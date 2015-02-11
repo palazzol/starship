@@ -2,14 +2,6 @@ function main() {
     var size = [640, 480];
     var center = [size[0]/2, size[1]/2];
 
-    // TBD - turn off mouse cursor?
-
-    // Graphics test code
-    //var c = document.getElementById("myCanvas");
-    //var ctx = c.getContext("2d");
-    //ctx.fillStyle = "#000000";
-    //ctx.fillRect(0,0,size[0],size[1]);
-
     var clock = Date.now();
     var u = SR.GetUniverse();
     var objects = [];
@@ -23,7 +15,6 @@ function main() {
             if (i===0 && j==0) {}
             else {
                 var beacon = new Starship.Object2D(u, "beacon", [i*50,j*50,0], [0,0,0], 0, 1);
-                //#beacon = Object2D(u, "beacon", (math.cos(math.pi*i/7.5)*(j+15)*20,math.sin(math.pi*i/7.5)*(j+15)*20,0), (0,0,0), 0, 1);
                 beacon.SetColor('#808080');
                 beacon.SetRadius(1);
                 objects[objects.length] = beacon;
@@ -32,7 +23,7 @@ function main() {
     }
 
     var ship2   = new Starship.Object2D(u, "ship2",   [-200,50,0], [0,0,0], 0, 10);
-    ship2.SetColor('#0000ff');
+    ship2.SetColor('#00ffff');
     ship2.SetRadius(5);
     objects[objects.length] = ship2;
 
@@ -101,11 +92,16 @@ function main() {
     var KEY = { SHIFT:16, CTRL:17, ESC:27, RIGHT:39, UP:38, LEFT:37, DOWN:40, SPACE:32,
             A:65, E:69, G:71, L:76, P:80, R:82, S:83, X:88, Z:90, DIGIT:48, BACKTICK:192 };
 
-    // Graphics test code
+    // Retrieve the graphic context
     var c = document.getElementById("gameCanvas");
     this.ctx = c.getContext("2d");
-	this.lastRender = Date.now();
-    this.test = function() {
+
+    this.lastRender = Date.now();
+
+    this.resizeGame();
+
+    // Main loop is here
+    this.loop = function() {
 
 		var now = Date.now();
         var elapsedTime = now-this.lastRender;
@@ -154,15 +150,14 @@ function main() {
             obj.Draw(ctx, center);
         }
 
-        //pygame.display.flip();
-
-        //window.setTimeout(this.test, 1000/24.0);
-        //window.setTimeout(this.test, 0.0);
-        requestAnimationFrame(this.test);
+        // Schedule the loop to run again
+        //window.setTimeout(this.loop, 1000/24.0);
+        //window.setTimeout(this.loop, 0.0);
+        requestAnimationFrame(this.loop);
     }
 
-	this.resizeGame();
-    this.test();
+    // Run the main loop for the first time
+    this.loop();
 }
 
 main();
