@@ -1,6 +1,7 @@
 function main() {
     var size = [640, 480];
     var center = [size[0]/2, size[1]/2];
+
     // TBD - turn off mouse cursor?
 
     // Graphics test code
@@ -15,8 +16,8 @@ function main() {
 
     //for (i=-14; i<15; i++) {
     //    for (j=-14; j<14; j++) {
-    for (i=-10; i<11; i++) {
-        for (j=-10; j<11; j++) {
+    for (i=-10; i<3; i++) {
+        for (j=-3; j<6; j++) {
     //for (i=-2; i<3; i++) {
     //    for (j=-2; j<3; j++) {
             if (i===0 && j==0) {}
@@ -56,7 +57,7 @@ function main() {
     var speed = 50;
 
     var tau = 0;
-    var delta_tau = 1/24;
+    //var delta_tau = 1/24;
 
     var delta_turn = 15.0; //degrees
 
@@ -75,8 +76,25 @@ function main() {
         keystate[e.keyCode] = false;
     };
 
+	this.resizeGame = function(e) {
+		var newWidth = window.innerWidth-8;
+    	var newHeight = window.innerHeight-8;
+    	var gameArea = document.getElementById('gameArea');
+    	var gameCanvas = document.getElementById('gameCanvas');
+		gameArea.style.height = newHeight+'px';
+		gameArea.style.width = newWidth+'px';
+		gameArea.style.marginTop = (-newHeight / 2) + 'px';
+		gameArea.style.marginLeft = (-newWidth / 2) + 'px';
+		gameCanvas.width = newWidth;
+    	gameCanvas.height = newHeight;
+    	size = [newWidth, newHeight];
+    	center = [size[0]/2, size[1]/2];
+	};
+
     window.addEventListener("keydown", this.doKeyDown, false);
     window.addEventListener("keyup", this.doKeyUp, false);
+	window.addEventListener('resize', this.resizeGame, false);
+	window.addEventListener('orientationchange', this.resizeGame, false);
 
     var count = 1;
 
@@ -84,13 +102,15 @@ function main() {
             A:65, E:69, G:71, L:76, P:80, R:82, S:83, X:88, Z:90, DIGIT:48, BACKTICK:192 };
 
     // Graphics test code
-    var c = document.getElementById("myCanvas");
+    var c = document.getElementById("gameCanvas");
     this.ctx = c.getContext("2d");
-
+	this.lastRender = Date.now();
     this.test = function() {
 
-        time = Date.now();
-        //console.log(time);
+		var now = Date.now();
+        var elapsedTime = now-this.lastRender;
+        this.lastRender = now;
+		var delta_tau = elapsedTime/1000.0;
 
         if (keystate[KEY.Z] || keystate[KEY.LEFT]) {
             turn = +delta_turn;
@@ -102,8 +122,8 @@ function main() {
         }
         if (keystate[KEY.SPACE] || keystate[KEY.UP]) {
             ship.Thrust(thrust);
-            if (delta_tau === 0.0)
-                delta_tau = 1.0;
+            //if (delta_tau === 0.0)
+            //    delta_tau = 1.0;
         } else {
             ship.Thrust(0.0);
         }
@@ -127,7 +147,7 @@ function main() {
 
         // Draw the background
         //ctx.fillStyle = "#000000";
-        ctx.clearRect(0,0,640,480);
+        ctx.clearRect(0,0,size[0],size[1]);
 
         for (var i=0; i<objects.length; i++) {
             var obj = objects[i];
@@ -136,10 +156,12 @@ function main() {
 
         //pygame.display.flip();
 
-        window.setTimeout(this.test, 1000/24.0);
+        //window.setTimeout(this.test, 1000/24.0);
         //window.setTimeout(this.test, 0.0);
+        requestAnimationFrame(this.test);
     }
 
+	this.resizeGame();
     this.test();
 }
 

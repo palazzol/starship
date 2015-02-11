@@ -1,12 +1,15 @@
+// Starship is a namespace
 if (typeof Starship == "undefined" || !Starship) {
     Starship = {};
 }
 
+// Starship.Object2D is derived from SR.Object
 (function() {
     Starship.Object2D = function(u, n, pos3, vel3, clk, mass) {
         SR.Object.call(this, u, n, pos3, vel3, clk, mass);
         this.color = '#ffffff';
         this.radius = 10;
+        this.rendered = false;
     };
     Starship.Object2D.prototype = Object.create(SR.Object.prototype);
     Starship.Object2D.prototype.SetColor = function(clr) {
@@ -16,37 +19,64 @@ if (typeof Starship == "undefined" || !Starship) {
         this.radius = r;
     };
     Starship.Object2D.prototype.Draw = function(ctx, center) {
+        if (this.rendered === false) {
+            // create canvas
+            this.pre = document.createElement("canvas");
+            this.pre.width = 20;
+            this.pre.height = 20;
+            var prectx = this.pre.getContext("2d");
+            if (this.radius === 1) {
+                var L = 3;
+                prectx.strokeStyle = this.color;
+                prectx.moveTo(10-L,10);
+                prectx.lineTo(10+L,10);
+                prectx.moveTo(10,10-L);
+                prectx.lineTo(10,10+L);
+                prectx.stroke();
+                //this.img = new Image()
+                //this.img.src = this.pre.toDataURL();
+                this.rendered = true
+            } else {
+                prectx.strokeStyle = this.color;
+                prectx.fillStyle = this.color;
+                prectx.beginPath();
+                prectx.arc(10, 10, this.radius, 0, 2*Math.PI);
+                prectx.closePath();
+                prectx.fill();
+                prectx.stroke();
+                //this.img = new Image()
+                //this.img.src = this.pre.toDataURL();
+                this.rendered = true
+            }
+        }
+        if (this.rendered === true)
+        {
+            // render image
+            var pos = this.universe.GetPos3Local(this);
+            pos[0] += center[0];
+            pos[1] += center[1];
+            ctx.drawImage(this.pre, pos[0]-10, pos[1]-10);
+        }
         var pos = this.universe.GetPos3Local(this);
         pos[0] += center[0];
         pos[1] += center[1];
-        if (this.radius === 1) {
-            var l = 3;
-            ctx.strokeStyle = this.color;
-            ctx.moveTo(pos[0]-l,pos[1]);
-            ctx.lineTo(pos[0]+l,pos[1]);
-            ctx.moveTo(pos[0],pos[1]-l);
-            ctx.lineTo(pos[0],pos[1]+l);
-            ctx.stroke();
-        } else {
-            ctx.strokeStyle = this.color;
-            ctx.fillStyle = this.color;
-            ctx.beginPath();
-            ctx.arc(pos[0], pos[1], this.radius, 0, 2*Math.PI);
-            ctx.closePath();
-            ctx.fill();
-            ctx.stroke();
-        }
         if (this.GetName() != 'beacon') {
             ctx.strokeStyle = this.color;
             ctx.fillStyle = this.color;
             var t = this.GetClock();
             ctx.font="14px Georgia";
             var t_rounded = Math.floor(t*10)/10;
-            var txt = "clock="+t_rounded;
+            var t_int = Math.floor(t);
+            var t_frac = Math.floor(Math.abs(t*10))%10;
+            //var txt = "clock="+t_rounded;
+            var txt = "clock="+t_int+"."+t_frac;
             ctx.fillText(txt,pos[0]+this.radius, pos[1]+this.radius);
         }
     };
+}());
 
+// Starship.Ship2D is derived from Starship.Object2D
+(function() {
     Starship.Ship2D = function(u, n, pos3, vel3, clk, mass) {
         Starship.Object2D.call(this, u, n, pos3, vel3, clk, mass);
         this.wire = [[1.0,0.0],[-1.0,-0.7],[-0.5,0.0],[-1.0,0.7]];
@@ -154,8 +184,11 @@ if (typeof Starship == "undefined" || !Starship) {
             }
         }
         ctx.font="14px Georgia";
-        var t_rounded = Math.floor(t*10)/10;
-        var txt = "v/c=" + Math.floor(v/c*100) + "%, Clock="+t_rounded;
+        //var t_rounded = Math.floor(t*10)/10;
+		var t_int = Math.floor(t);
+		var t_frac = Math.floor(Math.abs(t*10))%10;
+		//var txt = "clock="+t_rounded;
+        var txt = "v/c=" + Math.floor(v/c*100) + "%, Clock="+t_int+"."+t_frac;
         ctx.fillText(txt,pos[0]+this.radius, pos[1]+this.radius);
     };
 }());

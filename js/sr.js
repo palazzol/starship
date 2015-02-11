@@ -40,8 +40,10 @@ function ProjectTime(pos, vel) {
     return x;
 }
 
+// SR is a namespace
 var SR = {};
 
+// SR.Universe is a singleton class
 (function() {
     var _universe = null;
     SR.GetUniverse = function() {
@@ -97,6 +99,7 @@ var SR = {};
     };
 }());
 
+// SR.Object is a class
 (function() {
     SR.Object = function(universe, name, pos3, vel3, clock, restmass) {
         this.universe = universe
