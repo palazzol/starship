@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+<head>
+<style>
+body {background-color:black;color:white}
+canvas {border:1px solid #ffffff}
+</style>
+</head>
+<body>
+
+<h1>2D Relativistic Starship simulation</h1>
+
+<canvas id="myCanvas" width="640" height="480">
+Your browser does not support the HTML5 canvas tag.
+</canvas>
+
+<script src="sr.js"></script>
+<script src="starship.js"></script>
+<script src="main.js"></script>
+
+<pre>
+Turn CCW: Z or LEFT
+Turn CW:  X or RIGHT
+Thrust:   SPACE or UP
+Go to speeds:
+  0 - 0%
+  1 - 10%
+  2 - 20%
+  ...
+  9 - 90%
+  ` - 99%
+
+Reload Page to Restart
+</pre>
+</body>
+</html>
