@@ -1,0 +1,41 @@
+
+Ideas for starship:
+
+config file:
+
+ref coord system
+
+object trajectories
+
+object definition:
+	initial condition
+	trajectory
+	
+internals:
+
+ship coordinate system
+
+ray-intersection engine
+	(look at cuda)
+	
+1) handle acceleration as piecewise constant
+2) Try to use mass/energy relation propulsion
+3) handle acceleration as piecewise constant?
+4) create navigation algorithm for "target intercept"
+
+2D and 3D rendering
+color shifting
+brightness shifting
+
+look at mit engine OpenRelativity
+
+backstory
+
+test particle in curved spacetime
+
+multiplayer considerations?
+
+
+
+
+
