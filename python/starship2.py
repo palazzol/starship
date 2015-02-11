@@ -29,7 +29,7 @@ class Object2D(sr.Object):
     def SetRadius(self, radius):
         self.__radius = radius
     def Draw(self, surf, center):
-        pos = self._Object__universe.GetPos3(self)
+        pos = self._Object__universe.GetPos3Local(self)
         pos = (int(pos[0]+0.5)+center[0], int(pos[1]+0.5)+center[1])
         if self.__radius == 1:
             l = 3
@@ -71,7 +71,7 @@ class Ship2D(sr.Object):
             self.__thruster = False
         self.ApplyForce(self.GetOrientation()*amount)
     def Draw(self, surf, center):
-        pos = self._Object__universe.GetPos3(self)
+        pos = self._Object__universe.GetPos3Local(self)
         pos = (int(pos[0]+0.5)+center[0], int(pos[1]+0.5)+center[1])
         vel4 = self.GetGlobalVel4()
         c = self._Object__c
@@ -150,10 +150,12 @@ def main():
             objects.append(beacon)
     
     ship2   = Object2D(u, "ship2",   (-200,50,0), (0,0,0), 0, 10)
+    #ship2   = Object2D(u, "ship2",   (-400,50,0), (50,0,0), 0, 10)
     ship2.SetColor((0,0,255))
     ship2.SetRadius(5)
     objects.append(ship2)
     ship3   = Object2D(u, "ship3",   (-200,150,0), (0,0,0), 0, 10)
+    #ship3   = Object2D(u, "ship3",   (-350,50,0), (50,0,0), 0, 10)
     ship3.SetColor((255,0,0))
     ship3.SetRadius(5)
     objects.append(ship3)
@@ -168,13 +170,12 @@ def main():
     objects.append(ship)
 
     u.SetObserver(ship)
-    speed = 50
 
     surf = pygame.display.get_surface()
     tau = 0
-    delta_tau = 0.04167
+    delta_tau = 1.0/24.0
     
-    delta_turn = 10.0 #degrees
+    delta_turn = 15.0 #degrees
     
     turn = 0.0
     thrust = 200.0
@@ -229,13 +230,13 @@ def main():
         if keys[K_ESCAPE]:
             pygame.quit()
             return
-        if keys[K_z]:
+        if keys[K_z] or keys[K_LEFT]:
             turn = +delta_turn
             ship.Turn(turn)
-        if keys[K_x]:
+        if keys[K_x] or keys[K_RIGHT]:
             turn = -delta_turn
             ship.Turn(turn)
-        if keys[K_SPACE]:    
+        if keys[K_SPACE] or keys[K_LCTRL] or keys[K_UP]:    
             ship.Thrust(thrust)
             if delta_tau == 0.0:
                 delta_tau = 1.0
@@ -243,10 +244,27 @@ def main():
             ship.Thrust(0.0)
         if keys[K_0]:
             ship.SetGlobalVel3(ship.GetOrientation()*0.0)
+        if keys[K_1]:
+            ship.SetGlobalVel3(ship.GetOrientation()*10.0)
+        if keys[K_2]:
+            ship.SetGlobalVel3(ship.GetOrientation()*20.0)
+        if keys[K_3]:
+            ship.SetGlobalVel3(ship.GetOrientation()*30.0)
+        if keys[K_4]:
+            ship.SetGlobalVel3(ship.GetOrientation()*40.0)
         if keys[K_5]:
             ship.SetGlobalVel3(ship.GetOrientation()*50.0)
+        if keys[K_6]:
+            ship.SetGlobalVel3(ship.GetOrientation()*60.0)
+        if keys[K_7]:
+            ship.SetGlobalVel3(ship.GetOrientation()*70.0)
+        if keys[K_8]:
+            ship.SetGlobalVel3(ship.GetOrientation()*80.0)
         if keys[K_9]:
             ship.SetGlobalVel3(ship.GetOrientation()*90.0)
+        if keys[K_BACKQUOTE]:
+            ship.SetGlobalVel3(ship.GetOrientation()*99.0)
+
         if delta_tau != 0.0:
             u.MoveToObserverClock(tau)
             tau += delta_tau 

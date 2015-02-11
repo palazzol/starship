@@ -5,6 +5,16 @@ Created on Mon Oct 24 13:44:06 2011
 @author: palazzol
 """
 
+"""
+A note on Coordinate systems:
+    There are difference coordinate systems for every object.
+    'Standard Coordinates' are coordinates a preferred object.
+        All objects store their state in Standard Coordinates internally
+    'Object Coordinates' are the local coordinates associated with each object
+        
+"""
+    
+    
 from numpy import *
 import pylab as plt
 
@@ -20,13 +30,12 @@ def ProjectTime(pos, vel):
     D=B*B-4*A*C
     if math.fabs(D)<1e-6:
         D = 0.0
-    x1 = (-B+math.sqrt(D))/(2*A)
-    x2 = (-B-math.sqrt(D))/(2*A)
-    if x1<x2:
-        x=x1
+    S = math.sqrt(D)
+    if A>0.0:
+        x = (-B-S)/(2*A)
     else:
-        x=x2
-    #print x,x1,x2
+        x = (-B+S)/(2*A)
+    #print x
     if math.fabs(x)<1e-6:
         x = 0.0
     return x
@@ -40,12 +49,9 @@ class Universe():
         self.__objects.append(obj)
     def GetObjects(self):
         return self.__objects
-    def GetPos3(self, obj):
-        global_delta = obj.GetGlobalPos4()-self.__observer.GetGlobalPos4()
-        local_delta = dot( global_delta, self.__observer.GetLorentz() )
-        #new_pos = self.__observer.GetGlobalPos4()+local_delta
-        new_pos = local_delta
-        return new_pos[1:4]
+    def GetPos3Local(self, obj):
+        "Get Object location in Observer Coordinates"
+        return self.__observer.GetObservedRelativePos3(obj)
     def GetSpeedOfLight(self):
         return self.__c
     def SetSpeedOfLight(self, c):
@@ -66,7 +72,7 @@ class Universe():
                 #if obj.GetName() != 'beacon':
                 #    print obj.GetName(),delta_tau        
                 obj.IncrementTime(delta_tau)
-    
+
 class Object():
     'name, pos3, vel3, clock, restmass'
     def __init__(self, universe, name, pos3, vel3, clock, restmass):
@@ -74,7 +80,7 @@ class Object():
         self.__c = self.__universe.GetSpeedOfLight()
         # Initialize the name
         self.__name = name
-        # Initialize the position 4-vector
+        # Initialize the position 4-vector in
         self.__pos4 = array([self.__c*clock,pos3[0],pos3[1],pos3[2]])
         # Initialize the velocity 4-vector
         self.SetGlobalVel3(vel3)
@@ -133,25 +139,52 @@ class Object():
             self.__lorentz[1][1] = 1.0
             self.__lorentz[2][2] = 1.0
             self.__lorentz[3][3] = 1.0
-        else:            
+        else:    
+            # Note 0,0 is not used right now either
             self.__lorentz[0][0] = gamma
             self.__lorentz[0][1] = -bx*gamma
             self.__lorentz[0][2] = -by*gamma
             self.__lorentz[0][3] = -bz*gamma
-            self.__lorentz[1][0] = self.__lorentz[0][1]             
+            #self.__lorentz[1][0] = self.__lorentz[0][1]             
             self.__lorentz[1][1] = 1.0+(gamma-1)*bx*bx/b_squared
             self.__lorentz[1][2] = (gamma-1)*bx*by/b_squared
             self.__lorentz[1][3] = (gamma-1)*bx*bz/b_squared
-            self.__lorentz[2][0] = self.__lorentz[0][2]             
-            self.__lorentz[2][1] = self.__lorentz[1][2]
+            #self.__lorentz[2][0] = self.__lorentz[0][2]             
+            #self.__lorentz[2][1] = self.__lorentz[1][2]
             self.__lorentz[2][2] = 1.0+(gamma-1)*by*by/b_squared
             self.__lorentz[2][3] = (gamma-1)*by*bz/b_squared
-            self.__lorentz[3][0] = self.__lorentz[0][3]             
-            self.__lorentz[3][1] = self.__lorentz[1][3]
-            self.__lorentz[3][2] = self.__lorentz[2][3]
+            #self.__lorentz[3][0] = self.__lorentz[0][3]             
+            #self.__lorentz[3][1] = self.__lorentz[1][3]
+            #self.__lorentz[3][2] = self.__lorentz[2][3]
             self.__lorentz[3][3] = 1.0+(gamma-1)*bz*bz/b_squared
-    def GetLorentz(self):
-        return self.__lorentz
+    def GetObservedRelativePos3(self, obj):
+        # global delta is the object's position in global coordinates,
+        # but with the origin moved to the the observer
+        global_delta = obj.GetGlobalPos4()-self.GetGlobalPos4()
+        # Now, we can convert to the observer's coordinate system, but with
+        # the origin still at the observer.
+        #local_delta = dot( self.__lorentz, global_delta )
+        local_delta = array([0.0,0.0,0.0,0.0])
+        #local_delta[0] = global_delta[0]*self.__lorentz[0][0]+ \
+        #                 global_delta[1]*self.__lorentz[0][1]+ \
+        #                 global_delta[2]*self.__lorentz[0][2]+ \
+        #                 global_delta[3]*self.__lorentz[0][3]
+        local_delta[1] = global_delta[0]*self.__lorentz[0][1]+ \
+                         global_delta[1]*self.__lorentz[1][1]+ \
+                         global_delta[2]*self.__lorentz[1][2]+ \
+                         global_delta[3]*self.__lorentz[1][3]
+        local_delta[2] = global_delta[0]*self.__lorentz[0][2]+ \
+                         global_delta[1]*self.__lorentz[1][2]+ \
+                         global_delta[2]*self.__lorentz[2][2]+ \
+                         global_delta[3]*self.__lorentz[2][3]
+        local_delta[3] = global_delta[0]*self.__lorentz[0][3]+ \
+                         global_delta[1]*self.__lorentz[1][3]+ \
+                         global_delta[2]*self.__lorentz[2][3]+ \
+                         global_delta[3]*self.__lorentz[3][3]
+        # We would use this if we wanted the answer in Observer coordinates
+        #new_pos = self.__observer.GetGlobalPos4()+local_delta
+        new_pos = local_delta
+        return new_pos[1:4]
     def GetGlobalTime(self):
         return self.__pos4[0]/self.__c
     def ApplyForce(self, force3):
