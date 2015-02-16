@@ -38,6 +38,7 @@ function ProjectTime(pos, vel) {
     if (Math.abs(x)<1e-6)
         x = 0.0;
     return x;
+    //return -pos[0]/vel[0]; // doesn't work? should be measured pos
 }
 
 // SR is a namespace
