@@ -10,7 +10,7 @@ A note on Coordinate systems:
 
 function Metric(a,b) {
     // Minkowski Metric
-    return -(a[0]*b[0])+a[1]*b[1]+a[2]*b[2]+a[3]*b[3];
+    return a[0]*b[0]-a[1]*b[1]-a[2]*b[2]-a[3]*b[3];
 }
 
 function GoToPercentC(ship, speed) {
@@ -23,9 +23,9 @@ function GoToPercentC(ship, speed) {
 }
 
 function ProjectTime(pos, vel) {
-    // Solve the equation (pos-x*vel)^(pos-x*vel) == 0.0 for x>=0
+    // Solve the equation (pos+x*vel)^(pos+x*vel) == 0.0 for x>=0
     var A = Metric(vel,vel);
-    var B = Metric(pos,vel) * -2;
+    var B = Metric(pos,vel) * 2;
     var C = Metric(pos,pos);
     var D = B*B-4*A*C;
     if (Math.abs(D)<1e-6)
@@ -89,7 +89,7 @@ var SR = {};
                 // Move the object to the event where observer will "see" it
                 var temp1 = this.observer.GetGlobalPos4();
                 var temp2 = obj.GetGlobalPos4();
-                var temp3 = [temp1[0]-temp2[0],temp1[1]-temp2[1],temp1[2]-temp2[2],temp1[3]-temp2[3]];
+                var temp3 = [temp2[0]-temp1[0],temp2[1]-temp1[1],temp2[2]-temp1[2],temp2[3]-temp1[3]];
                 delta_tau = ProjectTime(temp3, obj.GetGlobalVel4());
                 //#if obj.GetName() != 'beacon':
                 //#    print obj.GetName(),delta_tau
