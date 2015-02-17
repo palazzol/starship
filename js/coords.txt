@@ -1,0 +1,42 @@
+
+standard coordinates:
+
+object coordinates:
+
+observer coordinates:
+
+Possible viewpoints:
+
+---
+
+first-person:
+    everything in object coordinates
+    
+third-person:
+    everthing in standard coordinates
+---
+
+Hybrid 2D viewpoints:
+
+A) "fixed ship stays in middle"
+    object coordinates, except rotated and offset such that:
+    object position is stationary
+    object rotation is stationary
+    (exactly like first person)
+    
+B) "rotating ship stays in middle"
+    object coordinates, except rotated and offset such that:
+        obj position is stationary
+        obj orientation is aligned to standard coordinates (?)
+    Can be accomplished by rotating A to ?
+    
+C) "rotating ship moves on screen"
+    object coordinates, except rotated and offset such that:
+        obj position is offset to standard coordinates
+        obj orientation is aligned to standard coordinates (?)
+    Can be accomplished by offsetting B to standard coordinate position
+    
+Current Architecture:
+
+TBD
+    
