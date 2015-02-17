@@ -3,17 +3,21 @@
 /*
 A note on Coordinate systems:
     There are difference coordinate systems for every object.
-    'Standard Coordinates' are coordinates a preferred object.
-        All objects store their state in Standard Coordinates internally
+    'Global Coordinates' are coordinates a global reference frame.
+        Initial positions and velocities are defined in this reference frame
+        Ship speed is defined in this reference frame
+        Objects store their state in Global Coordinates internally
     'Object Coordinates' are the local coordinates associated with each object
 */
 
 function Metric(a,b) {
     // Minkowski Metric
+    // +,-,-,- convention, timelike distances are positive
     return a[0]*b[0]-a[1]*b[1]-a[2]*b[2]-a[3]*b[3];
 }
 
 function GoToPercentC(ship, speed) {
+    // Set speed wrt to global ref frame
     var o = ship.GetOrientation();
     var rv = []
     rv[0] = o[0]*speed;
@@ -83,17 +87,16 @@ var SR = {};
         // Actually move the observer to the event where this proper time is measured
         var delta_tau = tau-this.observer.GetClock();
         this.observer.IncrementTime(delta_tau);
-        //#print self.__observer.GetName(),delta_tau
+        // Now, move each object to the point where it intersects the observer's past light cone
         for (var i=0; i<this.objects.length; i++) {
             var obj = this.objects[i];
             if (obj != this.observer) {
                 // Move the object to the event where observer will "see" it
+                // Get the object position vector, with the origin at the observer
                 var temp1 = this.observer.GetGlobalPos4();
                 var temp2 = obj.GetGlobalPos4();
-                var temp3 = [temp2[0]-temp1[0],temp2[1]-temp1[1],temp2[2]-temp1[2],temp2[3]-temp1[3]];
-                delta_tau = ProjectTime(temp3, obj.GetGlobalVel4());
-                //#if obj.GetName() != 'beacon':
-                //#    print obj.GetName(),delta_tau
+                var pos3observer = [temp2[0]-temp1[0],temp2[1]-temp1[1],temp2[2]-temp1[2],temp2[3]-temp1[3]];
+                delta_tau = ProjectTime(pos3observer, obj.GetGlobalVel4());
                 obj.IncrementTime(delta_tau);
             }
         }
@@ -107,13 +110,13 @@ var SR = {};
         this.c = universe.GetSpeedOfLight();
         // Initialize the name
         this.name = name;
-        // Initialize the position 4-vector
+        // Initialize the position 4-vector, global coordinates
         this.pos4 = [this.c*clock,pos3[0],pos3[1],pos3[2]];
-        // Initialize the velocity 4-vector
+        // Initialize the velocity 4-vector, global coordinates
         this.SetGlobalVel3(vel3);
         // Initialize the clock
         this.clock = clock;
-        // Initialize the orientation
+        // Initialize the orientation, object coordinates
         this.orient3 = [1.0,0.0,0.0];
         // Initialize the rest mass
         this.restmass = restmass;
