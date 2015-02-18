@@ -27,7 +27,8 @@ function GoToPercentC(ship, speed) {
 }
 
 function ProjectTimeObserved(pos, vel) {
-    // Solve the equation (pos+x*vel)^(pos+x*vel) == 0.0 for x>=0
+    // Solve the equation (pos+x*vel) dot (pos+x*vel) == 0.0 for x>=0
+    // Intersection of object trajectory with observer's past light cone
     var A = Metric(vel,vel);
     var B = Metric(pos,vel) * 2;
     var C = Metric(pos,pos);
@@ -45,7 +46,8 @@ function ProjectTimeObserved(pos, vel) {
 }
 
 function ProjectTimeMeasured(posobj, velobj, velobs) {
-    // Solve the equation (posobj+x*velobj)^(velobs) == 0.0 for x>=0
+    // Solve the equation (posobj+x*velobj) dot (velobs) == 0.0
+    // Intersection of object trajectory with observer's "now" (t_obs=now plane)
     var A = Metric(velobj,velobs);
     var B = Metric(posobj,velobs);
     return -B/A;
