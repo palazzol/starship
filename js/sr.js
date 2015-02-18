@@ -26,7 +26,7 @@ function GoToPercentC(ship, speed) {
     ship.SetGlobalVel3(rv);
 }
 
-function ProjectTime(pos, vel) {
+function ProjectTimeObserved(pos, vel) {
     // Solve the equation (pos+x*vel)^(pos+x*vel) == 0.0 for x>=0
     var A = Metric(vel,vel);
     var B = Metric(pos,vel) * 2;
@@ -42,7 +42,13 @@ function ProjectTime(pos, vel) {
     if (Math.abs(x)<1e-6)
         x = 0.0;
     return x;
-    //return -B/(2*A); // doesn't work? should be measured pos
+}
+
+function ProjectTimeMeasured(posobj, velobj, velobs) {
+    // Solve the equation (posobj+x*velobj)^(velobs) == 0.0 for x>=0
+    var A = Metric(velobj,velobs);
+    var B = Metric(posobj,velobs);
+    return -B/A;
 }
 
 // SR is a namespace
@@ -96,7 +102,8 @@ var SR = {};
                 var temp1 = this.observer.GetGlobalPos4();
                 var temp2 = obj.GetGlobalPos4();
                 var pos3observer = [temp2[0]-temp1[0],temp2[1]-temp1[1],temp2[2]-temp1[2],temp2[3]-temp1[3]];
-                delta_tau = ProjectTime(pos3observer, obj.GetGlobalVel4());
+                delta_tau = ProjectTimeObserved(pos3observer, obj.GetGlobalVel4());
+                //delta_tau = ProjectTimeMeasured(pos3observer, obj.GetGlobalVel4(), this.observer.GetGlobalVel4());
                 obj.IncrementTime(delta_tau);
             }
         }
