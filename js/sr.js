@@ -83,7 +83,7 @@ var SR = {};
         return this.c;
     };
     SR.Universe.prototype.SetSpeedOfLight = function(c) {
-        this.c = xc;
+        this.c = c;
     };
     SR.Universe.prototype.SetObserver = function(obj) {
         this.observer = obj;
