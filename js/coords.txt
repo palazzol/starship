@@ -38,5 +38,13 @@ C) "rotating ship moves on screen"
     
 Current Architecture:
 
-TBD
+B)
+
+Units:
+
+Time is in seconds
+Space is in light-seconds/100  (100 = one light-second)
+Therefore C = 100.0, making v in percentage of the speed of light
+
+
     

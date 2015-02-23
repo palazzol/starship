@@ -35,6 +35,70 @@ test particle in curved spacetime
 
 multiplayer considerations?
 
+----
+
+Notes from 2/12/2014 audio file
+
+look at orientation transforms and distortion
+
+look at sprites 
+- make encapsulated
+- all wireframe?
+
+steering via new heading icon, snapping
+
+console region & text
+- vector text?
+- brightening, fading?
+
+target icon
+
+clock positions & delta clock
+
+load/save prerecorded file, with pause/continue, text descriptions
+
+circles 
+- equidistant from you, or another target
+- could be grid
+
+unify object list, call draw on this
+- display manager?
+
+coordinate systems
+- object (global)
+- screen (pixels)
+- ships (local) coordinate system
+- cleanup/document
+
+javascript object implementation ok? better?
+
+deployment
+- minification / staging
+
+debug display
+- graphics vs calculation framerate
+
+options for framerate
+- fixed vs variable?
+
+toggle observed vs measured, both at once?
+
+projectiles
+- mass drivers
+- light beams - lasers or photon packets
+
+targetting computer
+- dumb shots
+- homing shots
+- smart aiming
+
+navigation computer
+- point to point navigation
+
+automated enemy ships
+- targetting and/or navigation
+
+
 
 
 

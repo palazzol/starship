@@ -22,8 +22,8 @@ if (typeof Starship == "undefined" || !Starship) {
         if (this.rendered === false) {
             // create canvas
             this.pre = document.createElement("canvas");
-            this.pre.width = 20;
-            this.pre.height = 20;
+            this.pre.width = 24;
+            this.pre.height = 24;
             var prectx = this.pre.getContext("2d");
             if (this.radius === 1) {
                 var L = 3;
@@ -38,11 +38,13 @@ if (typeof Starship == "undefined" || !Starship) {
                 this.rendered = true
             } else {
                 prectx.strokeStyle = this.color;
-                prectx.fillStyle = this.color;
+                //prectx.fillStyle = this.color;
+                prectx.lineWidth = 2;
+                prectx.lineJoin = "miter";
                 prectx.beginPath();
                 prectx.arc(10, 10, this.radius, 0, 2*Math.PI);
                 prectx.closePath();
-                prectx.fill();
+                //prectx.fill();
                 prectx.stroke();
                 //this.img = new Image()
                 //this.img.src = this.pre.toDataURL();
@@ -64,12 +66,12 @@ if (typeof Starship == "undefined" || !Starship) {
             ctx.strokeStyle = this.color;
             ctx.fillStyle = this.color;
             var t = this.GetClock();
-            ctx.font="14px Georgia";
+            ctx.font="18px Courier";
             var t_rounded = Math.floor(t*10)/10;
             var t_int = Math.floor(t);
             var t_frac = Math.floor(Math.abs(t*10))%10;
-            //var txt = "clock="+t_rounded;
-            var txt = "clock="+t_int+"."+t_frac;
+            //var txt = "clock:"+t_rounded;
+            var txt = " clock:"+t_int+"."+t_frac;
             ctx.fillText(txt,pos[0]+this.radius, pos[1]+this.radius);
         }
     };
@@ -115,6 +117,8 @@ if (typeof Starship == "undefined" || !Starship) {
         var gv = Math.sqrt(vel4[1]*vel4[1]+vel4[2]*vel4[2]+vel4[3]*vel4[3]);
         var v = gv/g;
         var t = this.GetClock();
+        /*
+        // Put the circle on hold for a bit
         for (r=50; r<600; r+=50) {
             var center_offset = r;
             var center_pos = [pos[0]+vel4[1]/c*center_offset,pos[1]+vel4[2]/c*center_offset];
@@ -125,6 +129,7 @@ if (typeof Starship == "undefined" || !Starship) {
             ctx.arc(center_pos[0], center_pos[1], radius, 0, 2*Math.PI);
             ctx.stroke();
         }
+        */
         if (this.radius === 1) {
             ctx.beginPath();
             ctx.strokeStyle = '#ffffff';
@@ -146,6 +151,7 @@ if (typeof Starship == "undefined" || !Starship) {
                 p_rots[p_rots.length] = p_rot;
             }
             ctx.strokeStyle = this.color;
+            ctx.lineWidth = 2;
             ctx.beginPath();
             var p1 = p_rots[0];
             ctx.moveTo(p1[0], p1[1]);
@@ -154,6 +160,7 @@ if (typeof Starship == "undefined" || !Starship) {
                 ctx.lineTo(p1[0], p1[1]);
             }
             p1 = p_rots[0];
+            ctx.lineJoin = "miter";
             ctx.closePath();
             ctx.stroke();
             if (this.toggle) {
@@ -183,12 +190,13 @@ if (typeof Starship == "undefined" || !Starship) {
                 ctx.stroke();
             }
         }
-        ctx.font="14px Georgia";
+        ctx.fillStyle = this.color;
+        ctx.font="18px Courier";
         //var t_rounded = Math.floor(t*10)/10;
 		var t_int = Math.floor(t);
 		var t_frac = Math.floor(Math.abs(t*10))%10;
-		//var txt = "clock="+t_rounded;
-        var txt = "v/c=" + Math.floor(v/c*100) + "%, Clock="+t_int+"."+t_frac;
+		//var txt = "clock:"+t_rounded;
+        var txt = "v/c:" + Math.floor(v/c*100) + "%, clock:"+t_int+"."+t_frac;
         ctx.fillText(txt,pos[0]+this.radius, pos[1]+this.radius);
     };
 }());

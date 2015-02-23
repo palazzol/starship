@@ -12,13 +12,13 @@ function main() {
         for (j=-3; j<6; j++) {
     //for (i=-2; i<3; i++) {
     //    for (j=-2; j<3; j++) {
-            if (i===0 && j==0) {}
-            else {
+            //if (i===0 && j==0) {}
+            //else {
                 var beacon = new Starship.Object2D(u, "beacon", [i*50,j*50,0], [0,0,0], 0, 1);
                 beacon.SetColor('#808080');
                 beacon.SetRadius(1);
                 objects[objects.length] = beacon;
-            }
+            //}
         }
     }
 
@@ -34,13 +34,13 @@ function main() {
 
     var station = new Starship.Object2D(u, "station",[0,0,0], [0,0,0], 0, 100);
     station.SetColor('#ffff00');
-    station.SetRadius(10);
+    station.SetRadius(8);
     objects[objects.length] = station;
 
     var ship    = new Starship.Ship2D(u, "ship",   [-200,50,0], [0,0,0], 0, 10);
     console.log(ship);
 
-    ship.SetColor('#00ff00');
+    ship.SetColor('#008000');
     ship.SetRadius(20);
     objects[objects.length] = ship;
 
