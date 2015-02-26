@@ -68,14 +68,9 @@ function main() {
     };
 
 	this.resizeGame = function(e) {
-		var newWidth = window.innerWidth-8;
-    	var newHeight = window.innerHeight-8;
-    	var gameArea = document.getElementById('gameArea');
+		var newWidth = window.innerWidth;
+    	var newHeight = window.innerHeight;
     	var gameCanvas = document.getElementById('gameCanvas');
-		gameArea.style.height = newHeight+'px';
-		gameArea.style.width = newWidth+'px';
-		gameArea.style.marginTop = (-newHeight / 2) + 'px';
-		gameArea.style.marginLeft = (-newWidth / 2) + 'px';
 		gameCanvas.width = newWidth;
     	gameCanvas.height = newHeight;
     	size = [newWidth, newHeight];
