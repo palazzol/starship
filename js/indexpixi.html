@@ -1,0 +1,28 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+    <title>2D Relativistic Starship simulation</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+        }
+    	html, body { width:100%; height:100%; } /* just to be sure these are full screen*/
+        body {background-color:black;color:white}
+        #gameArea {
+		  position: absolute;
+		  left:     50%;
+		  top:      50%;
+		}
+    </style>
+    <script src="pixi.js-master/bin/pixi.dev.js"></script>
+
+</head>
+<body onload="main();">
+	<script src="sr.js"></script>
+	<script src="starshippixi.js"></script>
+	<script src="mainpixi.js"></script>
+	<div id="gameArea" >
+	</div>
+<body>
+</html>
