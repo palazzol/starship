@@ -1,9 +1,10 @@
 function main() {
-	var width =  720;
-	var height = 1280;
+	var width =  600;
+	var height = 1200;
 
 	// create an new instance of a pixi stage
-	var stage = new PIXI.Stage(0x66FF99);
+    //var stage = new PIXI.Stage(0x66FF99);
+    var stage = new PIXI.Stage(0x000000);
 
 	// create a renderer instance
 	//var gameCanvas = document.getElementById('gameCanvas');
@@ -19,7 +20,7 @@ function main() {
     	var newWidthToHeight = newWidth/newHeight;
     	if (newWidthToHeight > widthToHeight) {
 		  // window width is too wide relative to desired game width
-		  newWidth = newHeight * widthToHeight;
+		  newWidth = Math.floor(newHeight * widthToHeight);
 		  gameArea.style.height = newHeight + 'px';
 		  gameArea.style.width = newWidth + 'px';
 		} else { // window height is too high relative to desired game height
@@ -54,8 +55,13 @@ function main() {
 	bunny.anchor.y = 0.5;
 
 	// move the sprite to the center of the screen
-	bunny.position.x = width/2;
-	bunny.position.y = height/2;
+	bunny.position.x = 300;
+	bunny.position.y = 540;
+
+    bunny.rotation = 0.7;
+    bunny.scale.x = 2;
+    bunny["skew"] = new PIXI.Point(1,1);
+    bunny.skew.x = 10;
 
 	stage.addChild(bunny);
 
@@ -63,7 +69,7 @@ function main() {
 		requestAnimFrame(animate);
 
 		// just for fun, let's rotate mr rabbit a little
-		bunny.rotation += 0.1;
+		//bunny.rotation += 0.1;
 
 		// render the stage
 		renderer.render(stage);

@@ -8,13 +8,53 @@
             padding: 0;
         }
     	html, body { width:100%; height:100%; } /* just to be sure these are full screen*/
-        body {background-color:black;color:white}
+        body {background-color:darkgray; color:white}
         #gameArea {
 		  position: absolute;
 		  left:     50%;
 		  top:      50%;
 		}
-    </style>
+        #topArea {
+		  position: absolute;
+		  width:    100%;
+		  height:   20%;
+		  top:      0;
+		  opacity:  0.8;
+		  background-color: red;
+		}
+        #stripe1Area {
+		  position: absolute;
+		  width:    100%;
+		  height:   5%;
+		  top:      5%;
+		  opacity:  1.0;
+		  background-color: blue;
+		}
+        #stripe2Area {
+		  position: absolute;
+		  width:    100%;
+		  height:   5%;
+		  top:      15%;
+		  opacity:  0.8;
+		  background-color: blue;
+		}
+        #stripe3Area {
+		  position: absolute;
+		  width:    100%;
+		  height:   10%;
+		  bottom:   10%;
+		  opacity:  0.8;
+		  background-color: blue;
+		}
+		#bottomArea {
+		  position: absolute;
+		  width:    100%;
+		  height:   30%;
+		  bottom:   0;
+		  opacity:  0.8;
+		  background-color: red;
+		}
+	</style>
     <script src="pixi.js-master/bin/pixi.dev.js"></script>
 
 </head>
@@ -23,6 +63,11 @@
 	<script src="starshippixi.js"></script>
 	<script src="mainpixi.js"></script>
 	<div id="gameArea" >
+		<div id="topArea"></div>
+		<div id="stripe1Area"></div>
+		<div id="stripe2Area"></div>
+		<div id="stripe3Area"></div>
+		<div id="bottomArea"></div>
 	</div>
 <body>
 </html>
