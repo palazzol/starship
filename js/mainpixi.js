@@ -51,19 +51,20 @@ function main() {
 
 	// create a new Sprite using the texture
 	var bunny = new PIXI.Sprite(texture);
-	var frame = new PIXI.Sprite();
+	// create a reference frame
+	var refframe = new PIXI.DisplayObjectContainer();
 
 	// This will be the position of the bunny
-	frame.position.x = 300;
-	frame.position.y = 540;
+	refframe.position.x = 300;
+	refframe.position.y = 540;
 
 	// This is the composite rotation for the whole object,
 	// it is made of the desired rotation + the skew angle, clockwise from axis we are skewing
-	frame.rotation = 60*3.14159/180;
+	refframe.rotation = 60*PIXI.DEG_TO_RAD;
 
 	// Can apply a skew here - example is 60 degrees clockwise from y, (2 o'clock)
-	frame.scale.y = 10;
-	frame.scale.x = 1;
+	refframe.scale.y = 10;
+	refframe.scale.x = 1;
 
 	// center the sprites anchor point
 	bunny.anchor.x = 0.5;
@@ -74,20 +75,20 @@ function main() {
 	bunny.position.y = 0;
 
 	// this is the negative rotation of the skew
-	bunny.rotation = -60*3.14159/180;
+	bunny.rotation = -60**PIXI.DEG_TO_RAD;
 
 	// you can still do a scale here wrt the sprite frame
 	bunny.scale.x=1;
 	bunny.scale.y=1;
 
-	stage.addChild(frame);
-	frame.addChild(bunny);
+	stage.addChild(refframe);
+	refframe.addChild(bunny);
 
 	function animate() {
 		requestAnimFrame(animate);
 
 		// just for fun, let's rotate mr rabbit a little
-		//frame.rotation += 0.02;
+		refframe.rotation += 0.02;
 
 		// render the stage
 		renderer.render(stage);
