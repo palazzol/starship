@@ -75,7 +75,7 @@ function main() {
 	bunny.position.y = 0;
 
 	// this is the negative rotation of the skew
-	bunny.rotation = -60**PIXI.DEG_TO_RAD;
+	bunny.rotation = -60*PIXI.DEG_TO_RAD;
 
 	// you can still do a scale here wrt the sprite frame
 	bunny.scale.x=1;
