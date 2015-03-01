@@ -54,6 +54,13 @@ if (typeof Starship == "undefined" || !Starship) {
             this.sprite.anchor.y = 0.5;
             parent.addChild(this.sprite);
 
+			if (this.name === "ship2") {
+				this.timetext = new PIXI.Text("", { font: "24px Inconsolata", fill: "#ffffff", align: "left" });
+				this.timetext.position.x = 0
+				this.timetext.position.y = 60;
+				parent.addChild(this.timetext);
+			}
+
             this.rendered = true;
         }
         if (this.rendered === true)
@@ -83,6 +90,13 @@ if (typeof Starship == "undefined" || !Starship) {
             ctx.fillText(txt,pos[0]+this.radius, pos[1]+this.radius);
         }
         */
+        if (this.name === "ship2") {
+        	var t = this.GetClock();
+			var t_int = Math.floor(t);
+			var t_frac = Math.floor(Math.abs(t*10))%10;
+			var txt = "TRGT TIME: "+t_int+"."+t_frac+"s";
+			this.timetext.setText(txt);
+		}
     };
 }());
 
@@ -225,7 +239,12 @@ if (typeof Starship == "undefined" || !Starship) {
                 this.sprite2.anchor.x = 0.5;
                 this.sprite2.anchor.y = 0.5;
                 parent.addChild(this.sprite2);
-                //}
+
+				//this.timetext = new PIXI.Text("", { font: "bold italic 60px Arvo", fill: "#3e1707", align: "left", stroke: "#a4410e", strokeThickness: 7 });
+				this.timetext = new PIXI.Text("", { font: "24px Inconsolata", fill: "#ffffff", align: "left" });
+				this.timetext.position.x = 0
+				this.timetext.position.y = 0;
+				parent.addChild(this.timetext);
             }
 
 
@@ -250,15 +269,10 @@ if (typeof Starship == "undefined" || !Starship) {
             }
         }
 
-        /*
-        ctx.fillStyle = this.color;
-        ctx.font="18px Courier";
-        //var t_rounded = Math.floor(t*10)/10;
+		var t = this.GetClock();
         var t_int = Math.floor(t);
         var t_frac = Math.floor(Math.abs(t*10))%10;
-        //var txt = "clock:"+t_rounded;
-        var txt = "v/c:" + Math.floor(v/c*100) + "%, clock:"+t_int+"."+t_frac;
-        ctx.fillText(txt,pos[0]+this.radius, pos[1]+this.radius);
-        */
+        var txt = "SHIP TIME: "+t_int+"."+t_frac+"s";
+        this.timetext.setText(txt);
     };
 }());

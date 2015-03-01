@@ -47,7 +47,6 @@ function main() {
     // Initialize
     var clock = Date.now();
     var u = SR.GetUniverse();
-    var objects = [];
 
     //for (i=-14; i<15; i++) {
     //    for (j=-14; j<14; j++) {
@@ -60,7 +59,6 @@ function main() {
                 var beacon = new Starship.Object2D(u, "beacon", [i*50,j*50,0], [0,0,0], 0, 1);
                 beacon.SetColor('#808080');
                 beacon.SetRadius(1);
-                objects[objects.length] = beacon;
             //}
         }
     }
@@ -68,17 +66,14 @@ function main() {
     var ship2   = new Starship.Object2D(u, "ship2",   [-200,50,0], [0,0,0], 0, 10);
     ship2.SetColor('#00ffff');
     ship2.SetRadius(5);
-    objects[objects.length] = ship2;
 
     var ship3   = new Starship.Object2D(u, "ship3",   [-200,150,0], [0,0,0], 0, 10);
     ship3.SetColor('#ff0000');
     ship3.SetRadius(5);
-    objects[objects.length] = ship3;
 
     var station = new Starship.Object2D(u, "station",[0,0,0], [0,0,0], 0, 100);
     station.SetColor('#ffff00');
     station.SetRadius(8);
-    objects[objects.length] = station;
 
     // should be a ship!
     var ship = new Starship.Ship2D(u, "ship",   [-200,50,0], [0,0,0], 0, 10);
@@ -86,7 +81,6 @@ function main() {
 
     ship.SetColor('#008000');
     ship.SetRadius(20);
-    objects[objects.length] = ship;
 
     u.SetObserver(ship);
     var speed = 50;
@@ -120,6 +114,11 @@ function main() {
 
     var KEY = { SHIFT:16, CTRL:17, ESC:27, RIGHT:39, UP:38, LEFT:37, DOWN:40, SPACE:32,
             A:65, E:69, G:71, L:76, P:80, R:82, S:83, X:88, Z:90, DIGIT:48, BACKTICK:192 };
+
+	this.deltatime = new PIXI.Text("", { font: "24px Inconsolata", fill: "#ffffff", align: "left" });
+	this.deltatime.position.x = 0
+	this.deltatime.position.y = 120;
+	stage.addChild(this.deltatime);
 
     this.lastRender = Date.now();
 
@@ -168,10 +167,25 @@ function main() {
         //ctx.fillStyle = "#000000";
         ///////ctx.clearRect(0,0,size[0],size[1]);
 
+		var deltatime = 0;
+		var shiptime = 0;
+		var trgttime = 0;
+
+		var objects = u.GetObjects();
         for (var i=0; i<objects.length; i++) {
             var obj = objects[i];
             obj.Draw(stage, [300, 540]);
+            if (obj.name === "ship")
+            	shiptime = obj.GetClock();
+            else if (obj.name === "ship2")
+            	trgttime = obj.GetClock();
         }
+
+        deltatime = trgttime - shiptime;
+        var t_int = Math.floor(deltatime);
+        var t_frac = Math.floor(Math.abs(deltatime*10))%10;
+        var txt = "DLTA TIME: "+t_int+"."+t_frac+"s";
+        this.deltatime.setText(txt);
 
         renderer.render(stage);
 
@@ -183,55 +197,4 @@ function main() {
 
     // Run the main loop for the first time
     requestAnimFrame(this.loop);
-
-    //////////////////////////////////////////////
-/*
-	// create a texture from an image path
-	var texture = PIXI.Texture.fromImage("pixi.js-master/examples/example 1 - Basics/bunny.png");
-
-	// create a new Sprite using the texture
-	var bunny = new PIXI.Sprite(texture);
-	// create a reference frame
-	var refframe = new PIXI.DisplayObjectContainer();
-
-	// This will be the position of the bunny
-	refframe.position.x = 300;
-	refframe.position.y = 540;
-
-	// This is the composite rotation for the whole object,
-	// it is made of the desired rotation + the skew angle, clockwise from axis we are skewing
-	refframe.rotation = 60*PIXI.DEG_TO_RAD;
-
-	// Can apply a skew here - example is 60 degrees clockwise from y, (2 o'clock)
-	refframe.scale.y = 10;
-	refframe.scale.x = 1;
-
-	// center the sprites anchor point
-	bunny.anchor.x = 0.5;
-	bunny.anchor.y = 0.5;
-
-	// must be zero or we will get "orbit" rotation
-	bunny.position.x = 0;
-	bunny.position.y = 0;
-
-	// this is the negative rotation of the skew
-	bunny.rotation = -60*PIXI.DEG_TO_RAD;
-
-	// you can still do a scale here wrt the sprite frame
-	bunny.scale.x=1;
-	bunny.scale.y=1;
-
-	stage.addChild(refframe);
-	refframe.addChild(bunny);
-
-	function animate() {
-		requestAnimFrame(animate);
-
-		// just for fun, let's rotate mr rabbit a little
-		refframe.rotation += 0.02;
-
-		// render the stage
-		renderer.render(stage);
-	}
-*/
 }
