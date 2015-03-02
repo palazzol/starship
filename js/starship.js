@@ -52,8 +52,9 @@ if (typeof Starship == "undefined" || !Starship) {
         	var t = this.GetClock();
 			var t_int = Math.floor(t);
 			var t_frac = Math.floor(Math.abs(t*10))%10;
-			var txt = "TRGT TIME: "+t_int+"."+t_frac+"s";
+			var txt = t_int+"."+t_frac+"s";
 			this.timetext.setText(txt);
+            this.timetext.position.x = 300 - this.timetext.width;
 		}
     };
 }());
@@ -137,7 +138,8 @@ if (typeof Starship == "undefined" || !Starship) {
 		var t = this.GetClock();
         var t_int = Math.floor(t);
         var t_frac = Math.floor(Math.abs(t*10))%10;
-        var txt = "SHIP TIME: "+t_int+"."+t_frac+"s";
+        var txt = t_int+"."+t_frac+"s";
         this.timetext.setText(txt);
+        this.timetext.position.x = 300 - this.timetext.width;
     };
 }());

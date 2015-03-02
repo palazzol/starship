@@ -88,7 +88,7 @@ if (typeof Starship == "undefined" || !Starship) {
 		canvas.height = size*2;
 		var ctx = canvas.getContext("2d");
 	  	ctx.beginPath();
-	  	ctx.rect(0, 0, canvas.width, canvas.height);
+	  	ctx.rect(10, 10, canvas.width-20, canvas.height-20);
 	  	ctx.fillStyle = color;
 	  	ctx.fill();
 	  	ctx.lineWidth = 1;

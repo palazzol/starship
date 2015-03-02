@@ -75,10 +75,7 @@ function main() {
     station.SetColor('#ffff00');
     station.SetRadius(8);
 
-    // should be a ship!
     var ship = new Starship.Ship2D(u, "ship",   [-200,50,0], [0,0,0], 0, 10);
-    console.log(ship);
-
     ship.SetColor('#008000');
     ship.SetRadius(20);
 
@@ -131,7 +128,7 @@ function main() {
 		{
 			var newPosition = this.data.getLocalPosition(this.parent);
 			var angle = Math.atan2(newPosition.y-540,newPosition.x-300);
-			angle = Math.floor(angle/(Math.PI/12)+0.5)*(Math.PI/12);
+            angle = Math.floor(angle/(delta_turn*Math.PI/180)+0.5)*(delta_turn*Math.PI/180);
 			this.rotation = angle;
 			var c = Math.cos(angle);
 			var s = Math.sin(angle);
@@ -198,8 +195,23 @@ function main() {
     var KEY = { SHIFT:16, CTRL:17, ESC:27, RIGHT:39, UP:38, LEFT:37, DOWN:40, SPACE:32,
             A:65, E:69, G:71, L:76, P:80, R:82, S:83, X:88, Z:90, DIGIT:48, BACKTICK:192 };
 
-	this.deltatime = new PIXI.Text("", { font: "24px Inconsolata", fill: "#ffffff", align: "left" });
-	this.deltatime.position.x = 0
+    this.shiptimeTitle = new PIXI.Text("SHIP TIME:", { font: "24px Inconsolata", fill: "#ffff00", align: "left" });
+    this.shiptimeTitle.position.x = 0
+    this.shiptimeTitle.position.y = 0;
+    stage.addChild(this.shiptimeTitle);
+
+    this.targettimeTitle = new PIXI.Text("TARGET TIME:", { font: "24px Inconsolata", fill: "#ffff00", align: "left" });
+    this.targettimeTitle.position.x = 0
+    this.targettimeTitle.position.y = 60;
+    stage.addChild(this.targettimeTitle);
+
+    this.deltatimeTitle = new PIXI.Text("DELTA TIME:", { font: "24px Inconsolata", fill: "#ffff00", align: "left" });
+    this.deltatimeTitle.position.x = 0
+    this.deltatimeTitle.position.y = 120;
+    stage.addChild(this.deltatimeTitle);
+
+    this.deltatime = new PIXI.Text("", { font: "24px Inconsolata", fill: "#ffffff", align: "right" });
+	this.deltatime.position.x = 300;
 	this.deltatime.position.y = 120;
 	stage.addChild(this.deltatime);
 
@@ -267,8 +279,9 @@ function main() {
         deltatime = trgttime - shiptime;
         var t_int = Math.floor(deltatime);
         var t_frac = Math.floor(Math.abs(deltatime*10))%10;
-        var txt = "DLTA TIME: "+t_int+"."+t_frac+"s";
+        var txt = t_int+"."+t_frac+"s";
         this.deltatime.setText(txt);
+        this.deltatime.position.x = 300 - this.deltatime.width;
 
         renderer.render(stage);
 
