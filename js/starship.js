@@ -105,7 +105,8 @@ if (typeof Starship == "undefined" || !Starship) {
         if (this.rendered === false) {
 
 			this.sprite = Starship.generateSprite("ship",this.radius,this.color);
-			this.sprite2 = Starship.generateSprite("flame",this.radius,this.color);
+			this.sprite2 = Starship.generateSprite("flame",this.radius,"#ffff00");
+			console.log(this.color);
 			parent.addChild(this.sprite);
 			parent.addChild(this.sprite2);
 
