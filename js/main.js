@@ -44,6 +44,11 @@ function main() {
 	var gameArea = document.getElementById('gameArea');
 	gameArea.appendChild(renderer.view);
 
+    var observerFrame = new PIXI.DisplayObjectContainer();
+    observerFrame.position.x = 300;
+    observerFrame.position.y = 540;
+    stage.addChild(observerFrame);
+
     // Initialize
     var clock = Date.now();
     var u = SR.GetUniverse();
@@ -91,14 +96,14 @@ function main() {
     var thrust = 200.0;
 
 	var headingControl = Starship.generateSprite("heading", 20, '#ff00ff');
-	headingControl.position.x = 600;
-	headingControl.position.y = 540;
+	headingControl.position.x = 300;
+	headingControl.position.y = 0;
 	headingControl.anchor.x = 1.0;
 	headingControl.anchor.y = 0.5;
 	headingControl.rotation = 0;
-	headingControl.buttoneMode = true;
+	headingControl.buttonMode = true;
 	headingControl.interactive = true;
-	stage.addChild(headingControl);
+    observerFrame.addChild(headingControl);
 
 	var headingDown = false;
 
@@ -127,31 +132,31 @@ function main() {
 		if(this.dragging)
 		{
 			var newPosition = this.data.getLocalPosition(this.parent);
-			var angle = Math.atan2(newPosition.y-540,newPosition.x-300);
+			var angle = Math.atan2(newPosition.y,newPosition.x);
             angle = Math.floor(angle/(delta_turn*Math.PI/180)+0.5)*(delta_turn*Math.PI/180);
 			this.rotation = angle;
 			var c = Math.cos(angle);
 			var s = Math.sin(angle);
 			if (Math.abs(c) >= Math.sqrt(2)/2) { // extends to xmin/xmax
 				if (c > 0) { //xmax
-					this.position.x = 300+300;
-					this.position.y = 540+s*300/c;
+					this.position.x = 300;
+					this.position.y = s*300/c;
 				} else {
-					this.position.x = 300-300;
-					this.position.y = 540-s*300/c;
+					this.position.x = -300;
+					this.position.y = -s*300/c;
 				}
 			} else {
 				if (s > 0) {
-					this.position.y = 540+300;
-					this.position.x = 300+c*300/s;
+					this.position.y = 300;
+					this.position.x = c*300/s;
 				} else {
-					this.position.y = 540-300;
-					this.position.x = 300-c*300/s;
+					this.position.y = -300;
+					this.position.x = -c*300/s;
 				}
 			}
 
-			//this.position.x = Math.cos(angle)*300+300;
-			//this.position.y = Math.sin(angle)*300+540;
+			//this.position.x = Math.cos(angle)*300;
+			//this.position.y = Math.sin(angle)*300;
 			u.GetObserver().SetOrientation(Math.cos(angle), Math.sin(angle));
 		}
 	}
@@ -200,10 +205,21 @@ function main() {
     this.shiptimeTitle.position.y = 0;
     stage.addChild(this.shiptimeTitle);
 
+    //this.shiptime = new PIXI.Text("", { font: "bold italic 60px Arvo", fill: "#3e1707", align: "left", stroke: "#a4410e", strokeThickness: 7 });
+    this.shiptime = new PIXI.Text("", { font: "24px Inconsolata", fill: "#ffffff", align: "right" });
+    this.shiptime.position.x = 300
+    this.shiptime.position.y = 0;
+    stage.addChild(this.shiptime);
+
     this.targettimeTitle = new PIXI.Text("TARGET TIME:", { font: "24px Inconsolata", fill: "#ffff00", align: "left" });
     this.targettimeTitle.position.x = 0
     this.targettimeTitle.position.y = 60;
     stage.addChild(this.targettimeTitle);
+
+    this.targettime = new PIXI.Text("", { font: "24px Inconsolata", fill: "#ffffff", align: "right" });
+    this.targettime.position.x = 300
+    this.targettime.position.y = 60;
+    stage.addChild(this.targettime);
 
     this.deltatimeTitle = new PIXI.Text("DELTA TIME:", { font: "24px Inconsolata", fill: "#ffff00", align: "left" });
     this.deltatimeTitle.position.x = 0
@@ -262,25 +278,35 @@ function main() {
         //ctx.fillStyle = "#000000";
         ///////ctx.clearRect(0,0,size[0],size[1]);
 
-		var deltatime = 0;
 		var shiptime = 0;
-		var trgttime = 0;
+        var targettime = 0;
 
 		var objects = u.GetObjects();
         for (var i=0; i<objects.length; i++) {
             var obj = objects[i];
-            obj.Draw(stage, [300, 540]);
-            if (obj.name === "ship")
+            obj.Draw(observerFrame);
+            if (obj.name === "ship") {
             	shiptime = obj.GetClock();
+            }
             else if (obj.name === "target")
-            	trgttime = obj.GetClock();
+                targettime = obj.GetClock();
         }
 
-        deltatime = trgttime - shiptime;
+        var deltatime = targettime - shiptime;
+
+        var t_int = Math.floor(shiptime);
+        var t_frac = Math.floor(Math.abs(shiptime*10))%10;
+        this.shiptime.setText(t_int+"."+t_frac+"s");
+        this.shiptime.position.x = 300 - this.shiptime.width;
+
+        var t_int = Math.floor(targettime);
+        var t_frac = Math.floor(Math.abs(targettime*10))%10;
+        this.targettime.setText(t_int+"."+t_frac+"s");
+        this.targettime.position.x = 300 - this.targettime.width;
+
         var t_int = Math.floor(deltatime);
         var t_frac = Math.floor(Math.abs(deltatime*10))%10;
-        var txt = t_int+"."+t_frac+"s";
-        this.deltatime.setText(txt);
+        this.deltatime.setText(t_int+"."+t_frac+"s");
         this.deltatime.position.x = 300 - this.deltatime.width;
 
         renderer.render(stage);

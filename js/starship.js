@@ -18,7 +18,7 @@ if (typeof Starship == "undefined" || !Starship) {
     Starship.Object2D.prototype.SetRadius = function(r) {
         this.radius = r;
     };
-    Starship.Object2D.prototype.Draw = function(parent, center) {
+    Starship.Object2D.prototype.Draw = function(parent) {
         if (this.rendered === false) {
 
             if (this.radius === 1) {
@@ -28,34 +28,12 @@ if (typeof Starship == "undefined" || !Starship) {
 			}
             parent.addChild(this.sprite);
 
-			// faux target for now
-			if (this.name === "target") {
-				this.timetext = new PIXI.Text("", { font: "24px Inconsolata", fill: "#ffffff", align: "left" });
-				this.timetext.position.x = 0
-				this.timetext.position.y = 60;
-				parent.addChild(this.timetext);
-			}
-
             this.rendered = true;
         }
-        if (this.rendered === true)
-        {
-            // render image
-            var pos = this.universe.GetPos3Local(this);
-            pos[0] += center[0];
-            pos[1] += center[1];
-            this.sprite.position.x = pos[0];
-            this.sprite.position.y = pos[1];
-        }
-
-        if (this.name === "target") {
-        	var t = this.GetClock();
-			var t_int = Math.floor(t);
-			var t_frac = Math.floor(Math.abs(t*10))%10;
-			var txt = t_int+"."+t_frac+"s";
-			this.timetext.setText(txt);
-            this.timetext.position.x = 300 - this.timetext.width;
-		}
+        // render image
+        var pos = this.universe.GetPos3Local(this);
+        this.sprite.position.x = pos[0];
+        this.sprite.position.y = pos[1];
     };
 }());
 
@@ -79,7 +57,7 @@ if (typeof Starship == "undefined" || !Starship) {
             amount_vec3[i] *= amount;
         this.ApplyForce(amount_vec3);
     };
-    Starship.Ship2D.prototype.Draw = function(parent, center) {
+    Starship.Ship2D.prototype.Draw = function(parent) {
         var pos = this.universe.GetPos3Local(this);
 
         var vel4 = this.GetGlobalVel4();
@@ -110,23 +88,17 @@ if (typeof Starship == "undefined" || !Starship) {
 			parent.addChild(this.sprite);
 			parent.addChild(this.sprite2);
 
-			//this.timetext = new PIXI.Text("", { font: "bold italic 60px Arvo", fill: "#3e1707", align: "left", stroke: "#a4410e", strokeThickness: 7 });
-			this.timetext = new PIXI.Text("", { font: "24px Inconsolata", fill: "#ffffff", align: "left" });
-			this.timetext.position.x = 0
-			this.timetext.position.y = 0;
-			parent.addChild(this.timetext);
-
             this.rendered = true;
         }
 
-		this.sprite.position.x = pos[0]+center[0];
-		this.sprite.position.y = pos[1]+center[1];
+		this.sprite.position.x = pos[0];
+		this.sprite.position.y = pos[1];
 		var temp = this.GetOrientation();
 		var angle = Math.atan2(temp[1],temp[0]);
 		this.sprite.rotation = angle;
 
-		this.sprite2.position.x = pos[0]+center[0];
-		this.sprite2.position.y = pos[1]+center[1];
+		this.sprite2.position.x = pos[0];
+		this.sprite2.position.y = pos[1];
 		this.sprite2.rotation = angle;
 
 		if (this.thruster) {
@@ -134,12 +106,5 @@ if (typeof Starship == "undefined" || !Starship) {
 		} else {
 			this.sprite2.visible = false;
 		}
-
-		var t = this.GetClock();
-        var t_int = Math.floor(t);
-        var t_frac = Math.floor(Math.abs(t*10))%10;
-        var txt = t_int+"."+t_frac+"s";
-        this.timetext.setText(txt);
-        this.timetext.position.x = 300 - this.timetext.width;
     };
 }());
