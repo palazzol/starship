@@ -65,6 +65,17 @@ if (typeof Starship == "undefined" || !Starship) {
 			var wire = [[1.0,0.0],[-1.0,-0.7],[-1.5,0.0],[-1.0,0.7]];
 			Starship._renderPolyline(ctx,wire,true,size,color);
 		}
+        var parent = document.getElementById('sprites');
+        if (parent != null) {
+            // save canvas image as data url (png format by default)
+            var dataURL = canvas.toDataURL();
+
+            // set canvasImg image src to dataURL
+            // so it can be saved as an image
+            var imageElement = document.createElement('img');
+            imageElement.src = dataURL;
+            parent.appendChild(imageElement);
+        }
 		var texture = PIXI.Texture.fromCanvas(canvas,PIXI.scaleModes.DEFAULT)
 		var sprite = new PIXI.Sprite(texture);
 		sprite.anchor.x = 0.5;
