@@ -117,6 +117,34 @@ function main() {
 		this.data = null;
 	};
 
+    headingControl.updateHeading = function(c,s) {
+        // Rotate the sprite
+        this.rotation = Math.atan2(s,c);
+
+        // Move it to extents on a square
+        if (Math.abs(c) >= Math.sqrt(2)/2) { // extends to xmin/xmax
+            if (c > 0) { //xmax
+                this.position.x = 300;
+                this.position.y = s*300/c;
+            } else {
+                this.position.x = -300;
+                this.position.y = -s*300/c;
+            }
+        } else { // ymin/ymax
+            if (s > 0) {
+                this.position.y = 300;
+                this.position.x = c*300/s;
+            } else {
+                this.position.y = -300;
+                this.position.x = -c*300/s;
+            }
+        }
+
+        // if we wanted a circle instead
+        //this.position.x = c*300;
+        //this.position.y = s*300;
+    }
+
 	// set the callbacks for when the mouse or a touch moves
 	headingControl.mousemove = headingControl.touchmove = function(data)
 	{
@@ -125,32 +153,10 @@ function main() {
 			var newPosition = this.data.getLocalPosition(this.parent);
 			var angle = Math.atan2(newPosition.y,newPosition.x);
             angle = Math.floor(angle/(delta_turn*Math.PI/180)+0.5)*(delta_turn*Math.PI/180);
-			this.rotation = angle;
 			var c = Math.cos(angle);
 			var s = Math.sin(angle);
 
-            // extents on a square
-			if (Math.abs(c) >= Math.sqrt(2)/2) { // extends to xmin/xmax
-				if (c > 0) { //xmax
-					this.position.x = 300;
-					this.position.y = s*300/c;
-				} else {
-					this.position.x = -300;
-					this.position.y = -s*300/c;
-				}
-			} else { // ymin/ymax
-				if (s > 0) {
-					this.position.y = 300;
-					this.position.x = c*300/s;
-				} else {
-					this.position.y = -300;
-					this.position.x = -c*300/s;
-				}
-			}
-
-            // if we wanted a circle instead
-			//this.position.x = c*300;
-			//this.position.y = s*300;
+            this.updateHeading(c,s);
 
 			u.GetObserver().SetOrientation(Math.cos(angle), Math.sin(angle));
 		}
@@ -238,10 +244,14 @@ function main() {
         if (keystate[KEY.Z] || keystate[KEY.LEFT]) {
             turn = +delta_turn;
             ship.Turn(turn);
+            var orient3 = u.GetObserver().GetOrientation();
+            headingControl.updateHeading(orient3[0],orient3[1]);
         }
         if (keystate[KEY.X] || keystate[KEY.RIGHT]) {
             turn = -delta_turn;
             ship.Turn(turn);
+            var orient3 = u.GetObserver().GetOrientation();
+            headingControl.updateHeading(orient3[0],orient3[1]);
         }
         if (keystate[KEY.SPACE] || keystate[KEY.UP] || thrustDown) {
             ship.Thrust(thrust);
