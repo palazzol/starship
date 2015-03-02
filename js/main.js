@@ -294,19 +294,21 @@ function main() {
 
         var deltatime = targettime - shiptime;
 
-        var t_int = Math.floor(shiptime);
-        var t_frac = Math.floor(Math.abs(shiptime*10))%10;
-        this.shiptime.setText(t_int+"."+t_frac+"s");
+        this.formatTime = function(t) {
+            var temp = ""+Math.round(t*10);
+            var temp2 = temp.slice(0,-1);
+            if (temp2 === "") temp2 = "0";
+            else if (temp2 === "-") temp2 = "-0";
+            return temp2+"."+temp.slice(-1)+"s";
+        }
+
+        this.shiptime.setText(this.formatTime(shiptime));
         this.shiptime.position.x = 300 - this.shiptime.width;
 
-        var t_int = Math.floor(targettime);
-        var t_frac = Math.floor(Math.abs(targettime*10))%10;
-        this.targettime.setText(t_int+"."+t_frac+"s");
+        this.targettime.setText(this.formatTime(targettime));
         this.targettime.position.x = 300 - this.targettime.width;
 
-        var t_int = Math.floor(deltatime);
-        var t_frac = Math.floor(Math.abs(deltatime*10))%10;
-        this.deltatime.setText(t_int+"."+t_frac+"s");
+        this.deltatime.setText(this.formatTime(deltatime));
         this.deltatime.position.x = 300 - this.deltatime.width;
 
         renderer.render(stage);
