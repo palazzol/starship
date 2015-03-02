@@ -63,9 +63,30 @@ if (typeof Starship == "undefined" || !Starship) {
 			Starship._renderPolyline(ctx,flame,false,size,color);
 		}
 		var texture = PIXI.Texture.fromCanvas(canvas,PIXI.scaleModes.DEFAULT)
-		sprite = new PIXI.Sprite(texture);
+		var sprite = new PIXI.Sprite(texture);
 		sprite.anchor.x = 0.5;
 		sprite.anchor.y = 0.5;
 		return sprite;
     };
+    Starship.generateButton = function(type, size, color, text) {
+		var canvas = document.createElement("canvas");
+		canvas.width = size*2;
+		canvas.height = size*2;
+		var ctx = canvas.getContext("2d");
+	  	ctx.beginPath();
+	  	ctx.rect(0, 0, canvas.width, canvas.height);
+	  	ctx.fillStyle = color;
+	  	ctx.fill();
+	  	ctx.lineWidth = 1;
+	  	ctx.strokeStyle = 'black';
+	  	ctx.stroke();
+		var texture = PIXI.Texture.fromCanvas(canvas,PIXI.scaleModes.DEFAULT)
+		var sprite = new PIXI.Sprite(texture);
+		sprite.buttonMode = true;
+		sprite.interactive = true;
+		sprite.anchor.x = 0.5;
+		sprite.anchor.y = 0.5;
+		return sprite;
+	}
+
 }());

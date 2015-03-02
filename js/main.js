@@ -93,6 +93,23 @@ function main() {
     var turn = 0.0;
     var thrust = 200.0;
 
+	var thrustButton = Starship.generateButton("button", 60, '#ffff00', "Thrust");
+
+	thrustButton.position.x = 60;
+	thrustButton.position.y = 1200-60;
+
+	var thrustDown = false;
+
+	thrustButton.mousedown = thrustButton.touchstart = function(data) {
+		thrustDown = true;
+    };
+
+	thrustButton.mouseup = thrustButton.touchend = thrustButton.mouseupoutside = thrustButton.touchendoutside = function(data) {
+		thrustDown = false;
+	};
+
+    stage.addChild(thrustButton);
+
     var keystate = [];
 
     this.doKeyDown = function(e) {
@@ -138,7 +155,7 @@ function main() {
             turn = -delta_turn;
             ship.Turn(turn);
         }
-        if (keystate[KEY.SPACE] || keystate[KEY.UP]) {
+        if (keystate[KEY.SPACE] || keystate[KEY.UP] || thrustDown) {
             ship.Thrust(thrust);
             //if (delta_tau === 0.0)
             //    delta_tau = 1.0;
