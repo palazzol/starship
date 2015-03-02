@@ -152,6 +152,9 @@ var SR = {};
     SR.Object.prototype.GetOrientation = function() {
         return this.orient3;
     };
+    SR.Object.prototype.SetOrientation = function(x, y) {
+        this.orient3 = [x,y,this.orient3[2]];
+    };
     SR.Object.prototype.Turn = function(degrees) {
         var radians = degrees*Math.PI/180.0;
         var o_old = this.GetOrientation();

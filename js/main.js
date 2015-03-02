@@ -93,6 +93,72 @@ function main() {
     var turn = 0.0;
     var thrust = 200.0;
 
+	var headingControl = Starship.generateSprite("heading", 20, '#ff00ff');
+	headingControl.position.x = 600;
+	headingControl.position.y = 540;
+	headingControl.anchor.x = 1.0;
+	headingControl.anchor.y = 0.5;
+	headingControl.rotation = 0;
+	headingControl.buttoneMode = true;
+	headingControl.interactive = true;
+	stage.addChild(headingControl);
+
+	var headingDown = false;
+
+	headingControl.mousedown = headingControl.touchstart = function(data) {
+		// stop the default event...
+		data.originalEvent.preventDefault();
+
+		// store a reference to the data
+		// The reason for this is because of multitouch
+		// we want to track the movement of this particular touch
+		this.data = data;
+		this.alpha = 0.9;
+		this.dragging = true;
+    };
+
+	headingControl.mouseup = headingControl.touchend = headingControl.mouseupoutside = headingControl.touchendoutside = function(data) {
+		this.alpha = 1
+		this.dragging = false;
+		// set the interaction data to null
+		this.data = null;
+	};
+
+	// set the callbacks for when the mouse or a touch moves
+	headingControl.mousemove = headingControl.touchmove = function(data)
+	{
+		if(this.dragging)
+		{
+			var newPosition = this.data.getLocalPosition(this.parent);
+			var angle = Math.atan2(newPosition.y-540,newPosition.x-300);
+			angle = Math.floor(angle/(Math.PI/12)+0.5)*(Math.PI/12);
+			this.rotation = angle;
+			var c = Math.cos(angle);
+			var s = Math.sin(angle);
+			if (Math.abs(c) >= Math.sqrt(2)/2) { // extends to xmin/xmax
+				if (c > 0) { //xmax
+					this.position.x = 300+300;
+					this.position.y = 540+s*300/c;
+				} else {
+					this.position.x = 300-300;
+					this.position.y = 540-s*300/c;
+				}
+			} else {
+				if (s > 0) {
+					this.position.y = 540+300;
+					this.position.x = 300+c*300/s;
+				} else {
+					this.position.y = 540-300;
+					this.position.x = 300-c*300/s;
+				}
+			}
+
+			//this.position.x = Math.cos(angle)*300+300;
+			//this.position.y = Math.sin(angle)*300+540;
+			u.GetObserver().SetOrientation(Math.cos(angle), Math.sin(angle));
+		}
+	}
+
 	var thrustButton = Starship.generateButton("button", 60, '#ffff00', "Thrust");
 
 	thrustButton.position.x = 60;

@@ -121,7 +121,7 @@ if (typeof Starship == "undefined" || !Starship) {
 		this.sprite.position.x = pos[0]+center[0];
 		this.sprite.position.y = pos[1]+center[1];
 		var temp = this.GetOrientation();
-		var angle = Math.atan2(-temp[0],temp[1]);
+		var angle = Math.atan2(temp[1],temp[0]);
 		this.sprite.rotation = angle;
 
 		this.sprite2.position.x = pos[0]+center[0];

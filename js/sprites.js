@@ -9,8 +9,8 @@ if (typeof Starship == "undefined" || !Starship) {
 		for (var i=0; i<polyline.length; i++) {
 			var p = polyline[i];
 			var p_rot = [];
-			p_rot[0] = -p[1]*size + 32;
-			p_rot[1] =  p[0]*size + 32;
+			p_rot[0] = p[0]*size + 32;
+			p_rot[1] = p[1]*size + 32;
 			p_rots[p_rots.length] = p_rot;
 		}
 		ctx.strokeStyle = color;
@@ -61,6 +61,9 @@ if (typeof Starship == "undefined" || !Starship) {
         } else if (type === "flame") {
 			var flame = [[-0.75,-0.35],[-1.5,0.0],[-0.75,0.35]];
 			Starship._renderPolyline(ctx,flame,false,size,color);
+        } else if (type === "heading") {
+			var wire = [[1.0,0.0],[-1.0,-0.7],[-1.5,0.0],[-1.0,0.7]];
+			Starship._renderPolyline(ctx,wire,true,size,color);
 		}
 		var texture = PIXI.Texture.fromCanvas(canvas,PIXI.scaleModes.DEFAULT)
 		var sprite = new PIXI.Sprite(texture);
