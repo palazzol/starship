@@ -5,12 +5,9 @@ function main() {
 	var height = 1200;
 
 	// create an new instance of a pixi stage
-    //var stage = new PIXI.Stage(0x66FF99);
     var stage = new PIXI.Stage(0x000000);
 
 	// create a renderer instance
-	//var gameCanvas = document.getElementById('gameCanvas');
-	//var options.view = gameCanvas;
 	var renderer = PIXI.autoDetectRenderer(width,height);
 	renderer.view.style.display = "block";
 
@@ -54,18 +51,11 @@ function main() {
     var clock = Date.now();
     var u = SR.GetUniverse();
 
-    //for (i=-14; i<15; i++) {
-    //    for (j=-14; j<14; j++) {
     for (i=-10; i<3; i++) {
-        for (j=-3; j<6; j++) {
-    //for (i=-2; i<3; i++) {
-    //    for (j=-2; j<3; j++) {
-            //if (i===0 && j==0) {}
-            //else {
-                var beacon = new Starship.Object2D(u, "beacon", [i*50,j*50,0], [0,0,0], 0, 1);
-                beacon.SetColor('#808080');
-                beacon.SetRadius(1);
-            //}
+        for (j=-4; j<7; j++) {
+            var beacon = new Starship.Object2D(u, "beacon", [i*50,j*50,0], [0,0,0], 0, 1);
+            beacon.SetColor('#808080');
+            beacon.SetRadius(1);
         }
     }
 
