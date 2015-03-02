@@ -1,8 +1,8 @@
 
 function main() {
 
-	var width =  600;
-	var height = 1200;
+	var width =  900;
+	var height = 1300;
 
 	// create an new instance of a pixi stage
     var stage = new PIXI.Stage(0x000000);
@@ -43,7 +43,7 @@ function main() {
 
     var observerFrame = new PIXI.DisplayObjectContainer();
     // center of the main display screen
-    observerFrame.position.x = 300;
+    observerFrame.position.x = 450;
     observerFrame.position.y = 540;
     stage.addChild(observerFrame);
 
@@ -52,7 +52,7 @@ function main() {
     var u = SR.GetUniverse();
 
     for (i=-10; i<3; i++) {
-        for (j=-4; j<7; j++) {
+        for (j=-5; j<8; j++) {
             var beacon = new Starship.Object2D(u, "beacon", [i*50,j*50,0], [0,0,0], 0, 1);
             beacon.SetColor('#808080');
             beacon.SetRadius(1);
@@ -87,7 +87,7 @@ function main() {
     var thrust = 200.0;
 
 	var headingControl = Starship.generateSprite("heading", 20, '#ff00ff');
-	headingControl.position.x = 300;
+	headingControl.position.x = 450;
 	headingControl.position.y = 0;
 	headingControl.anchor.x = 1.0;
 	headingControl.anchor.y = 0.5;
@@ -121,28 +121,32 @@ function main() {
         // Rotate the sprite
         this.rotation = Math.atan2(s,c);
 
+        var r = 450;
+
+        /*
         // Move it to extents on a square
         if (Math.abs(c) >= Math.sqrt(2)/2) { // extends to xmin/xmax
             if (c > 0) { //xmax
-                this.position.x = 300;
-                this.position.y = s*300/c;
+                this.position.x = r;
+                this.position.y = s*r/c;
             } else {
-                this.position.x = -300;
-                this.position.y = -s*300/c;
+                this.position.x = -r;
+                this.position.y = -s*r/c;
             }
         } else { // ymin/ymax
             if (s > 0) {
-                this.position.y = 300;
-                this.position.x = c*300/s;
+                this.position.y = r;
+                this.position.x = c*r/s;
             } else {
-                this.position.y = -300;
-                this.position.x = -c*300/s;
+                this.position.y = -r;
+                this.position.x = -c*r/s;
             }
         }
+        */
 
         // if we wanted a circle instead
-        //this.position.x = c*300;
-        //this.position.y = s*300;
+        this.position.x = c*450;
+        this.position.y = s*450;
     }
 
 	// set the callbacks for when the mouse or a touch moves
@@ -164,8 +168,8 @@ function main() {
 
 	var thrustButton = Starship.generateButton("button", 60, '#ffff00', "Thrust");
 
-	thrustButton.position.x = 60;
-	thrustButton.position.y = 1200-60;
+	thrustButton.position.x = 50;
+	thrustButton.position.y = 1300-50;
 
 	var thrustDown = false;
 
@@ -207,28 +211,28 @@ function main() {
     stage.addChild(this.shiptimeTitle);
 
     this.shiptime = new PIXI.Text("", { font: "24px Inconsolata", fill: "#ffffff", align: "right" });
-    this.shiptime.position.x = 300
+    this.shiptime.position.x = 450
     this.shiptime.position.y = 0;
     stage.addChild(this.shiptime);
 
     this.targettimeTitle = new PIXI.Text("TARGET TIME:", { font: "24px Inconsolata", fill: "#ffff00", align: "left" });
     this.targettimeTitle.position.x = 0
-    this.targettimeTitle.position.y = 60;
+    this.targettimeTitle.position.y = 25;
     stage.addChild(this.targettimeTitle);
 
     this.targettime = new PIXI.Text("", { font: "24px Inconsolata", fill: "#ffffff", align: "right" });
-    this.targettime.position.x = 300
-    this.targettime.position.y = 60;
+    this.targettime.position.x = 450
+    this.targettime.position.y = 25;
     stage.addChild(this.targettime);
 
     this.deltatimeTitle = new PIXI.Text("DELTA TIME:", { font: "24px Inconsolata", fill: "#ffff00", align: "left" });
     this.deltatimeTitle.position.x = 0
-    this.deltatimeTitle.position.y = 120;
+    this.deltatimeTitle.position.y = 50;
     stage.addChild(this.deltatimeTitle);
 
     this.deltatime = new PIXI.Text("", { font: "24px Inconsolata", fill: "#ffffff", align: "right" });
-	this.deltatime.position.x = 300;
-	this.deltatime.position.y = 120;
+	this.deltatime.position.x = 450;
+	this.deltatime.position.y = 50;
 	stage.addChild(this.deltatime);
 
     this.lastRender = Date.now();
@@ -303,13 +307,13 @@ function main() {
         }
 
         this.shiptime.setText(this.formatTime(shiptime));
-        this.shiptime.position.x = 300 - this.shiptime.width;
+        this.shiptime.position.x = 450 - this.shiptime.width;
 
         this.targettime.setText(this.formatTime(targettime));
-        this.targettime.position.x = 300 - this.targettime.width;
+        this.targettime.position.x = 450 - this.targettime.width;
 
         this.deltatime.setText(this.formatTime(deltatime));
-        this.deltatime.position.x = 300 - this.deltatime.width;
+        this.deltatime.position.x = 450 - this.deltatime.width;
 
         renderer.render(stage);
 
