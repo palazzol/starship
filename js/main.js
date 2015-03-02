@@ -63,7 +63,7 @@ function main() {
         }
     }
 
-    var ship2   = new Starship.Object2D(u, "ship2",   [-200,50,0], [0,0,0], 0, 10);
+    var ship2   = new Starship.Object2D(u, "target",   [-200,50,0], [0,0,0], 0, 10);
     ship2.SetColor('#00ffff');
     ship2.SetRadius(5);
 
@@ -177,7 +177,7 @@ function main() {
             obj.Draw(stage, [300, 540]);
             if (obj.name === "ship")
             	shiptime = obj.GetClock();
-            else if (obj.name === "ship2")
+            else if (obj.name === "target")
             	trgttime = obj.GetClock();
         }
 
