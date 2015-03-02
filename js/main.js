@@ -45,6 +45,7 @@ function main() {
 	gameArea.appendChild(renderer.view);
 
     var observerFrame = new PIXI.DisplayObjectContainer();
+    // center of the main display screen
     observerFrame.position.x = 300;
     observerFrame.position.y = 540;
     stage.addChild(observerFrame);
@@ -137,6 +138,8 @@ function main() {
 			this.rotation = angle;
 			var c = Math.cos(angle);
 			var s = Math.sin(angle);
+
+            // extents on a square
 			if (Math.abs(c) >= Math.sqrt(2)/2) { // extends to xmin/xmax
 				if (c > 0) { //xmax
 					this.position.x = 300;
@@ -145,7 +148,7 @@ function main() {
 					this.position.x = -300;
 					this.position.y = -s*300/c;
 				}
-			} else {
+			} else { // ymin/ymax
 				if (s > 0) {
 					this.position.y = 300;
 					this.position.x = c*300/s;
@@ -155,8 +158,10 @@ function main() {
 				}
 			}
 
-			//this.position.x = Math.cos(angle)*300;
-			//this.position.y = Math.sin(angle)*300;
+            // if we wanted a circle instead
+			//this.position.x = c*300;
+			//this.position.y = s*300;
+
 			u.GetObserver().SetOrientation(Math.cos(angle), Math.sin(angle));
 		}
 	}
@@ -205,7 +210,6 @@ function main() {
     this.shiptimeTitle.position.y = 0;
     stage.addChild(this.shiptimeTitle);
 
-    //this.shiptime = new PIXI.Text("", { font: "bold italic 60px Arvo", fill: "#3e1707", align: "left", stroke: "#a4410e", strokeThickness: 7 });
     this.shiptime = new PIXI.Text("", { font: "24px Inconsolata", fill: "#ffffff", align: "right" });
     this.shiptime.position.x = 300
     this.shiptime.position.y = 0;
@@ -272,11 +276,7 @@ function main() {
             tau += delta_tau;
         }
 
-        // Draw Everything
-
-        // Draw the background
-        //ctx.fillStyle = "#000000";
-        ///////ctx.clearRect(0,0,size[0],size[1]);
+        // Update Everything
 
 		var shiptime = 0;
         var targettime = 0;
@@ -284,7 +284,7 @@ function main() {
 		var objects = u.GetObjects();
         for (var i=0; i<objects.length; i++) {
             var obj = objects[i];
-            obj.Draw(observerFrame);
+            obj.Update(observerFrame);
             if (obj.name === "ship") {
             	shiptime = obj.GetClock();
             }

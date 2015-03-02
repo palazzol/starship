@@ -39,13 +39,13 @@ multiplayer considerations?
 
 Notes from 2/12/2014 audio file
 
-look at orientation transforms and distortion
+x look at orientation transforms and distortion
 
-look at sprites 
-- make encapsulated
-- all wireframe?
+x look at sprites 
+x - make encapsulated
+x - all wireframe?
 
-steering via new heading icon, snapping
+x steering via new heading icon, snapping
 
 console region & text
 - vector text?
@@ -61,8 +61,8 @@ circles
 - equidistant from you, or another target
 - could be grid
 
-unify object list, call draw on this
-- display manager?
+x unify object list, call draw on this
+ - display manager?
 
 coordinate systems
 - object (global)

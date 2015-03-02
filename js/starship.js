@@ -18,7 +18,7 @@ if (typeof Starship == "undefined" || !Starship) {
     Starship.Object2D.prototype.SetRadius = function(r) {
         this.radius = r;
     };
-    Starship.Object2D.prototype.Draw = function(parent) {
+    Starship.Object2D.prototype.Update = function(parent) {
         if (this.rendered === false) {
 
             if (this.radius === 1) {
@@ -57,7 +57,7 @@ if (typeof Starship == "undefined" || !Starship) {
             amount_vec3[i] *= amount;
         this.ApplyForce(amount_vec3);
     };
-    Starship.Ship2D.prototype.Draw = function(parent) {
+    Starship.Ship2D.prototype.Update = function(parent) {
         var pos = this.universe.GetPos3Local(this);
 
         var vel4 = this.GetGlobalVel4();
