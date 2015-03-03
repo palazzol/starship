@@ -205,34 +205,34 @@ function main() {
     var KEY = { SHIFT:16, CTRL:17, ESC:27, RIGHT:39, UP:38, LEFT:37, DOWN:40, SPACE:32,
             A:65, E:69, G:71, L:76, P:80, R:82, S:83, X:88, Z:90, DIGIT:48, BACKTICK:192 };
 
-    this.shiptimeTitle = new PIXI.Text("SHIP TIME:", { font: "24px Inconsolata", fill: "#ffff00", align: "left" });
+    this.shiptimeTitle = new PIXI.Text("SHIP:", { font: "48px Inconsolata", fill: "#ffff00", align: "left" });
     this.shiptimeTitle.position.x = 0
     this.shiptimeTitle.position.y = 0;
     stage.addChild(this.shiptimeTitle);
 
-    this.shiptime = new PIXI.Text("", { font: "24px Inconsolata", fill: "#ffffff", align: "right" });
+    this.shiptime = new PIXI.Text("", { font: "48px Inconsolata", fill: "#ffffff", align: "right" });
     this.shiptime.position.x = 360
     this.shiptime.position.y = 0;
     stage.addChild(this.shiptime);
 
-    this.targettimeTitle = new PIXI.Text("TARGET TIME:", { font: "24px Inconsolata", fill: "#ffff00", align: "left" });
+    this.targettimeTitle = new PIXI.Text("TARGET:", { font: "48px Inconsolata", fill: "#ffff00", align: "left" });
     this.targettimeTitle.position.x = 0
-    this.targettimeTitle.position.y = 25;
+    this.targettimeTitle.position.y = 50;
     stage.addChild(this.targettimeTitle);
 
-    this.targettime = new PIXI.Text("", { font: "24px Inconsolata", fill: "#ffffff", align: "right" });
+    this.targettime = new PIXI.Text("", { font: "48px Inconsolata", fill: "#ffffff", align: "right" });
     this.targettime.position.x = 360
-    this.targettime.position.y = 25;
+    this.targettime.position.y = 50;
     stage.addChild(this.targettime);
 
-    this.deltatimeTitle = new PIXI.Text("DELTA TIME:", { font: "24px Inconsolata", fill: "#ffff00", align: "left" });
+    this.deltatimeTitle = new PIXI.Text("DELTA:", { font: "48px Inconsolata", fill: "#ffff00", align: "left" });
     this.deltatimeTitle.position.x = 0
-    this.deltatimeTitle.position.y = 50;
+    this.deltatimeTitle.position.y = 100;
     stage.addChild(this.deltatimeTitle);
 
-    this.deltatime = new PIXI.Text("", { font: "24px Inconsolata", fill: "#ffffff", align: "right" });
+    this.deltatime = new PIXI.Text("", { font: "48px Inconsolata", fill: "#ffffff", align: "right" });
 	this.deltatime.position.x = 360;
-	this.deltatime.position.y = 50;
+	this.deltatime.position.y = 100;
 	stage.addChild(this.deltatime);
 
     this.lastRender = Date.now();
