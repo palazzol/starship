@@ -1,8 +1,8 @@
 
 function main() {
 
-	var width =  900;
-	var height = 1300;
+	var width =  720;
+	var height = 1080;
 
 	// create an new instance of a pixi stage
     var stage = new PIXI.Stage(0x000000);
@@ -43,7 +43,7 @@ function main() {
 
     var observerFrame = new PIXI.DisplayObjectContainer();
     // center of the main display screen
-    observerFrame.position.x = 450;
+    observerFrame.position.x = 360;
     observerFrame.position.y = 540;
     stage.addChild(observerFrame);
 
@@ -87,7 +87,7 @@ function main() {
     var thrust = 200.0;
 
 	var headingControl = Starship.generateSprite("heading", 20, '#ff00ff');
-	headingControl.position.x = 450;
+	headingControl.position.x = 360;
 	headingControl.position.y = 0;
 	headingControl.anchor.x = 1.0;
 	headingControl.anchor.y = 0.5;
@@ -121,7 +121,7 @@ function main() {
         // Rotate the sprite
         this.rotation = Math.atan2(s,c);
 
-        var r = 450;
+        var r = 360;
 
         /*
         // Move it to extents on a square
@@ -145,8 +145,8 @@ function main() {
         */
 
         // if we wanted a circle instead
-        this.position.x = c*450;
-        this.position.y = s*450;
+        this.position.x = c*r;
+        this.position.y = s*r;
     }
 
 	// set the callbacks for when the mouse or a touch moves
@@ -169,7 +169,7 @@ function main() {
 	var thrustButton = Starship.generateButton("button", 60, '#ffff00', "Thrust");
 
 	thrustButton.position.x = 50;
-	thrustButton.position.y = 1300-50;
+	thrustButton.position.y = 1080-50;
 
 	var thrustDown = false;
 
@@ -211,7 +211,7 @@ function main() {
     stage.addChild(this.shiptimeTitle);
 
     this.shiptime = new PIXI.Text("", { font: "24px Inconsolata", fill: "#ffffff", align: "right" });
-    this.shiptime.position.x = 450
+    this.shiptime.position.x = 360
     this.shiptime.position.y = 0;
     stage.addChild(this.shiptime);
 
@@ -221,7 +221,7 @@ function main() {
     stage.addChild(this.targettimeTitle);
 
     this.targettime = new PIXI.Text("", { font: "24px Inconsolata", fill: "#ffffff", align: "right" });
-    this.targettime.position.x = 450
+    this.targettime.position.x = 360
     this.targettime.position.y = 25;
     stage.addChild(this.targettime);
 
@@ -231,7 +231,7 @@ function main() {
     stage.addChild(this.deltatimeTitle);
 
     this.deltatime = new PIXI.Text("", { font: "24px Inconsolata", fill: "#ffffff", align: "right" });
-	this.deltatime.position.x = 450;
+	this.deltatime.position.x = 360;
 	this.deltatime.position.y = 50;
 	stage.addChild(this.deltatime);
 
@@ -307,13 +307,13 @@ function main() {
         }
 
         this.shiptime.setText(this.formatTime(shiptime));
-        this.shiptime.position.x = 450 - this.shiptime.width;
+        this.shiptime.position.x = 360 - this.shiptime.width;
 
         this.targettime.setText(this.formatTime(targettime));
-        this.targettime.position.x = 450 - this.targettime.width;
+        this.targettime.position.x = 360 - this.targettime.width;
 
         this.deltatime.setText(this.formatTime(deltatime));
-        this.deltatime.position.x = 450 - this.deltatime.width;
+        this.deltatime.position.x = 360 - this.deltatime.width;
 
         renderer.render(stage);
 
