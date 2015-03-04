@@ -22,13 +22,17 @@ function main() {
 		  newWidth = Math.floor(newHeight * widthToHeight);
 		  gameArea.style.height = newHeight + 'px';
 		  gameArea.style.width = newWidth + 'px';
+		  gameArea.style.marginTop = 0 + 'px';
+		  gameArea.style.marginLeft = Math.floor((window.innerWidth-newWidth)/2) + 'px';
 		} else { // window height is too high relative to desired game height
-		  newHeight = newWidth / widthToHeight;
+		  newHeight = Math.floor(newWidth / widthToHeight);
 		  gameArea.style.width = newWidth + 'px';
 		  gameArea.style.height = newHeight + 'px';
+		  gameArea.style.marginTop = Math.floor((window.innerHeight-newHeight)/2) + 'px';
+		  gameArea.style.marginLeft = 0 + 'px';
 		}
-		gameArea.style.marginTop = (-newHeight / 2) + 'px';
-		gameArea.style.marginLeft = (-newWidth / 2) + 'px';
+		//gameArea.style.marginTop = 0 + 'px';
+		//gameArea.style.marginLeft = 0 + 'px';
 		renderer.view.style.height = "100%";
 		renderer.view.style.width = "100%";
 		//renderer.resize(newWidth,newHeight);
