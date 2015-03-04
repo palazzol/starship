@@ -10,6 +10,8 @@ function main() {
 	// create a renderer instance
 	var renderer = PIXI.autoDetectRenderer(width,height);
 	renderer.view.style.display = "block";
+	renderer.view.style.height = "100%";
+	renderer.view.style.width = "100%";
 
 	this.resize = function(e) {
 		var gameArea = document.getElementById('gameArea');
@@ -33,8 +35,8 @@ function main() {
 		}
 		//gameArea.style.marginTop = 0 + 'px';
 		//gameArea.style.marginLeft = 0 + 'px';
-		renderer.view.style.height = "100%";
-		renderer.view.style.width = "100%";
+		//renderer.view.style.height = "100%";
+		//renderer.view.style.width = "100%";
 		//renderer.resize(newWidth,newHeight);
 	};
 

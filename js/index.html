@@ -8,70 +8,22 @@
             padding: 0;
         }
     	html, body { width:100%; height:100%; } /* just to be sure these are full screen*/
-        body {background-color:darkgray; color:white}
+        body {background-color:#202020; color:white}
         #gameArea {
-		}
-        #topArea {
-		  position: absolute;
-		  width:    100%;
-		  height:   20%;
-		  top:      0;
-		  opacity:  0.1;
-		  background-color: red;
-		}
-        #stripe1Area {
-		  position: absolute;
-		  width:    100%;
-		  height:   5%;
-		  top:      5%;
-		  opacity:  0.1;
-		  background-color: blue;
-		}
-        #stripe2Area {
-		  position: absolute;
-		  width:    100%;
-		  height:   5%;
-		  top:      15%;
-		  opacity:  0.1;
-		  background-color: blue;
-		}
-        #stripe3Area {
-		  position: absolute;
-		  width:    100%;
-		  height:   10%;
-		  bottom:   10%;
-		  opacity:  0.1;
-		  background-color: blue;
-		}
-		#bottomArea {
-		  position: absolute;
-		  width:    100%;
-		  height:   30%;
-		  bottom:   0;
-		  opacity:  0.1;
-		  background-color: red;
+          position: absolute;
 		}
 	</style>
     <script src="pixi.js-master/bin/pixi.dev.js"></script>
-
-</head>
-<body onload="main();">
-<!--<body>-->
 	<script src="sr.js"></script>
 	<!--<script src="wfloader.js"></script>-->
 	<script src="sprites.js"></script>
 	<script src="starship.js"></script>
 	<script src="main.js"></script>
 	<!--<script src="build/starship.min.js"></script>-->
-	<div id="gameArea">
-		<!--
-		<div id="topArea"></div>
-		<div id="stripe1Area"></div>
-		<div id="stripe2Area"></div>
-		<div id="stripe3Area"></div>
-		<div id="bottomArea"></div>
-		-->
-	</div>
+</head>
+<body onload="main();">
+<!--<body>-->
+	<div id="gameArea"></div>
 	<!--<div id="sprites"></div>-->
 <body>
 </html>
