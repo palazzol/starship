@@ -34,21 +34,22 @@ function ProjectTimeObserved(pos, vel) {
     var A = Metric(vel,vel);
     var B = Metric(pos,vel) * 2;
     var C = Metric(pos,pos);
-    //var D = B*B-4*A*C;
-    // Note A is always a constant, c^2, so this helps with overflow
-    var D = A*(B/A*B-4*C);
+    // scale it
+    B = B/A;
+    C = C/A;
+    var D = B*B-4*C
     if (Math.abs(D)<1e-6)
         D = 0.0;
     if (D < 0.0) {
-        console.log("***",A,B,C,D)
+        console.log("***",B,C,D)
         D = 0.0;
 	}
     var S = Math.sqrt(D);
     var x = 0.0;
     //if (A>0.0)
-        x = (-B-S)/(2*A);
+        x = (-B-S)/2;
     //else
-    //    x = (-B+S)/(2*A);
+    //    x = (-B+S)/2;
     if (Math.abs(x)<1e-6)
         x = 0.0;
     return x;
