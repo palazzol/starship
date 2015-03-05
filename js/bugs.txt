@@ -1,3 +1,4 @@
 - Sometimes the target (and delta) go to NaN and the target disappears
+	(identified!)
 - Fix flash as font loads
 - size is still smaller than needed on android, would like to lose the address bar
