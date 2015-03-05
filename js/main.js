@@ -1,3 +1,4 @@
+"use strict";
 
 function main() {
 
@@ -13,7 +14,7 @@ function main() {
 	renderer.view.style.height = "100%";
 	renderer.view.style.width = "100%";
 
-	this.resize = function(e) {
+	var resize = function(e) {
 		var gameArea = document.getElementById('gameArea');
 		var widthToHeight = renderer.width/renderer.height;
 		var newWidth = window.innerWidth;
@@ -40,8 +41,9 @@ function main() {
 		//renderer.resize(newWidth,newHeight);
 	};
 
-	this.resize();
-	window.addEventListener('resize', this.resize, false);
+	resize();
+	window.addEventListener('resize', resize, false);
+    window.addEventListener('orientationchange', resize, false);
 
 	// add the renderer view element to the DOM
 	var gameArea = document.getElementById('gameArea');
@@ -57,8 +59,8 @@ function main() {
     var clock = Date.now();
     var u = SR.GetUniverse();
 
-    for (i=-10; i<3; i++) {
-        for (j=-5; j<8; j++) {
+    for (var i=-10; i<3; i++) {
+        for (var j=-5; j<8; j++) {
             var beacon = new Starship.Object2D(u, "beacon", [i*50,j*50,0], [0,0,0], 0, 1);
             beacon.SetColor('#808080');
             beacon.SetRadius(1);
@@ -191,64 +193,62 @@ function main() {
 
     var keystate = [];
 
-    this.doKeyDown = function(e) {
+    var doKeyDown = function(e) {
         //console.log("down "+e.keyCode);
         keystate[e.keyCode] = true;
     };
 
-    this.doKeyUp = function(e) {
+    var doKeyUp = function(e) {
         //console.log("  up "+e.keyCode);
         keystate[e.keyCode] = false;
     };
 
-    window.addEventListener("keydown", this.doKeyDown, false);
-    window.addEventListener("keyup", this.doKeyUp, false);
-    window.addEventListener('resize', this.resizeGame, false);
-    window.addEventListener('orientationchange', this.resizeGame, false);
+    window.addEventListener("keydown", doKeyDown, false);
+    window.addEventListener("keyup", doKeyUp, false);
 
     var count = 1;
 
     var KEY = { SHIFT:16, CTRL:17, ESC:27, RIGHT:39, UP:38, LEFT:37, DOWN:40, SPACE:32,
             A:65, E:69, G:71, L:76, P:80, R:82, S:83, X:88, Z:90, DIGIT:48, BACKTICK:192 };
 
-    this.shiptimeTitle = new PIXI.Text("", { font: "48px Inconsolata", fill: "#ffff00", align: "left" });
-    this.shiptimeTitle.position.x = 0
-    this.shiptimeTitle.position.y = 0;
-    stage.addChild(this.shiptimeTitle);
+    var shiptimeTitle = new PIXI.Text("", { font: "48px Inconsolata", fill: "#ffff00", align: "left" });
+    shiptimeTitle.position.x = 0
+    shiptimeTitle.position.y = 0;
+    stage.addChild(shiptimeTitle);
 
-    this.shiptime = new PIXI.Text("", { font: "48px Inconsolata", fill: "#ffffff", align: "right" });
-    this.shiptime.position.x = 360
-    this.shiptime.position.y = 0;
-    stage.addChild(this.shiptime);
+    var shiptime = new PIXI.Text("", { font: "48px Inconsolata", fill: "#ffffff", align: "right" });
+    shiptime.position.x = 360
+    shiptime.position.y = 0;
+    stage.addChild(shiptime);
 
-    this.targettimeTitle = new PIXI.Text("", { font: "48px Inconsolata", fill: "#ffff00", align: "left" });
-    this.targettimeTitle.position.x = 0
-    this.targettimeTitle.position.y = 50;
-    stage.addChild(this.targettimeTitle);
+    var targettimeTitle = new PIXI.Text("", { font: "48px Inconsolata", fill: "#ffff00", align: "left" });
+    targettimeTitle.position.x = 0
+    targettimeTitle.position.y = 50;
+    stage.addChild(targettimeTitle);
 
-    this.targettime = new PIXI.Text("", { font: "48px Inconsolata", fill: "#ffffff", align: "right" });
-    this.targettime.position.x = 360
-    this.targettime.position.y = 50;
-    stage.addChild(this.targettime);
+    var targettime = new PIXI.Text("", { font: "48px Inconsolata", fill: "#ffffff", align: "right" });
+    targettime.position.x = 360
+    targettime.position.y = 50;
+    stage.addChild(targettime);
 
-    this.deltatimeTitle = new PIXI.Text("", { font: "48px Inconsolata", fill: "#ffff00", align: "left" });
-    this.deltatimeTitle.position.x = 0
-    this.deltatimeTitle.position.y = 100;
-    stage.addChild(this.deltatimeTitle);
+    var deltatimeTitle = new PIXI.Text("", { font: "48px Inconsolata", fill: "#ffff00", align: "left" });
+    deltatimeTitle.position.x = 0
+    deltatimeTitle.position.y = 100;
+    stage.addChild(deltatimeTitle);
 
-    this.deltatime = new PIXI.Text("", { font: "48px Inconsolata", fill: "#ffffff", align: "right" });
-	this.deltatime.position.x = 360;
-	this.deltatime.position.y = 100;
-	stage.addChild(this.deltatime);
+    var deltatime = new PIXI.Text("", { font: "48px Inconsolata", fill: "#ffffff", align: "right" });
+	deltatime.position.x = 360;
+	deltatime.position.y = 100;
+	stage.addChild(deltatime);
 
-    this.lastRender = Date.now();
+    var lastRender = Date.now();
 
     // Main loop is here
-    this.loop = function() {
+    var loop = function() {
 
         var now = Date.now();
-        var elapsedTime = now-this.lastRender;
-        this.lastRender = now;
+        var elapsedTime = now-lastRender;
+        lastRender = now;
         var delta_tau = elapsedTime/1000.0;
 
         if (keystate[KEY.Z] || keystate[KEY.LEFT]) {
@@ -288,23 +288,23 @@ function main() {
 
         // Update Everything
 
-		var shiptime = 0;
-        var targettime = 0;
+		var shipt = 0;
+        var targett = 0;
 
 		var objects = u.GetObjects();
         for (var i=0; i<objects.length; i++) {
             var obj = objects[i];
             obj.Update(observerFrame);
             if (obj.name === "ship") {
-            	shiptime = obj.GetClock();
+            	shipt = obj.GetClock();
             }
             else if (obj.name === "target")
-                targettime = obj.GetClock();
+                targett = obj.GetClock();
         }
 
-        var deltatime = targettime - shiptime;
+        var deltat = targett - shipt;
 
-        this.formatTime = function(t) {
+        var formatTime = function(t) {
             var temp = ""+Math.round(t*10);
             var temp2 = temp.slice(0,-1);
             if (temp2 === "") temp2 = "0";
@@ -312,26 +312,26 @@ function main() {
             return temp2+"."+temp.slice(-1)+"s";
         }
 
-		this.shiptimeTitle.setText("SHIP:");
-        this.shiptime.setText(this.formatTime(shiptime));
-        this.shiptime.position.x = 360 - this.shiptime.width;
+		shiptimeTitle.setText("SHIP:");
+        shiptime.setText(formatTime(shipt));
+        shiptime.position.x = 360 - shiptime.width;
 
-		this.targettimeTitle.setText("TARGET:");
-		this.targettime.setText(this.formatTime(targettime));
-        this.targettime.position.x = 360 - this.targettime.width;
+		targettimeTitle.setText("TARGET:");
+		targettime.setText(formatTime(targett));
+        targettime.position.x = 360 - targettime.width;
 
-		this.deltatimeTitle.setText("DELTA:");
-		this.deltatime.setText(this.formatTime(deltatime));
-        this.deltatime.position.x = 360 - this.deltatime.width;
+		deltatimeTitle.setText("DELTA:");
+		deltatime.setText(formatTime(deltat));
+        deltatime.position.x = 360 - deltatime.width;
 
         renderer.render(stage);
 
         // Schedule the loop to run again
-        //window.setTimeout(this.loop, 1000/24.0);
-        //window.setTimeout(this.loop, 0.0);
-        requestAnimFrame(this.loop);
+        //window.setTimeout(loop, 1000/24.0);
+        //window.setTimeout(loop, 0.0);
+        requestAnimFrame(loop);
     }
 
     // Run the main loop for the first time
-    requestAnimFrame(this.loop);
+    requestAnimFrame(loop);
 }

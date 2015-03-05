@@ -1,6 +1,8 @@
+"use strict";
+
 // Starship is a namespace
 if (typeof Starship == "undefined" || !Starship) {
-    Starship = {};
+    var Starship = {};
 }
 
 // Starship.Object2D is derived from SR.Object
