@@ -20,7 +20,8 @@ ray-intersection engine
 	
 1) handle acceleration as piecewise constant
 2) Try to use mass/energy relation propulsion
-3) handle acceleration as piecewise constant?
+3) handle acceleration as piecewise constant? *
+3.5) allow for different and quantified amounts of thrust
 4) create navigation algorithm for "target intercept"
 
 2D and 3D rendering
@@ -39,21 +40,15 @@ multiplayer considerations?
 
 Notes from 2/12/2014 audio file
 
-x look at orientation transforms and distortion
-
-x look at sprites 
-x - make encapsulated
-x - all wireframe?
-
-x steering via new heading icon, snapping
-
 console region & text
 - vector text?
 - brightening, fading?
 
+add touch/key targetting
 target icon
-
-clock positions & delta clock
+display velocity info
+display location info
+maybe use sprites in text area
 
 load/save prerecorded file, with pause/continue, text descriptions
 
@@ -61,8 +56,7 @@ circles
 - equidistant from you, or another target
 - could be grid
 
-x unify object list, call draw on this
- - display manager?
+- display manager?
 
 coordinate systems
 - object (global)
@@ -70,9 +64,8 @@ coordinate systems
 - ships (local) coordinate system
 - cleanup/document
 
-javascript object implementation ok? better?
-
 deployment
+x grunt installed
 - minification / staging
 
 debug display
@@ -97,6 +90,13 @@ navigation computer
 
 automated enemy ships
 - targetting and/or navigation
+
+add jsdoc
+try webstorm again?
+
+get fullscreen working on android
+
+
 
 
 
