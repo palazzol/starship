@@ -14,6 +14,9 @@ if (typeof Starship == "undefined" || !Starship) {
         this.rendered = false;
     };
     Starship.Object2D.prototype = Object.create(SR.Object.prototype);
+
+    Starship.Object2D.constructor = Starship.Object2D;
+
     Starship.Object2D.prototype.SetColor = function(clr) {
         this.color = clr;
     };
@@ -46,6 +49,8 @@ if (typeof Starship == "undefined" || !Starship) {
         this.thruster = false;
     }
     Starship.Ship2D.prototype = Object.create(Starship.Object2D.prototype);
+
+    Starship.Ship2D.constructor = Starship.Ship2D;
 
     Starship.Ship2D.prototype.Thrust = function(amount) {
         if (amount > 0) {

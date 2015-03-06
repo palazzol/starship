@@ -60,7 +60,7 @@ function main() {
 
     // Initialize
     var clock = Date.now();
-    var u = SR.GetUniverse();
+    var u = new SR.Universe();
 
     for (var i=-10; i<3; i++) {
         for (var j=-5; j<8; j++) {
@@ -209,37 +209,38 @@ function main() {
     window.addEventListener("keydown", doKeyDown, false);
     window.addEventListener("keyup", doKeyUp, false);
 
-    var count = 1;
-
     var KEY = { SHIFT:16, CTRL:17, ESC:27, RIGHT:39, UP:38, LEFT:37, DOWN:40, SPACE:32,
             A:65, E:69, G:71, L:76, P:80, R:82, S:83, X:88, Z:90, DIGIT:48, BACKTICK:192 };
 
-    var shiptimeTitle = new PIXI.Text("", { font: "48px Inconsolata", fill: "#ffff00", align: "left" });
+    var yellow_font_left = { font: "48px Inconsolata", fill: "#ffff00", align: "left" };
+    var white_font_right = { font: "48px Inconsolata", fill: "#ffffff", align: "right" };
+
+    var shiptimeTitle = new PIXI.Text("", yellow_font_left);
     shiptimeTitle.position.x = 0
     shiptimeTitle.position.y = 0;
     stage.addChild(shiptimeTitle);
 
-    var shiptime = new PIXI.Text("", { font: "48px Inconsolata", fill: "#ffffff", align: "right" });
+    var shiptime = new PIXI.Text("", white_font_right);
     shiptime.position.x = 360
     shiptime.position.y = 0;
     stage.addChild(shiptime);
 
-    var targettimeTitle = new PIXI.Text("", { font: "48px Inconsolata", fill: "#ffff00", align: "left" });
+    var targettimeTitle = new PIXI.Text("", yellow_font_left);
     targettimeTitle.position.x = 0
     targettimeTitle.position.y = 50;
     stage.addChild(targettimeTitle);
 
-    var targettime = new PIXI.Text("", { font: "48px Inconsolata", fill: "#ffffff", align: "right" });
+    var targettime = new PIXI.Text("", white_font_right);
     targettime.position.x = 360
     targettime.position.y = 50;
     stage.addChild(targettime);
 
-    var deltatimeTitle = new PIXI.Text("", { font: "48px Inconsolata", fill: "#ffff00", align: "left" });
+    var deltatimeTitle = new PIXI.Text("", yellow_font_left);
     deltatimeTitle.position.x = 0
     deltatimeTitle.position.y = 100;
     stage.addChild(deltatimeTitle);
 
-    var deltatime = new PIXI.Text("", { font: "48px Inconsolata", fill: "#ffffff", align: "right" });
+    var deltatime = new PIXI.Text("", white_font_right);
 	deltatime.position.x = 360;
 	deltatime.position.y = 100;
 	stage.addChild(deltatime);

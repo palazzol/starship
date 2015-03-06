@@ -68,18 +68,22 @@ var SR = {};
 
 // SR.Universe is a singleton class
 (function() {
-    var _universe = null;
-    SR.GetUniverse = function() {
-        if (!_universe)
-            _universe = new SR.Universe();
-        return _universe;
-    }
     SR.Universe = function() {
+        if (SR.Universe.prototype._singletonInstance) {
+            return SR.Universe.prototype._singletonInstance;
+        }
+        SR.Universe.prototype._singletonInstance = this;
+
         // private variables
         this.c = 100.0;
         this.observer = null;
         this.objects = [];
     }
+
+    SR.Universe.prototype = Object.create(null);
+
+    SR.Universe.constructor = SR.Universe;
+
     SR.Universe.prototype.AddObject = function(obj) {
         this.objects[this.objects.length] = obj;
     };
@@ -143,6 +147,11 @@ var SR = {};
         this.force = [0.0,0.0,0.0,0.0];
         this.universe.AddObject(this);
     };
+
+    SR.Object.prototype = Object.create(null);
+
+    SR.Object.prototype.constructor = SR.Object;
+
     SR.Object.prototype.GetUniverse = function() {
         return this.universe;
     };
