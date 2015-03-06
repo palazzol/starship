@@ -5,6 +5,9 @@ function main() {
 	var width =  720;
 	var height = 1080;
 
+	// enable scrolling?
+	PIXI.AUTO_PREVENT_DEFAULT = false;
+
 	// create an new instance of a pixi stage
     var stage = new PIXI.Stage(0x000000);
 
