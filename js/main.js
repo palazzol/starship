@@ -338,10 +338,9 @@ function main() {
         	var deltat = targett - shipt;
         	targetttext = formatTime(targett);
         	deltattext = formatTime(deltat);
-        	var shipvel = u.GetObserver().GetGlobalVel4();
-        	var targetvel = observerFrame.currentTarget.GetGlobalVel4();
+        	var targetvel = u.GetObserver().GetObservedRelativeVel3(observerFrame.currentTarget);
         	// TBD - calculate relvel
-        	relveltext = "TBD";
+        	relveltext = Math.round(targetvel[0]*1000)/10+","+Math.round(targetvel[1]*1000)/10;
 		}
 		else {
 			targetttext = "N/A";
