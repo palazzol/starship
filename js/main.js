@@ -52,6 +52,12 @@ function main() {
 	var gameArea = document.getElementById('gameArea');
 	gameArea.appendChild(renderer.view);
 
+    var backgroundTexture = new PIXI.Texture.fromImage("resources\\brushed_metal.png");
+    var background = new PIXI.Sprite(backgroundTexture);
+    background.position.x = 0;
+    background.position.y = 0;
+    stage.addChild(background);
+
     var observerFrame = new PIXI.DisplayObjectContainer();
     // center of the main display screen
     observerFrame.position.x = 360;
@@ -182,8 +188,8 @@ function main() {
     var thrustButtonUp = thrustButtonStuff[1];
     var thrustButtonDown = thrustButtonStuff[2];
 
-	thrustButton.position.x = 75;
-	thrustButton.position.y = 1080-75;
+	thrustButton.position.x = 720-90;
+	thrustButton.position.y = 1080-90;
 
 	var thrustDown = false;
 
@@ -217,11 +223,11 @@ function main() {
     var KEY = { SHIFT:16, CTRL:17, ESC:27, RIGHT:39, UP:38, LEFT:37, DOWN:40, SPACE:32,
             A:65, E:69, G:71, L:76, P:80, R:82, S:83, X:88, Z:90, DIGIT:48, BACKTICK:192 };
 
-    var yellow_font_left = { font: "48px Inconsolata", fill: "#ffff00", align: "left" };
-    var white_font_right = { font: "48px Inconsolata", fill: "#ffffff", align: "right" };
+    var yellow_font_left = { font: "40px Inconsolata", fill: "#ffff00", align: "left" };
+    var white_font_right = { font: "40px Inconsolata", fill: "#ffffff", align: "right" };
 
     var shiptimeTitle = new PIXI.Text("", yellow_font_left);
-    shiptimeTitle.position.x = 0
+    shiptimeTitle.position.x = 5
     shiptimeTitle.position.y = 0;
     stage.addChild(shiptimeTitle);
 
@@ -231,35 +237,34 @@ function main() {
     stage.addChild(shiptime);
 
     var targettimeTitle = new PIXI.Text("", yellow_font_left);
-    targettimeTitle.position.x = 0
-    targettimeTitle.position.y = 50;
+    targettimeTitle.position.x = 5
+    targettimeTitle.position.y = 45;
     stage.addChild(targettimeTitle);
 
     var targettime = new PIXI.Text("", white_font_right);
     targettime.position.x = 360
-    targettime.position.y = 50;
+    targettime.position.y = 45;
     stage.addChild(targettime);
 
     var deltatimeTitle = new PIXI.Text("", yellow_font_left);
-    deltatimeTitle.position.x = 0
-    deltatimeTitle.position.y = 100;
+    deltatimeTitle.position.x = 5
+    deltatimeTitle.position.y = 90;
     stage.addChild(deltatimeTitle);
 
     var deltatime = new PIXI.Text("", white_font_right);
 	deltatime.position.x = 360;
-	deltatime.position.y = 100;
+	deltatime.position.y = 90;
 	stage.addChild(deltatime);
 
     var relvelTitle = new PIXI.Text("", yellow_font_left);
-    relvelTitle.position.x = 0
-    relvelTitle.position.y = 150;
+    relvelTitle.position.x = 5
+    relvelTitle.position.y = 135;
     stage.addChild(relvelTitle);
 
     var relveltime = new PIXI.Text("", white_font_right);
 	relveltime.position.x = 360;
-	relveltime.position.y = 150;
+	relveltime.position.y = 135;
 	stage.addChild(relveltime);
-
 
 	var targetSprite = Starship.generateSprite("target",16,"#ffffff");
 	targetSprite.position.x = 0;
