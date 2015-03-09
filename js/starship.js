@@ -30,6 +30,14 @@ if (typeof Starship == "undefined" || !Starship) {
 				this.sprite = Starship.generateSprite("beacon",3,this.color);
 			} else {
 				this.sprite = Starship.generateSprite("object",this.radius,this.color);
+				this.sprite.buttonMode = true;
+				this.sprite.interactive = true;
+				this.sprite.objref = this;
+				//if (parent.currentTarget === undefined)
+				//	parent.currentTarget = this;
+				this.sprite.mousedown = this.sprite.touchstart = function(data) {
+					data.target.parent.currentTarget = data.target.objref;
+				}
 			}
             parent.addChild(this.sprite);
 

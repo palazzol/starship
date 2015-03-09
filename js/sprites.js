@@ -57,6 +57,29 @@ if (typeof Starship == "undefined" || !Starship) {
 			ctx.closePath();
 			//ctx.fill();
 			ctx.stroke();
+        } else if (type === "target") {
+			ctx.strokeStyle = color;
+			//ctx.fillStyle = color;
+			ctx.lineWidth = 3;
+			ctx.lineJoin = "miter";
+			ctx.beginPath();
+			// square
+			ctx.moveTo(32-size,32-size);
+			ctx.lineTo(32+size,32-size);
+			ctx.lineTo(32+size,32+size);
+			ctx.lineTo(32-size,32+size);
+			ctx.closePath();
+			// tick marks
+			ctx.moveTo(32-size,32);
+			ctx.lineTo(32-2*size,32);
+			ctx.moveTo(32+size,32);
+			ctx.lineTo(32+2*size,32);
+			ctx.moveTo(32,32-size);
+			ctx.lineTo(32,32-2*size);
+			ctx.moveTo(32,32+size);
+			ctx.lineTo(32,32+2*size);
+			//ctx.fill();
+			ctx.stroke();
         } else if (type === "ship") {
 			var wire = [[1.0,0.0],[-1.0,-0.7],[-0.5,0.0],[-1.0,0.7]];
 			var wire2 = [[-0.5,0.0],[0.5,-0.3],[-0.5,-0.6],
