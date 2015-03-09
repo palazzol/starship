@@ -70,7 +70,7 @@ function main() {
         }
     }
 
-    var ship2   = new Starship.Object2D(u, "target",   [-200,50,0], [0,0,0], 0, 10);
+    var ship2   = new Starship.Object2D(u, "ship2",   [-200,50,0], [0,0,0], 0, 10);
     ship2.SetColor('#00ffff');
     ship2.SetRadius(5);
 
@@ -78,7 +78,7 @@ function main() {
     ship3.SetColor('#ff0000');
     ship3.SetRadius(5);
 
-    var station = new Starship.Object2D(u, "station",[0,0,0], [0,0,0], 0, 100);
+    var station = new Starship.Object2D(u, "station",[0,-150,0], [0,0,0], 0, 100);
     station.SetColor('#ffff00');
     station.SetRadius(8);
 
@@ -250,6 +250,23 @@ function main() {
 	deltatime.position.y = 100;
 	stage.addChild(deltatime);
 
+    var relvelTitle = new PIXI.Text("", yellow_font_left);
+    relvelTitle.position.x = 0
+    relvelTitle.position.y = 150;
+    stage.addChild(relvelTitle);
+
+    var relveltime = new PIXI.Text("", white_font_right);
+	relveltime.position.x = 360;
+	relveltime.position.y = 150;
+	stage.addChild(relveltime);
+
+
+	var targetSprite = Starship.generateSprite("target",16,"#ffffff");
+	targetSprite.position.x = 0;
+	targetSprite.position.y = 0;
+	targetSprite.visible = false;
+	observerFrame.addChild(targetSprite);
+
     var lastRender = Date.now();
 
     // Main loop is here
@@ -297,21 +314,16 @@ function main() {
 
         // Update Everything
 
-		var shipt = 0;
-        var targett = 0;
+        var targetPos = 0;
+		var targetttext = "N/A";
+		var deltattext = "N/A";
+		var relveltext = "N/A";
 
 		var objects = u.GetObjects();
         for (var i=0; i<objects.length; i++) {
             var obj = objects[i];
             obj.Update(observerFrame);
-            if (obj.name === "ship") {
-            	shipt = obj.GetClock();
-            }
-            else if (obj.name === "target")
-                targett = obj.GetClock();
         }
-
-        var deltat = targett - shipt;
 
         var formatTime = function(t) {
             var temp = ""+Math.round(t*10);
@@ -321,17 +333,42 @@ function main() {
             return temp2+"."+temp.slice(-1)+"s";
         }
 
+		var shipt = u.GetObserver().GetClock();
+		if (observerFrame.currentTarget) {
+			var targett = observerFrame.currentTarget.GetClock();
+			targetPos = u.GetPos3Local(observerFrame.currentTarget);
+			targetSprite.position.x = targetPos[0];
+			targetSprite.position.y = targetPos[1];
+			targetSprite.visible = true;
+        	var deltat = targett - shipt;
+        	targetttext = formatTime(targett);
+        	deltattext = formatTime(deltat);
+        	var targetvel = u.GetObserver().GetObservedRelativeVel3(observerFrame.currentTarget);
+        	// TBD - calculate relvel
+        	relveltext = Math.round(targetvel[0]*1000)/10+","+Math.round(targetvel[1]*1000)/10;
+		}
+		else {
+			targetttext = "N/A";
+			deltattext = "N/A";
+			relveltext = "N/A";
+			targetSprite.visible = false;
+		}
+
 		shiptimeTitle.setText("SHIP:");
         shiptime.setText(formatTime(shipt));
         shiptime.position.x = 360 - shiptime.width;
 
 		targettimeTitle.setText("TARGET:");
-		targettime.setText(formatTime(targett));
+		targettime.setText(targetttext);
         targettime.position.x = 360 - targettime.width;
 
 		deltatimeTitle.setText("DELTA:");
-		deltatime.setText(formatTime(deltat));
+		deltatime.setText(deltattext);
         deltatime.position.x = 360 - deltatime.width;
+
+		relvelTitle.setText("REL VEL:");
+		relveltime.setText(relveltext);
+        relveltime.position.x = 360 - relveltime.width;
 
         renderer.render(stage);
 

@@ -260,6 +260,38 @@ var SR = {};
         var new_pos = local_delta
         return [ new_pos[1], new_pos[2], new_pos[3] ];
     }
+    SR.Object.prototype.GetObservedRelativeVel3 = function(obj) {
+        // global delta is the object's position in global coordinates,
+        // but with the origin moved to the the observer
+        var global_vel = obj.GetGlobalVel4();
+        ///global_delta[0] = obj.GetGlobalPos4()[0]-this.GetGlobalPos4()[0];
+        ///global_delta[1] = obj.GetGlobalPos4()[1]-this.GetGlobalPos4()[1];
+        ///global_delta[2] = obj.GetGlobalPos4()[2]-this.GetGlobalPos4()[2];
+        ///global_delta[3] = obj.GetGlobalPos4()[3]-this.GetGlobalPos4()[3];
+        // Now, we can convert to the observer's coordinate system, but with
+        // the origin still at the observer.
+        var local_delta = [0.0,0.0,0.0,0.0];
+        local_delta[0] = global_vel[0]*this.lorentz[0][0]+
+                         global_vel[1]*this.lorentz[0][1]+
+                         global_vel[2]*this.lorentz[0][2]+
+                         global_vel[3]*this.lorentz[0][3];
+        local_delta[1] = global_vel[0]*this.lorentz[0][1]+
+                         global_vel[1]*this.lorentz[1][1]+
+                         global_vel[2]*this.lorentz[1][2]+
+                         global_vel[3]*this.lorentz[1][3];
+        local_delta[2] = global_vel[0]*this.lorentz[0][2]+
+                         global_vel[1]*this.lorentz[1][2]+
+                         global_vel[2]*this.lorentz[2][2]+
+                         global_vel[3]*this.lorentz[2][3];
+        local_delta[3] = global_vel[0]*this.lorentz[0][3]+
+                         global_vel[1]*this.lorentz[1][3]+
+                         global_vel[2]*this.lorentz[2][3]+
+                         global_vel[3]*this.lorentz[3][3];
+        // We would use this if we wanted the answer in Observer coordinates
+        //new_pos = self.__observer.GetGlobalPos4()+local_delta
+        var new_pos = local_delta
+        return [ new_pos[1]/new_pos[0], new_pos[2]/new_pos[0], new_pos[3]/new_pos[0] ];
+    }
     SR.Object.prototype.GetLorentz = function() {
         return this.lorentz;
     };

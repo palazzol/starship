@@ -47,8 +47,37 @@ if (typeof Starship == "undefined" || !Starship) {
 			ctx.lineWidth = 3;
 			ctx.lineJoin = "miter";
 			ctx.beginPath();
+			// square
+			//ctx.moveTo(32-size,32-size);
+			//ctx.lineTo(32+size,32-size);
+			//ctx.lineTo(32+size,32+size);
+			//ctx.lineTo(32-size,32+size);
+			// circle
 			ctx.arc(32, 32, size, 0, 2*Math.PI);
 			ctx.closePath();
+			//ctx.fill();
+			ctx.stroke();
+        } else if (type === "target") {
+			ctx.strokeStyle = color;
+			//ctx.fillStyle = color;
+			ctx.lineWidth = 3;
+			ctx.lineJoin = "miter";
+			ctx.beginPath();
+			// square
+			ctx.moveTo(32-size,32-size);
+			ctx.lineTo(32+size,32-size);
+			ctx.lineTo(32+size,32+size);
+			ctx.lineTo(32-size,32+size);
+			ctx.closePath();
+			// tick marks
+			ctx.moveTo(32-size,32);
+			ctx.lineTo(32-2*size,32);
+			ctx.moveTo(32+size,32);
+			ctx.lineTo(32+2*size,32);
+			ctx.moveTo(32,32-size);
+			ctx.lineTo(32,32-2*size);
+			ctx.moveTo(32,32+size);
+			ctx.lineTo(32,32+2*size);
 			//ctx.fill();
 			ctx.stroke();
         } else if (type === "ship") {
@@ -79,7 +108,7 @@ if (typeof Starship == "undefined" || !Starship) {
             parent.appendChild(imageElement);
         }
 		var texture = PIXI.Texture.fromCanvas(canvas,PIXI.scaleModes.DEFAULT)
-		var sprite = new PIXI.Sprite(texture);
+		var sprite = new PIXI.StretchableSprite(texture);
 		sprite.anchor.x = 0.5;
 		sprite.anchor.y = 0.5;
 		return sprite;

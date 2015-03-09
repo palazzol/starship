@@ -64,7 +64,7 @@ coordinate systems
 - ships (local) coordinate system
 - cleanup/document
 
-deployment
+deployment - (screenfull.js is a nice example)
 x grunt installed
 - minification / staging
 
@@ -95,6 +95,20 @@ add jsdoc
 try webstorm again?
 
 get fullscreen working on android
+
+---
+
+Math writeups todo:
+
+math for starship:
+
+lorentz transforms
+orientation transformation - line/plane
+- line/cone
+impulse force - instant acceleration
+line/cone intersection
+line/plane intersection
+piecewise constant acceleration
 
 
 
