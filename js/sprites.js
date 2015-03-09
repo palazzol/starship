@@ -88,21 +88,23 @@ if (typeof Starship == "undefined" || !Starship) {
 		var canvas = document.createElement("canvas");
 		canvas.width = size*2;
 		canvas.height = size*2;
-		var ctx = canvas.getContext("2d");
-	  	ctx.beginPath();
-	  	ctx.rect(10, 10, canvas.width-20, canvas.height-20);
-	  	ctx.fillStyle = color;
-	  	ctx.fill();
-	  	ctx.lineWidth = 1;
-	  	ctx.strokeStyle = 'black';
-	  	ctx.stroke();
-		var texture = PIXI.Texture.fromCanvas(canvas,PIXI.scaleModes.DEFAULT)
-		var sprite = new PIXI.Sprite(texture);
+		//var ctx = canvas.getContext("2d");
+	  	//ctx.beginPath();
+	  	//ctx.rect(10, 10, canvas.width-20, canvas.height-20);
+	  	//ctx.fillStyle = color;
+	  	//ctx.fill();
+	  	//ctx.lineWidth = 1;
+	  	//ctx.strokeStyle = 'black';
+	  	//ctx.stroke();
+		//var texture = PIXI.Texture.fromCanvas(canvas,PIXI.scaleModes.DEFAULT)
+        var textureUp = PIXI.Texture.fromImage("resources\\yellow_button.png");
+        var textureDown = PIXI.Texture.fromImage("resources\\yellow_button_pressed.png");
+		var sprite = new PIXI.Sprite(textureUp);
 		sprite.buttonMode = true;
 		sprite.interactive = true;
 		sprite.anchor.x = 0.5;
 		sprite.anchor.y = 0.5;
-		return sprite;
+		return [sprite, textureUp, textureDown];
 	}
 
 }());

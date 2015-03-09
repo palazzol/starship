@@ -177,19 +177,24 @@ function main() {
 		}
 	}
 
-	var thrustButton = Starship.generateButton("button", 60, '#ffff00', "Thrust");
+	var thrustButtonStuff = Starship.generateButton("button", 60, '#ffff00', "Thrust");
+    var thrustButton = thrustButtonStuff[0];
+    var thrustButtonUp = thrustButtonStuff[1];
+    var thrustButtonDown = thrustButtonStuff[2];
 
-	thrustButton.position.x = 50;
-	thrustButton.position.y = 1080-50;
+	thrustButton.position.x = 75;
+	thrustButton.position.y = 1080-75;
 
 	var thrustDown = false;
 
 	thrustButton.mousedown = thrustButton.touchstart = function(data) {
 		thrustDown = true;
+        this.setTexture(thrustButtonDown);
     };
 
 	thrustButton.mouseup = thrustButton.touchend = thrustButton.mouseupoutside = thrustButton.touchendoutside = function(data) {
 		thrustDown = false;
+        this.setTexture(thrustButtonUp);
 	};
 
     stage.addChild(thrustButton);
