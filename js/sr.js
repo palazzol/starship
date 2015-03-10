@@ -74,6 +74,9 @@ var SR = {};
         }
         SR.Universe.prototype._singletonInstance = this;
 
+        // public variables
+        this.measured = false;
+
         // private variables
         this.c = 100.0;
         this.observer = null;
@@ -118,8 +121,10 @@ var SR = {};
                 var temp1 = this.observer.GetGlobalPos4();
                 var temp2 = obj.GetGlobalPos4();
                 var pos3observer = [temp2[0]-temp1[0],temp2[1]-temp1[1],temp2[2]-temp1[2],temp2[3]-temp1[3]];
-                delta_tau = ProjectTimeObserved(pos3observer, obj.GetGlobalVel4());
-                //delta_tau = ProjectTimeMeasured(pos3observer, obj.GetGlobalVel4(), this.observer.GetGlobalVel4());
+                if (this.measured)
+                    delta_tau = ProjectTimeMeasured(pos3observer, obj.GetGlobalVel4(), this.observer.GetGlobalVel4());
+                else
+                    delta_tau = ProjectTimeObserved(pos3observer, obj.GetGlobalVel4());
                 obj.IncrementTime(delta_tau);
             }
         }

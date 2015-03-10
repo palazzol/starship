@@ -205,6 +205,30 @@ function main() {
 
     stage.addChild(thrustButton);
 
+    var MOButtonStuff = Starship.generateButton("button", 60, '#ff0000', "M/O");
+    var MOButton = MOButtonStuff[0];
+    var MOButtonUp = MOButtonStuff[1];
+    var MOButtonDown = MOButtonStuff[2];
+
+    MOButton.position.x = 720-180-90;
+    MOButton.position.y = 1080-90;
+
+    var MOButtonToggle = false;
+
+    MOButton.mousedown = MOButton.touchstart = function(data) {
+        this.setTexture(MOButtonDown);
+    };
+
+    MOButton.mouseup = MOButton.touchend = MOButton.mouseupoutside = MOButton.touchendoutside = function(data) {
+        this.setTexture(MOButtonUp);
+        if (MOButtonToggle)
+            MOButtonToggle = false;
+        else
+            MOButtonToggle = true;
+    };
+
+    stage.addChild(MOButton);
+
     var keystate = [];
 
     var doKeyDown = function(e) {
@@ -323,6 +347,11 @@ function main() {
 		var targetttext = "N/A";
 		var deltattext = "N/A";
 		var relveltext = "N/A";
+
+        if (MOButtonToggle)
+            u.measured = true;
+        else
+            u.measured = false;
 
 		var objects = u.GetObjects();
         for (var i=0; i<objects.length; i++) {

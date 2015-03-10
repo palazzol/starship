@@ -126,9 +126,17 @@ if (typeof Starship == "undefined" || !Starship) {
 	  	//ctx.strokeStyle = 'black';
 	  	//ctx.stroke();
 		//var texture = PIXI.Texture.fromCanvas(canvas,PIXI.scaleModes.DEFAULT)
-        var textureUp = PIXI.Texture.fromImage("resources\\yellow_button.png");
-        var textureDown = PIXI.Texture.fromImage("resources\\yellow_button_pressed.png");
-		var sprite = new PIXI.Sprite(textureUp);
+        var textureUp = 0;
+        var textureDown = 0;
+        if (color === "#ffff00") {
+            textureUp = PIXI.Texture.fromImage("resources\\yellow_button.png");
+            textureDown = PIXI.Texture.fromImage("resources\\yellow_button_pressed.png");
+        }
+        else {
+            textureUp = PIXI.Texture.fromImage("resources\\red_button.png");
+            textureDown = PIXI.Texture.fromImage("resources\\red_button_pressed.png");
+		}
+        var sprite = new PIXI.Sprite(textureUp);
 		sprite.buttonMode = true;
 		sprite.interactive = true;
 		sprite.anchor.x = 0.5;
