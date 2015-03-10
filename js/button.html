@@ -1,0 +1,114 @@
+<body style="background-color:#000000; color:#ffffff">
+<p><h1>Shiny, Candylike Button</h1></p>
+<canvas id="canvas1" width="100", height="100"></canvas>
+</body>
+
+<script type="text/javascript">
+"use strict";
+
+function setPixel(imageData, x, y, r, g, b, a) {
+    var index = (x + y * imageData.width) * 4;
+    imageData.data[index+0] = r;
+    imageData.data[index+1] = g;
+    imageData.data[index+2] = b;
+    imageData.data[index+3] = a;
+}
+
+var phongMtx = function(r, g, b, normal_x, normal_y, normal_z, ls) {
+    var Iambient = 0.50;
+    var Idiffuse = 0.75;
+    var Ispecular = 2.0;
+    var alpha = 50.0;
+
+    var adjust = 1.0/(Iambient+Idiffuse*ls[2]);
+    var Iambient = Iambient*adjust;
+    var Idiffuse = Idiffuse*adjust;
+
+    var diffuse = normal_x*ls[0]+normal_y*ls[1]+normal_z*ls[2];
+    var specular = 0.0;
+    if (diffuse < 0.0) diffuse = 0.0;
+
+    var specular = 2.0*diffuse*normal_z-ls[2];
+    if (specular < 0.0) specular = 0.0;
+    specular = Math.pow(specular, alpha);
+
+    var kad = Iambient+Idiffuse*diffuse;
+    var s = 255*(Ispecular*specular);
+
+    var nr = kad*r+s;
+    if (nr < 0.0) nr = 0.0;
+    if (nr > 255.0) nr = 255.0;
+
+    var ng = kad*g+s
+    if (ng < 0.0) ng = 0.0;
+    if (ng > 255.0) ng = 255.0;
+
+    var nb = kad*b+s
+    if (nb < 0.0) nb = 0.0;
+    if (nb > 255.0) nb = 255.0;
+
+    return [nr, ng, nb];
+}
+
+var createButton = function(imageData, border, width, height, color, pressed) {
+
+    // Light source vector
+	var ls_invert = 0.0;
+	if (pressed) ls_invert = 1.0;
+    var ls_theta = (135.0+180.0*ls_invert)*Math.PI/180;
+    var ls_phi = 54.735*Math.PI/180;
+    var ls = [Math.cos(ls_theta)*Math.sin(ls_phi), -Math.sin(ls_theta)*Math.sin(ls_phi), Math.cos(ls_phi)];
+
+    // compute x and y-dependant terms for normals
+    var mw = 2.0*width/border;
+    var mh = 2.0*height/border;
+
+    for(var i=0; i<width; i++) {
+        var x = 2.0/(width-1)*i-1.0;
+        var temp = Math.pow(Math.abs(x),mw-1);
+        var tempi1 = mw*temp*x/Math.abs(x);
+        var tempi2 = 1-temp*x;
+        for(var j=0; j<height; j++) {
+            var y = 2.0/(height-1)*j-1.0;
+            var temp = Math.pow(Math.abs(y),mh-1);
+            var tempj1 = mh*temp*y/Math.abs(y);
+            var tempj2 = 1-temp*y;
+
+            var normal_x = tempi1*tempj2;
+            var normal_y = tempi2*tempj1;
+            var normal_z = 1.0;
+            var L = Math.sqrt(normal_x*normal_x + normal_y*normal_y + normal_z*normal_z);
+            normal_x = normal_x/L;
+            normal_y = normal_y/L;
+            normal_z = normal_z/L;
+
+            // apply shading to pixels
+            var c = phongMtx(color[0], color[1], color[2], normal_x, normal_y, normal_z, ls);
+            var nr = c[0];
+            var ng = c[1];
+            var nb = c[2];
+            setPixel(imageData, i, j, nr, ng, nb, 255); // 255 = opaque;
+        }
+    }
+}
+
+var element = document.getElementById("canvas1");
+var ctx = element.getContext("2d");
+
+// read the width and height of the canvas
+var width = element.width;
+var height = element.height;
+
+// create a new pixel array
+var imageData = ctx.createImageData(width, height);
+
+// generate the button data
+var border = 10;
+var color = [224, 224, 0];
+var pressed = true;
+createButton(imageData, border, width, height, color, pressed);
+
+// copy the image data back onto the canvas
+ctx.putImageData(imageData, 0, 0); // at coords 0,0
+
+</script>
