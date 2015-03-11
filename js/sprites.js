@@ -34,14 +34,14 @@ if (typeof Starship == "undefined" || !Starship) {
 		canvas.width = 64;
 		canvas.height = 64;
 		var ctx = canvas.getContext("2d");
-		if (type === "beacon") {
+		if (type === "plus") {
 			ctx.strokeStyle = color;
 			ctx.moveTo(32-size,32);
 			ctx.lineTo(32+size,32);
 			ctx.moveTo(32,32-size);
 			ctx.lineTo(32,32+size);
             ctx.stroke();
-        } else if (type === "object") {
+        } else if (type === "circle") {
 			ctx.strokeStyle = color;
 			//ctx.fillStyle = color;
 			ctx.lineWidth = 3;
@@ -94,6 +94,9 @@ if (typeof Starship == "undefined" || !Starship) {
 			Starship._renderPolyline(ctx,flame,false,size,color);
         } else if (type === "heading") {
 			var wire = [[1.0,0.0],[-1.0,-0.7],[-1.5,0.0],[-1.0,0.7]];
+			Starship._renderPolyline(ctx,wire,true,size,color);
+		} else if (type === "bearing") {
+			var wire = [[1.0,0.0],[0.0, 1.0],[0.0, -1.0]];
 			Starship._renderPolyline(ctx,wire,true,size,color);
 		}
         var parent = document.getElementById('sprites');

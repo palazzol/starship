@@ -72,7 +72,7 @@ function main() {
         for (var j=-5; j<8; j++) {
             var beacon = new Starship.Object2D(u, "beacon", [i*50,j*50,0], [0,0,0], 0, 1);
             beacon.SetColor('#808080');
-            beacon.SetRadius(1);
+            beacon.SetRadius(5);
         }
     }
 
@@ -93,7 +93,6 @@ function main() {
     ship.SetRadius(20);
 
     u.SetObserver(ship);
-    var speed = 50;
 
     var tau = 0;
     //var delta_tau = 1/24;
@@ -296,6 +295,12 @@ function main() {
 	targetSprite.visible = false;
 	observerFrame.addChild(targetSprite);
 
+	var bearingSprite = Starship.generateSprite("bearing",16,"#ffffff");
+	bearingSprite.position.x = 0;
+	bearingSprite.position.y = 0;
+	bearingSprite.visible = false;
+	observerFrame.addChild(bearingSprite);
+
     var lastRender = Date.now();
 
     // Main loop is here
@@ -373,7 +378,18 @@ function main() {
 			targetPos = u.GetPos3Local(observerFrame.currentTarget);
 			targetSprite.position.x = targetPos[0];
 			targetSprite.position.y = targetPos[1];
-			targetSprite.visible = true;
+			if ((Math.abs(targetSprite.position.x) > 360+32) || (Math.abs(targetSprite.position.y) > 360+32)) {
+				targetSprite.visible = false;
+				// draw bearing indicator here
+				var bearing = Math.atan2(targetPos[1],targetPos[0]);
+				bearingSprite.rotation = bearing;
+				bearingSprite.position.x = Math.cos(bearing)*300;
+				bearingSprite.position.y = Math.sin(bearing)*300;
+				bearingSprite.visible = true;
+			} else {
+				targetSprite.visible = true;
+				bearingSprite.visible = false;
+			}
         	var deltat = targett - shipt;
         	targetttext = formatTime(targett);
         	deltattext = formatTime(deltat);
