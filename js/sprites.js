@@ -98,6 +98,9 @@ if (typeof Starship == "undefined" || !Starship) {
 		} else if (type === "bearing") {
 			var wire = [[1.0,0.0],[0.0, 1.0],[0.0, -1.0]];
 			Starship._renderPolyline(ctx,wire,true,size,color);
+		} else if (type === "velocity") {
+			var wire = [[0.0, 1.0],[1.0,0.0],[0.0, -1.0],[-1.0,-1.0],[0.0,0.0],[-1.0,1.0]];
+			Starship._renderPolyline(ctx,wire,true,size,color);
 		}
         var parent = document.getElementById('sprites');
         if (parent != null) {

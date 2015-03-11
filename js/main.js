@@ -52,12 +52,6 @@ function main() {
 	var gameArea = document.getElementById('gameArea');
 	gameArea.appendChild(renderer.view);
 
-    var backgroundTexture = new PIXI.Texture.fromImage("resources\\brushed_metal.png");
-    var background = new PIXI.Sprite(backgroundTexture);
-    background.position.x = 0;
-    background.position.y = 0;
-    stage.addChild(background);
-
     var observerFrame = new PIXI.DisplayObjectContainer();
     // center of the main display screen
     observerFrame.position.x = 360;
@@ -182,6 +176,12 @@ function main() {
 		}
 	}
 
+    var backgroundTexture = new PIXI.Texture.fromImage("resources\\brushed_metal.png");
+    var background = new PIXI.Sprite(backgroundTexture);
+    background.position.x = 0;
+    background.position.y = 0;
+    stage.addChild(background);
+
 	var thrustButtonStuff = Starship.generateButton("button", 60, '#ffff00', "Thrust");
     var thrustButton = thrustButtonStuff[0];
     var thrustButtonUp = thrustButtonStuff[1];
@@ -301,6 +301,12 @@ function main() {
 	bearingSprite.visible = false;
 	observerFrame.addChild(bearingSprite);
 
+	var velocitySprite = Starship.generateSprite("velocity",16,"#ffff00");
+	velocitySprite.position.x = 0;
+	velocitySprite.position.y = 0;
+	velocitySprite.visible = false;
+	observerFrame.addChild(velocitySprite);
+
     var lastRender = Date.now();
 
     // Main loop is here
@@ -394,6 +400,17 @@ function main() {
         	targetttext = formatTime(targett);
         	deltattext = formatTime(deltat);
         	var targetvel = u.GetObserver().GetObservedRelativeVel3(observerFrame.currentTarget);
+        	var s2 = targetvel[0]*targetvel[0]+targetvel[1]*targetvel[1]+targetvel[2]*targetvel[2];
+        	if (s2 > 1e-6) {
+				// draw velocity indicator here
+				var velocity = Math.atan2(targetvel[1],targetvel[0]);
+				velocitySprite.rotation = velocity+Math.PI;
+				velocitySprite.position.x = Math.cos(velocity)*330;
+				velocitySprite.position.y = Math.sin(velocity)*330;
+				velocitySprite.visible = true;
+			} else {
+				velocitySprite.visible = false;
+			}
         	// TBD - calculate relvel
         	relveltext = Math.round(targetvel[0]*1000)/10+","+Math.round(targetvel[1]*1000)/10;
 		}
@@ -404,6 +421,7 @@ function main() {
 			targetSprite.visible = false;
 		}
 
+		var v = u.GetObserver().GetVel3
 		shiptimeTitle.setText("SHIP:");
         shiptime.setText(formatTime(shipt));
         shiptime.position.x = 360 - shiptime.width;
