@@ -182,7 +182,7 @@ function main() {
     background.position.y = 0;
     stage.addChild(background);
 
-	var thrustButtonStuff = Starship.generateButton("button", 60, '#ffff00', "Thrust");
+	var thrustButtonStuff = Starship.generateButton("button", 60, 'yellow', "Thrust");
     var thrustButton = thrustButtonStuff[0];
     var thrustButtonUp = thrustButtonStuff[1];
     var thrustButtonDown = thrustButtonStuff[2];
@@ -204,7 +204,7 @@ function main() {
 
     stage.addChild(thrustButton);
 
-    var MOButtonStuff = Starship.generateButton("button", 60, '#ff0000', "M/O");
+    var MOButtonStuff = Starship.generateButton("button", 60, 'red', "M/O");
     var MOButton = MOButtonStuff[0];
     var MOButtonUp = MOButtonStuff[1];
     var MOButtonDown = MOButtonStuff[2];
@@ -227,6 +227,42 @@ function main() {
     };
 
     stage.addChild(MOButton);
+
+    var blueButtonStuff = Starship.generateButton("button", 60, 'blue', "blue");
+    var blueButton = blueButtonStuff[0];
+    var blueButtonUp = blueButtonStuff[1];
+    var blueButtonDown = blueButtonStuff[2];
+
+    blueButton.position.x = 720-180-180-90;
+    blueButton.position.y = 1080-90;
+
+    blueButton.mousedown = blueButton.touchstart = function(data) {
+        this.setTexture(blueButtonDown);
+    };
+
+    blueButton.mouseup = blueButton.touchend = blueButton.mouseupoutside = blueButton.touchendoutside = function(data) {
+        this.setTexture(blueButtonUp);
+    };
+
+    stage.addChild(blueButton);
+
+    var greenButtonStuff = Starship.generateButton("button", 60, 'green', "green");
+    var greenButton = greenButtonStuff[0];
+    var greenButtonUp = greenButtonStuff[1];
+    var greenButtonDown = greenButtonStuff[2];
+
+    greenButton.position.x = 720-180-180-180-90;
+    greenButton.position.y = 1080-90;
+
+    greenButton.mousedown = greenButton.touchstart = function(data) {
+        this.setTexture(greenButtonDown);
+    };
+
+    greenButton.mouseup = greenButton.touchend = greenButton.mouseupoutside = greenButton.touchendoutside = function(data) {
+        this.setTexture(greenButtonUp);
+    };
+
+    stage.addChild(greenButton);
 
     var keystate = [];
 

@@ -134,11 +134,16 @@ if (typeof Starship == "undefined" || !Starship) {
 		//var texture = PIXI.Texture.fromCanvas(canvas,PIXI.scaleModes.DEFAULT)
         var textureUp = 0;
         var textureDown = 0;
-        if (color === "#ffff00") {
+        if (color === "yellow") {
             textureUp = PIXI.Texture.fromImage("resources\\yellow_button.png");
             textureDown = PIXI.Texture.fromImage("resources\\yellow_button_pressed.png");
-        }
-        else {
+        } else if (color === "blue") {
+            textureUp = PIXI.Texture.fromImage("resources\\blue_button.png");
+            textureDown = PIXI.Texture.fromImage("resources\\blue_button_pressed.png");
+        } else if (color === "green") {
+            textureUp = PIXI.Texture.fromImage("resources\\green_button.png");
+            textureDown = PIXI.Texture.fromImage("resources\\green_button_pressed.png");
+        } else {
             textureUp = PIXI.Texture.fromImage("resources\\red_button.png");
             textureDown = PIXI.Texture.fromImage("resources\\red_button_pressed.png");
 		}
