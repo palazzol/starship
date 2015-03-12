@@ -2,8 +2,8 @@
 
 function main() {
 
-	var width =  720;
-	var height = 1080;
+	var width =  1080;
+	var height = 720;
 
 	// enable scrolling?
 	PIXI.AUTO_PREVENT_DEFAULT = false;
@@ -54,8 +54,8 @@ function main() {
 
     var observerFrame = new PIXI.DisplayObjectContainer();
     // center of the main display screen
-    observerFrame.position.x = 360;
-    observerFrame.position.y = 540;
+    observerFrame.position.x = 540;
+    observerFrame.position.y = 360;
     stage.addChild(observerFrame);
 
     // Initialize
@@ -176,19 +176,21 @@ function main() {
 		}
 	}
 
+    /*
     var backgroundTexture = new PIXI.Texture.fromImage("resources\\brushed_metal.png");
     var background = new PIXI.Sprite(backgroundTexture);
     background.position.x = 0;
     background.position.y = 0;
     stage.addChild(background);
+    */
 
 	var thrustButtonStuff = Starship.generateButton("button", 60, 'yellow', "Thrust");
     var thrustButton = thrustButtonStuff[0];
     var thrustButtonUp = thrustButtonStuff[1];
     var thrustButtonDown = thrustButtonStuff[2];
 
-	thrustButton.position.x = 720-90;
-	thrustButton.position.y = 1080-90;
+	thrustButton.position.x = width-90;
+	thrustButton.position.y = height-90;
 
 	var thrustDown = false;
 
@@ -209,8 +211,8 @@ function main() {
     var MOButtonUp = MOButtonStuff[1];
     var MOButtonDown = MOButtonStuff[2];
 
-    MOButton.position.x = 720-180-90;
-    MOButton.position.y = 1080-90;
+    MOButton.position.x = width-135-90;
+    MOButton.position.y = height-90;
 
     var MOButtonToggle = false;
 
@@ -233,8 +235,8 @@ function main() {
     var blueButtonUp = blueButtonStuff[1];
     var blueButtonDown = blueButtonStuff[2];
 
-    blueButton.position.x = 720-180-180-90;
-    blueButton.position.y = 1080-90;
+    blueButton.position.x = 135+90;
+    blueButton.position.y = height-90;
 
     blueButton.mousedown = blueButton.touchstart = function(data) {
         this.setTexture(blueButtonDown);
@@ -251,8 +253,8 @@ function main() {
     var greenButtonUp = greenButtonStuff[1];
     var greenButtonDown = greenButtonStuff[2];
 
-    greenButton.position.x = 720-180-180-180-90;
-    greenButton.position.y = 1080-90;
+    greenButton.position.x = 90;
+    greenButton.position.y = height-90;
 
     greenButton.mousedown = greenButton.touchstart = function(data) {
         this.setTexture(greenButtonDown);
@@ -282,47 +284,70 @@ function main() {
     var KEY = { SHIFT:16, CTRL:17, ESC:27, RIGHT:39, UP:38, LEFT:37, DOWN:40, SPACE:32,
             A:65, E:69, G:71, L:76, P:80, R:82, S:83, X:88, Z:90, DIGIT:48, BACKTICK:192 };
 
-    var yellow_font_left = { font: "40px Inconsolata", fill: "#ffff00", align: "left" };
-    var white_font_right = { font: "40px Inconsolata", fill: "#ffffff", align: "right" };
+    var font_size = 20;
+    var font_margin = 2;
+
+    var yellow_font_left = { font: font_size+"px Inconsolata", fill: "#ffff00", align: "left" };
+    var white_font_right = { font: font_size+"px Inconsolata", fill: "#ffffff", align: "right" };
 
     var shiptimeTitle = new PIXI.Text("", yellow_font_left);
-    shiptimeTitle.position.x = 5
-    shiptimeTitle.position.y = 0;
+    shiptimeTitle.position.x = font_margin
+    shiptimeTitle.position.y = font_margin;
     stage.addChild(shiptimeTitle);
 
     var shiptime = new PIXI.Text("", white_font_right);
-    shiptime.position.x = 360
-    shiptime.position.y = 0;
+    shiptime.position.x = width/2;
+    shiptime.position.y = font_margin;
     stage.addChild(shiptime);
 
     var targettimeTitle = new PIXI.Text("", yellow_font_left);
-    targettimeTitle.position.x = 5
-    targettimeTitle.position.y = 45;
+    targettimeTitle.position.x = font_margin
+    targettimeTitle.position.y = font_size+font_margin;
     stage.addChild(targettimeTitle);
 
     var targettime = new PIXI.Text("", white_font_right);
-    targettime.position.x = 360
-    targettime.position.y = 45;
+    targettime.position.x = width/2;
+    targettime.position.y = font_size+font_margin;
     stage.addChild(targettime);
 
     var deltatimeTitle = new PIXI.Text("", yellow_font_left);
-    deltatimeTitle.position.x = 5
-    deltatimeTitle.position.y = 90;
+    deltatimeTitle.position.x = font_margin
+    deltatimeTitle.position.y = 2*font_size+font_margin;
     stage.addChild(deltatimeTitle);
 
     var deltatime = new PIXI.Text("", white_font_right);
-	deltatime.position.x = 360;
-	deltatime.position.y = 90;
+    deltatime.position.x = width/2;
+    deltatime.position.y = 2*font_size+font_margin;
 	stage.addChild(deltatime);
 
+    var rangeTitle = new PIXI.Text("", yellow_font_left);
+    rangeTitle.position.x = font_margin
+    rangeTitle.position.y = 3*font_size+font_margin;
+    stage.addChild(rangeTitle);
+
+    var rangeDist = new PIXI.Text("", white_font_right);
+    rangeDist.position.x = width/2;
+    rangeDist.position.y = 3*font_size+font_margin;
+    stage.addChild(rangeDist);
+
+    var bearingTitle = new PIXI.Text("", yellow_font_left);
+    bearingTitle.position.x = font_margin
+    bearingTitle.position.y = 4*font_size+font_margin;
+    stage.addChild(bearingTitle);
+
+    var bearingAngle = new PIXI.Text("", white_font_right);
+    bearingAngle.position.x = width/2;
+    bearingAngle.position.y = 4*font_size+font_margin;
+    stage.addChild(bearingAngle);
+
     var relvelTitle = new PIXI.Text("", yellow_font_left);
-    relvelTitle.position.x = 5
-    relvelTitle.position.y = 135;
+    relvelTitle.position.x = font_margin
+    relvelTitle.position.y = 5*font_size+font_margin;
     stage.addChild(relvelTitle);
 
     var relveltime = new PIXI.Text("", white_font_right);
-	relveltime.position.x = 360;
-	relveltime.position.y = 135;
+    relveltime.position.x = width/2;
+    relveltime.position.y = 5*font_size+font_margin;
 	stage.addChild(relveltime);
 
 	var targetSprite = Starship.generateSprite("target",16,"#ffffff");
@@ -393,6 +418,8 @@ function main() {
         var targetPos = 0;
 		var targetttext = "N/A";
 		var deltattext = "N/A";
+        var rangetext = "N/A";
+        var bearingtext = "N/A";
 		var relveltext = "N/A";
 
         if (MOButtonToggle)
@@ -411,7 +438,24 @@ function main() {
             var temp2 = temp.slice(0,-1);
             if (temp2 === "") temp2 = "0";
             else if (temp2 === "-") temp2 = "-0";
-            return temp2+"."+temp.slice(-1)+"s";
+            return temp2+"."+temp.slice(-1)+" s";
+        }
+
+        var formatDist = function(t) {
+            var temp = ""+Math.round(t/u.GetSpeedOfLight()*10);
+            var temp2 = temp.slice(0,-1);
+            if (temp2 === "") temp2 = "0";
+            else if (temp2 === "-") temp2 = "-0";
+            return temp2+"."+temp.slice(-1)+" ls";
+        }
+
+        var formatAngle = function(t) {
+            var temp = t/Math.PI*180.0;
+            temp = ""+Math.round(temp*10);
+            var temp2 = temp.slice(0,-1);
+            if (temp2 === "") temp2 = "0";
+            else if (temp2 === "-") temp2 = "-0";
+            return temp2+"."+temp.slice(-1)+" deg";
         }
 
 		var shipt = u.GetObserver().GetClock();
@@ -420,13 +464,14 @@ function main() {
 			targetPos = u.GetPos3Local(observerFrame.currentTarget);
 			targetSprite.position.x = targetPos[0];
 			targetSprite.position.y = targetPos[1];
-			if ((Math.abs(targetSprite.position.x) > 360+32) || (Math.abs(targetSprite.position.y) > 360+32)) {
+            var bearing = Math.atan2(targetPos[1],targetPos[0]);
+            bearingtext = formatAngle(bearing);
+            if ((Math.abs(targetSprite.position.x) > height/2+32) || (Math.abs(targetSprite.position.y) > height/2+32)) {
 				targetSprite.visible = false;
 				// draw bearing indicator here
-				var bearing = Math.atan2(targetPos[1],targetPos[0]);
 				bearingSprite.rotation = bearing;
-				bearingSprite.position.x = Math.cos(bearing)*300;
-				bearingSprite.position.y = Math.sin(bearing)*300;
+                bearingSprite.position.x = Math.cos(bearing)*(height/2-60);
+                bearingSprite.position.y = Math.sin(bearing)*(height/2-60);
 				bearingSprite.visible = true;
 			} else {
 				targetSprite.visible = true;
@@ -441,38 +486,57 @@ function main() {
 				// draw velocity indicator here
 				var velocity = Math.atan2(targetvel[1],targetvel[0]);
 				velocitySprite.rotation = velocity+Math.PI;
-				velocitySprite.position.x = Math.cos(velocity)*330;
-				velocitySprite.position.y = Math.sin(velocity)*330;
+                velocitySprite.position.x = Math.cos(velocity)*(height/2-30);
+                velocitySprite.position.y = Math.sin(velocity)*(height/2-30);
 				velocitySprite.visible = true;
 			} else {
 				velocitySprite.visible = false;
 			}
+            rangetext = formatDist(Math.sqrt(targetPos[0]*targetPos[0] + targetPos[1]*targetPos[1]));
         	// TBD - calculate relvel
         	relveltext = Math.round(targetvel[0]*1000)/10+","+Math.round(targetvel[1]*1000)/10;
 		}
 		else {
 			targetttext = "N/A";
 			deltattext = "N/A";
+            rangetext = "N/A";
+            bearingtext = "N/A";
 			relveltext = "N/A";
 			targetSprite.visible = false;
 		}
 
 		var v = u.GetObserver().GetVel3
-		shiptimeTitle.setText("SHIP:");
+		shiptimeTitle.setText("SHIP TIME:");
         shiptime.setText(formatTime(shipt));
-        shiptime.position.x = 360 - shiptime.width;
+        shiptime.position.x = width/4 - shiptime.width;
 
-		targettimeTitle.setText("TARGET:");
+		targettimeTitle.setText("TARGET TIME:");
 		targettime.setText(targetttext);
-        targettime.position.x = 360 - targettime.width;
+        targettime.position.x = width/4 - targettime.width;
 
-		deltatimeTitle.setText("DELTA:");
+		deltatimeTitle.setText("DELTA TIME:");
 		deltatime.setText(deltattext);
-        deltatime.position.x = 360 - deltatime.width;
+        deltatime.position.x = width/4 - deltatime.width;
 
-		relvelTitle.setText("REL VEL:");
+        rangeTitle.setText("RANGE:");
+        rangeDist.setText(rangetext);
+        rangeDist.position.x = width/4 - rangeDist.width;
+
+        bearingTitle.setText("BEARING:");
+        bearingAngle.setText(bearingtext);
+        bearingAngle.position.x = width/4 - bearingAngle.width;
+
+        //headingTitle.setText("HEADING:");
+        //heading.setText(headingtext);
+        //heading.position.x = width/4 - heading.width;
+
+        //directionTitle.setText("DIRECTION:");
+        //direction.setText(directiontext);
+        //direction.position.x = width/4 - direction.width;
+
+		relvelTitle.setText("VELOCITY:");
 		relveltime.setText(relveltext);
-        relveltime.position.x = 360 - relveltime.width;
+        relveltime.position.x = width/4 - relveltime.width;
 
         renderer.render(stage);
 
