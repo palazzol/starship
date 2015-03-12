@@ -340,14 +340,34 @@ function main() {
     bearingAngle.position.y = 4*font_size+font_margin;
     stage.addChild(bearingAngle);
 
+    var headingTitle = new PIXI.Text("", yellow_font_left);
+    headingTitle.position.x = font_margin
+    headingTitle.position.y = 5*font_size+font_margin;
+    stage.addChild(headingTitle);
+
+    var headingAngle = new PIXI.Text("", white_font_right);
+    headingAngle.position.x = width/2;
+    headingAngle.position.y = 5*font_size+font_margin;
+    stage.addChild(headingAngle);
+
+    var trackTitle = new PIXI.Text("", yellow_font_left);
+    trackTitle.position.x = font_margin
+    trackTitle.position.y = 6*font_size+font_margin;
+    stage.addChild(trackTitle);
+
+    var trackAngle = new PIXI.Text("", white_font_right);
+    trackAngle.position.x = width/2;
+    trackAngle.position.y = 6*font_size+font_margin;
+    stage.addChild(trackAngle);
+
     var relvelTitle = new PIXI.Text("", yellow_font_left);
     relvelTitle.position.x = font_margin
-    relvelTitle.position.y = 5*font_size+font_margin;
+    relvelTitle.position.y = 7*font_size+font_margin;
     stage.addChild(relvelTitle);
 
     var relveltime = new PIXI.Text("", white_font_right);
     relveltime.position.x = width/2;
-    relveltime.position.y = 5*font_size+font_margin;
+    relveltime.position.y = 7*font_size+font_margin;
 	stage.addChild(relveltime);
 
 	var targetSprite = Starship.generateSprite("target",16,"#ffffff");
@@ -362,11 +382,11 @@ function main() {
 	bearingSprite.visible = false;
 	observerFrame.addChild(bearingSprite);
 
-	var velocitySprite = Starship.generateSprite("velocity",16,"#ffff00");
-	velocitySprite.position.x = 0;
-	velocitySprite.position.y = 0;
-	velocitySprite.visible = false;
-	observerFrame.addChild(velocitySprite);
+	var trackSprite = Starship.generateSprite("track",16,"#ffff00");
+    trackSprite.position.x = 0;
+    trackSprite.position.y = 0;
+    trackSprite.visible = false;
+    observerFrame.addChild(trackSprite);
 
     var lastRender = Date.now();
 
@@ -420,6 +440,7 @@ function main() {
 		var deltattext = "N/A";
         var rangetext = "N/A";
         var bearingtext = "N/A";
+        var tracktext = "N/A";
 		var relveltext = "N/A";
 
         if (MOButtonToggle)
@@ -481,17 +502,18 @@ function main() {
         	targetttext = formatTime(targett);
         	deltattext = formatTime(deltat);
         	var targetvel = u.GetObserver().GetObservedRelativeVel3(observerFrame.currentTarget);
-        	var s2 = targetvel[0]*targetvel[0]+targetvel[1]*targetvel[1]+targetvel[2]*targetvel[2];
+            var velocityAngle = Math.atan2(targetvel[1],targetvel[0])-Math.PI;
+            var s2 = targetvel[0]*targetvel[0]+targetvel[1]*targetvel[1]+targetvel[2]*targetvel[2];
         	if (s2 > 1e-6) {
 				// draw velocity indicator here
-				var velocity = Math.atan2(targetvel[1],targetvel[0]);
-				velocitySprite.rotation = velocity+Math.PI;
-                velocitySprite.position.x = Math.cos(velocity)*(height/2-30);
-                velocitySprite.position.y = Math.sin(velocity)*(height/2-30);
-				velocitySprite.visible = true;
+                trackSprite.rotation = velocityAngle;
+                trackSprite.position.x = -Math.cos(velocityAngle)*(height/2-30);
+                trackSprite.position.y = -Math.sin(velocityAngle)*(height/2-30);
+                trackSprite.visible = true;
 			} else {
-				velocitySprite.visible = false;
+                trackSprite.visible = false;
 			}
+            tracktext = formatAngle(velocityAngle);
             rangetext = formatDist(Math.sqrt(targetPos[0]*targetPos[0] + targetPos[1]*targetPos[1]));
         	// TBD - calculate relvel
         	relveltext = Math.round(targetvel[0]*1000)/10+","+Math.round(targetvel[1]*1000)/10;
@@ -501,9 +523,13 @@ function main() {
 			deltattext = "N/A";
             rangetext = "N/A";
             bearingtext = "N/A";
+            tracktext = "N/A";
 			relveltext = "N/A";
 			targetSprite.visible = false;
 		}
+
+        var headingVector = u.GetObserver().GetOrientation();
+        var headingtext = formatAngle(Math.atan2(headingVector[1], headingVector[0]));
 
 		var v = u.GetObserver().GetVel3
 		shiptimeTitle.setText("SHIP TIME:");
@@ -526,13 +552,13 @@ function main() {
         bearingAngle.setText(bearingtext);
         bearingAngle.position.x = width/4 - bearingAngle.width;
 
-        //headingTitle.setText("HEADING:");
-        //heading.setText(headingtext);
-        //heading.position.x = width/4 - heading.width;
+        headingTitle.setText("HEADING:");
+        headingAngle.setText(headingtext);
+        headingAngle.position.x = width/4 - headingAngle.width;
 
-        //directionTitle.setText("DIRECTION:");
-        //direction.setText(directiontext);
-        //direction.position.x = width/4 - direction.width;
+        trackTitle.setText("TRACK:");
+        trackAngle.setText(tracktext);
+        trackAngle.position.x = width/4 - trackAngle.width;
 
 		relvelTitle.setText("VELOCITY:");
 		relveltime.setText(relveltext);
