@@ -25,16 +25,13 @@ if (typeof Starship == "undefined" || !Starship) {
     };
     Starship.Object2D.prototype.Update = function(parent) {
         if (this.rendered === false) {
-
-            if (this.radius === 1) {
-				this.sprite = Starship.generateSprite("beacon",3,this.color);
+			if (this.name === "beacon") { // beacons are not selectable
+				this.sprite = Starship.generateSprite("plus",this.radius,this.color);
 			} else {
-				this.sprite = Starship.generateSprite("object",this.radius,this.color);
+				this.sprite = Starship.generateSprite("circle",this.radius,this.color);
 				this.sprite.buttonMode = true;
 				this.sprite.interactive = true;
 				this.sprite.objref = this;
-				//if (parent.currentTarget === undefined)
-				//	parent.currentTarget = this;
 				this.sprite.mousedown = this.sprite.touchstart = function(data) {
 					data.target.parent.currentTarget = data.target.objref;
 				}

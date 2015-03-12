@@ -34,14 +34,14 @@ if (typeof Starship == "undefined" || !Starship) {
 		canvas.width = 64;
 		canvas.height = 64;
 		var ctx = canvas.getContext("2d");
-		if (type === "beacon") {
+		if (type === "plus") {
 			ctx.strokeStyle = color;
 			ctx.moveTo(32-size,32);
 			ctx.lineTo(32+size,32);
 			ctx.moveTo(32,32-size);
 			ctx.lineTo(32,32+size);
             ctx.stroke();
-        } else if (type === "object") {
+        } else if (type === "circle") {
 			ctx.strokeStyle = color;
 			//ctx.fillStyle = color;
 			ctx.lineWidth = 3;
@@ -95,6 +95,12 @@ if (typeof Starship == "undefined" || !Starship) {
         } else if (type === "heading") {
 			var wire = [[1.0,0.0],[-1.0,-0.7],[-1.5,0.0],[-1.0,0.7]];
 			Starship._renderPolyline(ctx,wire,true,size,color);
+		} else if (type === "bearing") {
+			var wire = [[1.0,0.0],[0.0, 1.0],[0.0, -1.0]];
+			Starship._renderPolyline(ctx,wire,true,size,color);
+		} else if (type === "velocity") {
+			var wire = [[0.0, 1.0],[1.0,0.0],[0.0, -1.0],[-1.0,-1.0],[0.0,0.0],[-1.0,1.0]];
+			Starship._renderPolyline(ctx,wire,true,size,color);
 		}
         var parent = document.getElementById('sprites');
         if (parent != null) {
@@ -128,11 +134,16 @@ if (typeof Starship == "undefined" || !Starship) {
 		//var texture = PIXI.Texture.fromCanvas(canvas,PIXI.scaleModes.DEFAULT)
         var textureUp = 0;
         var textureDown = 0;
-        if (color === "#ffff00") {
+        if (color === "yellow") {
             textureUp = PIXI.Texture.fromImage("resources\\yellow_button.png");
             textureDown = PIXI.Texture.fromImage("resources\\yellow_button_pressed.png");
-        }
-        else {
+        } else if (color === "blue") {
+            textureUp = PIXI.Texture.fromImage("resources\\blue_button.png");
+            textureDown = PIXI.Texture.fromImage("resources\\blue_button_pressed.png");
+        } else if (color === "green") {
+            textureUp = PIXI.Texture.fromImage("resources\\green_button.png");
+            textureDown = PIXI.Texture.fromImage("resources\\green_button_pressed.png");
+        } else {
             textureUp = PIXI.Texture.fromImage("resources\\red_button.png");
             textureDown = PIXI.Texture.fromImage("resources\\red_button_pressed.png");
 		}

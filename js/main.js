@@ -52,12 +52,6 @@ function main() {
 	var gameArea = document.getElementById('gameArea');
 	gameArea.appendChild(renderer.view);
 
-    var backgroundTexture = new PIXI.Texture.fromImage("resources\\brushed_metal.png");
-    var background = new PIXI.Sprite(backgroundTexture);
-    background.position.x = 0;
-    background.position.y = 0;
-    stage.addChild(background);
-
     var observerFrame = new PIXI.DisplayObjectContainer();
     // center of the main display screen
     observerFrame.position.x = 360;
@@ -72,7 +66,7 @@ function main() {
         for (var j=-5; j<8; j++) {
             var beacon = new Starship.Object2D(u, "beacon", [i*50,j*50,0], [0,0,0], 0, 1);
             beacon.SetColor('#808080');
-            beacon.SetRadius(1);
+            beacon.SetRadius(5);
         }
     }
 
@@ -93,7 +87,6 @@ function main() {
     ship.SetRadius(20);
 
     u.SetObserver(ship);
-    var speed = 50;
 
     var tau = 0;
     //var delta_tau = 1/24;
@@ -183,7 +176,13 @@ function main() {
 		}
 	}
 
-	var thrustButtonStuff = Starship.generateButton("button", 60, '#ffff00', "Thrust");
+    var backgroundTexture = new PIXI.Texture.fromImage("resources\\brushed_metal.png");
+    var background = new PIXI.Sprite(backgroundTexture);
+    background.position.x = 0;
+    background.position.y = 0;
+    stage.addChild(background);
+
+	var thrustButtonStuff = Starship.generateButton("button", 60, 'yellow', "Thrust");
     var thrustButton = thrustButtonStuff[0];
     var thrustButtonUp = thrustButtonStuff[1];
     var thrustButtonDown = thrustButtonStuff[2];
@@ -205,7 +204,7 @@ function main() {
 
     stage.addChild(thrustButton);
 
-    var MOButtonStuff = Starship.generateButton("button", 60, '#ff0000', "M/O");
+    var MOButtonStuff = Starship.generateButton("button", 60, 'red', "M/O");
     var MOButton = MOButtonStuff[0];
     var MOButtonUp = MOButtonStuff[1];
     var MOButtonDown = MOButtonStuff[2];
@@ -228,6 +227,42 @@ function main() {
     };
 
     stage.addChild(MOButton);
+
+    var blueButtonStuff = Starship.generateButton("button", 60, 'blue', "blue");
+    var blueButton = blueButtonStuff[0];
+    var blueButtonUp = blueButtonStuff[1];
+    var blueButtonDown = blueButtonStuff[2];
+
+    blueButton.position.x = 720-180-180-90;
+    blueButton.position.y = 1080-90;
+
+    blueButton.mousedown = blueButton.touchstart = function(data) {
+        this.setTexture(blueButtonDown);
+    };
+
+    blueButton.mouseup = blueButton.touchend = blueButton.mouseupoutside = blueButton.touchendoutside = function(data) {
+        this.setTexture(blueButtonUp);
+    };
+
+    stage.addChild(blueButton);
+
+    var greenButtonStuff = Starship.generateButton("button", 60, 'green', "green");
+    var greenButton = greenButtonStuff[0];
+    var greenButtonUp = greenButtonStuff[1];
+    var greenButtonDown = greenButtonStuff[2];
+
+    greenButton.position.x = 720-180-180-180-90;
+    greenButton.position.y = 1080-90;
+
+    greenButton.mousedown = greenButton.touchstart = function(data) {
+        this.setTexture(greenButtonDown);
+    };
+
+    greenButton.mouseup = greenButton.touchend = greenButton.mouseupoutside = greenButton.touchendoutside = function(data) {
+        this.setTexture(greenButtonUp);
+    };
+
+    stage.addChild(greenButton);
 
     var keystate = [];
 
@@ -295,6 +330,18 @@ function main() {
 	targetSprite.position.y = 0;
 	targetSprite.visible = false;
 	observerFrame.addChild(targetSprite);
+
+	var bearingSprite = Starship.generateSprite("bearing",16,"#ffffff");
+	bearingSprite.position.x = 0;
+	bearingSprite.position.y = 0;
+	bearingSprite.visible = false;
+	observerFrame.addChild(bearingSprite);
+
+	var velocitySprite = Starship.generateSprite("velocity",16,"#ffff00");
+	velocitySprite.position.x = 0;
+	velocitySprite.position.y = 0;
+	velocitySprite.visible = false;
+	observerFrame.addChild(velocitySprite);
 
     var lastRender = Date.now();
 
@@ -373,11 +420,33 @@ function main() {
 			targetPos = u.GetPos3Local(observerFrame.currentTarget);
 			targetSprite.position.x = targetPos[0];
 			targetSprite.position.y = targetPos[1];
-			targetSprite.visible = true;
+			if ((Math.abs(targetSprite.position.x) > 360+32) || (Math.abs(targetSprite.position.y) > 360+32)) {
+				targetSprite.visible = false;
+				// draw bearing indicator here
+				var bearing = Math.atan2(targetPos[1],targetPos[0]);
+				bearingSprite.rotation = bearing;
+				bearingSprite.position.x = Math.cos(bearing)*300;
+				bearingSprite.position.y = Math.sin(bearing)*300;
+				bearingSprite.visible = true;
+			} else {
+				targetSprite.visible = true;
+				bearingSprite.visible = false;
+			}
         	var deltat = targett - shipt;
         	targetttext = formatTime(targett);
         	deltattext = formatTime(deltat);
         	var targetvel = u.GetObserver().GetObservedRelativeVel3(observerFrame.currentTarget);
+        	var s2 = targetvel[0]*targetvel[0]+targetvel[1]*targetvel[1]+targetvel[2]*targetvel[2];
+        	if (s2 > 1e-6) {
+				// draw velocity indicator here
+				var velocity = Math.atan2(targetvel[1],targetvel[0]);
+				velocitySprite.rotation = velocity+Math.PI;
+				velocitySprite.position.x = Math.cos(velocity)*330;
+				velocitySprite.position.y = Math.sin(velocity)*330;
+				velocitySprite.visible = true;
+			} else {
+				velocitySprite.visible = false;
+			}
         	// TBD - calculate relvel
         	relveltext = Math.round(targetvel[0]*1000)/10+","+Math.round(targetvel[1]*1000)/10;
 		}
@@ -388,6 +457,7 @@ function main() {
 			targetSprite.visible = false;
 		}
 
+		var v = u.GetObserver().GetVel3
 		shiptimeTitle.setText("SHIP:");
         shiptime.setText(formatTime(shipt));
         shiptime.position.x = 360 - shiptime.width;
