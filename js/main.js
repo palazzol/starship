@@ -479,6 +479,15 @@ function main() {
             return temp2+"."+temp.slice(-1)+" deg";
         }
 
+        var formatVel = function(t) {
+            var temp = t/Math.PI*180.0;
+            temp = ""+Math.round(temp*10);
+            var temp2 = temp.slice(0,-1);
+            if (temp2 === "") temp2 = "0";
+            else if (temp2 === "-") temp2 = "-0";
+            return temp2+"."+temp.slice(-1)+"% c";
+        }
+
 		var shipt = u.GetObserver().GetClock();
 		if (observerFrame.currentTarget) {
 			var targett = observerFrame.currentTarget.GetClock();
@@ -503,8 +512,8 @@ function main() {
         	deltattext = formatTime(deltat);
         	var targetvel = u.GetObserver().GetObservedRelativeVel3(observerFrame.currentTarget);
             var velocityAngle = Math.atan2(targetvel[1],targetvel[0])-Math.PI;
-            var s2 = targetvel[0]*targetvel[0]+targetvel[1]*targetvel[1]+targetvel[2]*targetvel[2];
-        	if (s2 > 1e-6) {
+            var speed = Math.sqrt(targetvel[0]*targetvel[0]+targetvel[1]*targetvel[1]+targetvel[2]*targetvel[2]);
+        	if (speed > 1e-6) {
 				// draw velocity indicator here
                 trackSprite.rotation = velocityAngle;
                 trackSprite.position.x = -Math.cos(velocityAngle)*(height/2-30);
@@ -516,7 +525,8 @@ function main() {
             tracktext = formatAngle(velocityAngle);
             rangetext = formatDist(Math.sqrt(targetPos[0]*targetPos[0] + targetPos[1]*targetPos[1]));
         	// TBD - calculate relvel
-        	relveltext = Math.round(targetvel[0]*1000)/10+","+Math.round(targetvel[1]*1000)/10;
+        	var relvel = targetvel[1]*Math.sin(bearing)+targetvel[0]*Math.cos(bearing);
+        	relveltext = formatVel(relvel);
 		}
 		else {
 			targetttext = "N/A";
