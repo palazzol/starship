@@ -110,6 +110,27 @@ line/cone intersection
 line/plane intersection
 piecewise constant acceleration
 
+-----
+
+select from different ships with different weights, propulsion systems
+
+autozoom behavior can keep planet surface (radius) in view
+
+different graphics for different ship type, prop type
+Use insignia for historical
+
+should have gravity, aerodynamics for this.
+
+Satellite launch (?)
+Command module (Apollo 11 - Columbia, Apollo 17 - America)
+SLS?
+Mars mission (NASA config?)
+Solar System missions
+Project XXX series
+
+Chemical
+Ion drive
+Matter-Antimatter
 
 
 
