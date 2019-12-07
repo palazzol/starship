@@ -91,7 +91,7 @@ function main() {
     var tau = 0;
     //var delta_tau = 1/24;
 
-    var delta_turn = 15.0; //degrees
+    var delta_turn = 5.0; //degrees
 
     var turn = 0.0;
     var thrust = 200.0;
