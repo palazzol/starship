@@ -12,13 +12,16 @@ A note on Coordinate systems:
 
 "use strict";
 
-function Metric(a,b) {
+// SR is a namespace
+var SR = {};
+
+SR.Metric = function(a,b) {
     // Minkowski Metric
     // +,-,-,- convention, timelike distances are positive
     return a[0]*b[0]-a[1]*b[1]-a[2]*b[2]-a[3]*b[3];
-}
+};
 
-function GoToPercentC(ship, speed) {
+SR.GoToPercentC = function(ship, speed) {
     // Set speed wrt to global ref frame
     var o = ship.GetOrientation();
     var rv = []
@@ -26,14 +29,14 @@ function GoToPercentC(ship, speed) {
     rv[1] = o[1]*speed;
     rv[2] = o[2]*speed;
     ship.SetGlobalVel3(rv);
-}
+};
 
-function ProjectTimeObserved(pos, vel) {
+SR.ProjectTimeObserved = function(pos, vel) {
     // Solve the equation (pos+x*vel) dot (pos+x*vel) == 0.0 for x>=0
     // Intersection of object trajectory with observer's past light cone
-    var A = Metric(vel,vel);
-    var B = Metric(pos,vel) * 2;
-    var C = Metric(pos,pos);
+    var A = SR.Metric(vel,vel);
+    var B = SR.Metric(pos,vel) * 2;
+    var C = SR.Metric(pos,pos);
     // scale it
     B = B/A;
     C = C/A;
@@ -53,27 +56,18 @@ function ProjectTimeObserved(pos, vel) {
     if (Math.abs(x)<1e-6)
         x = 0.0;
     return x;
-}
+};
 
-function ProjectTimeMeasured(posobj, velobj, velobs) {
+SR.ProjectTimeMeasured = function(posobj, velobj, velobs) {
     // Solve the equation (posobj+x*velobj) dot (velobs) == 0.0
     // Intersection of object trajectory with observer's "now" (t_obs=now plane)
-    var A = Metric(velobj,velobs);
-    var B = Metric(posobj,velobs);
+    var A = SR.Metric(velobj,velobs);
+    var B = SR.Metric(posobj,velobs);
     return -B/A;
-}
+};
 
-// SR is a namespace
-var SR = {};
-
-// SR.Universe is a singleton class
-(function() {
-    SR.Universe = function() {
-        if (SR.Universe.prototype._singletonInstance) {
-            return SR.Universe.prototype._singletonInstance;
-        }
-        SR.Universe.prototype._singletonInstance = this;
-
+SR.Universe = class {
+    constructor() {
         // public variables
         this.measured = false;
 
@@ -82,33 +76,28 @@ var SR = {};
         this.observer = null;
         this.objects = [];
     }
-
-    SR.Universe.prototype = Object.create(null);
-
-    SR.Universe.constructor = SR.Universe;
-
-    SR.Universe.prototype.AddObject = function(obj) {
+    AddObject(obj) {
         this.objects[this.objects.length] = obj;
-    };
-    SR.Universe.prototype.GetObjects = function() {
+    }
+    GetObjects() {
         return this.objects;
-    };
-    SR.Universe.prototype.GetPos3Local = function(obj) {
+    }
+    GetPos3Local(obj) {
         return this.observer.GetObservedRelativePos3(obj);
-    };
-    SR.Universe.prototype.GetSpeedOfLight = function() {
+    }
+    GetSpeedOfLight() {
         return this.c;
-    };
-    SR.Universe.prototype.SetSpeedOfLight = function(c) {
+    }
+    SetSpeedOfLight(c) {
         this.c = c;
-    };
-    SR.Universe.prototype.SetObserver = function(obj) {
+    }
+    SetObserver(obj) {
         this.observer = obj;
-    };
-    SR.Universe.prototype.GetObserver = function() {
+    }
+    GetObserver() {
         return this.observer;
-    };
-    SR.Universe.prototype.MoveToObserverClock = function(tau) {
+    }
+    MoveToObserverClock(tau) {
         // Actually move the observer to the event where this proper time is measured
         var delta_tau = tau-this.observer.GetClock();
         this.observer.IncrementTime(delta_tau);
@@ -122,18 +111,17 @@ var SR = {};
                 var temp2 = obj.GetGlobalPos4();
                 var pos3observer = [temp2[0]-temp1[0],temp2[1]-temp1[1],temp2[2]-temp1[2],temp2[3]-temp1[3]];
                 if (this.measured)
-                    delta_tau = ProjectTimeMeasured(pos3observer, obj.GetGlobalVel4(), this.observer.GetGlobalVel4());
+                    delta_tau = SR.ProjectTimeMeasured(pos3observer, obj.GetGlobalVel4(), this.observer.GetGlobalVel4());
                 else
-                    delta_tau = ProjectTimeObserved(pos3observer, obj.GetGlobalVel4());
+                    delta_tau = SR.ProjectTimeObserved(pos3observer, obj.GetGlobalVel4());
                 obj.IncrementTime(delta_tau);
             }
         }
-    };
-}());
+    }
+};
 
-// SR.Object is a class
-(function() {
-    SR.Object = function(universe, name, pos3, vel3, clock, restmass) {
+SR.Object = class {
+    constructor(universe, name, pos3, vel3, clock, restmass) {
         this.universe = universe
         this.c = universe.GetSpeedOfLight();
         // Initialize the name
@@ -151,52 +139,47 @@ var SR = {};
         //var accel4 = [0.0,0.0,0.0,0.0];
         this.force = [0.0,0.0,0.0,0.0];
         this.universe.AddObject(this);
-    };
-
-    SR.Object.prototype = Object.create(null);
-
-    SR.Object.prototype.constructor = SR.Object;
-
-    SR.Object.prototype.GetUniverse = function() {
+    }
+    GetUniverse() {
         return this.universe;
-    };
-    SR.Object.prototype.GetName = function() {
+    }
+    GetName() {
         return this.name;
-    };
-    SR.Object.prototype.GetClock = function() {
+    }
+    GetClock() {
         return this.clock;
-    };
-    SR.Object.prototype.SetClock = function(clock) {
+    }
+    SetClock(clock) {
         this.clock = clock;
-    };
-    SR.Object.prototype.MoveToClock = function(clock) {
+    }
+    MoveToClock(clock) {
         var delta_tau = clock-this.clock;
         IncrementTime(delta_tau);
-    };
-    SR.Object.prototype.GetOrientation = function() {
+    }
+    GetOrientation() {
         return this.orient3;
-    };
-    SR.Object.prototype.SetOrientation = function(x, y) {
+    }
+    SetOrientation(x, y) {
         this.orient3 = [x,y,this.orient3[2]];
-    };
-    SR.Object.prototype.Turn = function(degrees) {
+    }
+    Turn(degrees) {
         var radians = degrees*Math.PI/180.0;
         var o_old = this.GetOrientation();
         var o_new = [0.0,0.0];
         o_new[0] = o_old[0]*Math.cos(radians)+o_old[1]*Math.sin(radians);
         o_new[1] = -o_old[0]*Math.sin(radians)+o_old[1]*Math.cos(radians);
         this.orient3 = [o_new[0],o_new[1],this.orient3[2]];
-    };
-    SR.Object.prototype.GetGlobalPos3 = function() {
+    }
+    GetGlobalPos3() {
         return [this.pos4[1], this.pos4[2], this.pos4[3]];
-    };
-    SR.Object.prototype.GetGlobalPos4 = function() {
+    }
+    GetGlobalPos4() {
         return this.pos4;
-    };
-    SR.Object.prototype.GetGlobalVel4 = function() {
+    }
+    GetGlobalVel4() {
         return this.vel4;
-    };
-    SR.Object.prototype.SetGlobalVel4 = function(v4) {
+    }
+    SetGlobalVel4(v4) {
         this.vel4 = v4;
         var gamma = this.vel4[0]/this.c;
         var bx = this.vel4[1]/this.c/gamma;
@@ -223,8 +206,8 @@ var SR = {};
             //this.lorentz[3][2] = this.lorentz[2][3];
             this.lorentz[3][3] = 1.0+(gamma-1)*bz*bz/b_squared;
         }
-    };
-    SR.Object.prototype.SetGlobalVel3 = function(vel3) {
+    }
+    SetGlobalVel3(vel3) {
         //v_squared = vel3[0]*vel3[0]+vel3[1]*vel3[1]+vel3[2]*vel3[2]
         var bx = vel3[0]/this.c;
         var by = vel3[1]/this.c;
@@ -232,8 +215,8 @@ var SR = {};
         var b_squared = bx*bx+by*by+bz*bz;
         var gamma = 1.0/Math.sqrt(1-b_squared);
         this.SetGlobalVel4([this.c*gamma,vel3[0]*gamma,vel3[1]*gamma,vel3[2]*gamma]);
-    };
-    SR.Object.prototype.GetObservedRelativePos3 = function(obj) {
+    }
+    GetObservedRelativePos3(obj) {
         // global delta is the object's position in global coordinates,
         // but with the origin moved to the the observer
         var global_delta = [0.0,0.0,0.0,0.0];
@@ -265,7 +248,7 @@ var SR = {};
         var new_pos = local_delta
         return [ new_pos[1], new_pos[2], new_pos[3] ];
     }
-    SR.Object.prototype.GetObservedRelativeVel3 = function(obj) {
+    GetObservedRelativeVel3(obj) {
         // global delta is the object's position in global coordinates,
         // but with the origin moved to the the observer
         var global_vel = obj.GetGlobalVel4();
@@ -297,16 +280,16 @@ var SR = {};
         var new_pos = local_delta
         return [ new_pos[1]/new_pos[0], new_pos[2]/new_pos[0], new_pos[3]/new_pos[0] ];
     }
-    SR.Object.prototype.GetLorentz = function() {
+    GetLorentz() {
         return this.lorentz;
-    };
-    SR.Object.prototype.GetGlobalTime = function() {
+    }
+    GetGlobalTime() {
         return this.pos4[0]/this.c;
-    };
-    SR.Object.prototype.ApplyForce = function(force3) {
+    }
+    ApplyForce(force3) {
         this.force = [0,force3[0],force3[1],force3[2]];
-    };
-    SR.Object.prototype.IncrementTime = function(delta_tau) {
+    }
+    IncrementTime(delta_tau) {
         var new_vel = [];
         new_vel[1]= this.vel4[1] + this.force[1]*delta_tau/this.restmass;
         new_vel[2]= this.vel4[2] + this.force[2]*delta_tau/this.restmass;
@@ -332,4 +315,4 @@ var SR = {};
         //if self.GetName() != 'beacon':
         //    print self.__clock,delta_tau
     }
-}());
+};

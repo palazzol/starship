@@ -420,12 +420,12 @@ function main() {
 
         for (var i=0; i<10; i++) {
             if (keystate[KEY.DIGIT+i]) {
-                GoToPercentC(ship, 10.0*i);
+                SR.GoToPercentC(ship, 10.0*i);
             }
         }
 
         if (keystate[KEY.BACKTICK])
-            GoToPercentC(ship, 99);
+            SR.GoToPercentC(ship, 99);
 
         // Run the engine
         if (delta_tau !== 0.0) {

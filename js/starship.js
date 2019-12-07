@@ -6,24 +6,20 @@ if (typeof Starship == "undefined" || !Starship) {
 }
 
 // Starship.Object2D is derived from SR.Object
-(function() {
-    Starship.Object2D = function(u, n, pos3, vel3, clk, mass) {
-        SR.Object.call(this, u, n, pos3, vel3, clk, mass);
+Starship.Object2D = class extends SR.Object {
+    constructor(u, n, pos3, vel3, clk, mass) {
+        super(u, n, pos3, vel3, clk, mass);
         this.color = '#ffffff';
         this.radius = 10;
         this.rendered = false;
-    };
-    Starship.Object2D.prototype = Object.create(SR.Object.prototype);
-
-    Starship.Object2D.constructor = Starship.Object2D;
-
-    Starship.Object2D.prototype.SetColor = function(clr) {
+    }
+    SetColor(clr) {
         this.color = clr;
-    };
-    Starship.Object2D.prototype.SetRadius = function(r) {
+    }
+    SetRadius(r) {
         this.radius = r;
-    };
-    Starship.Object2D.prototype.Update = function(parent) {
+    }
+    Update(parent) {
         if (this.rendered === false) {
             if (this.name === "beacon") { // beacons are not selectable
                 this.sprite = Starship.generateSprite("plus",this.radius,this.color);
@@ -44,20 +40,16 @@ if (typeof Starship == "undefined" || !Starship) {
         var pos = this.universe.GetPos3Local(this);
         this.sprite.position.x = pos[0];
         this.sprite.position.y = pos[1];
-    };
-}());
+    }
+};
 
 // Starship.Ship2D is derived from Starship.Object2D
-(function() {
-    Starship.Ship2D = function(u, n, pos3, vel3, clk, mass) {
-        Starship.Object2D.call(this, u, n, pos3, vel3, clk, mass);
+Starship.Ship2D = class extends Starship.Object2D {
+    constructor(u, n, pos3, vel3, clk, mass) {
+        super(u, n, pos3, vel3, clk, mass);
         this.thruster = false;
     }
-    Starship.Ship2D.prototype = Object.create(Starship.Object2D.prototype);
-
-    Starship.Ship2D.constructor = Starship.Ship2D;
-
-    Starship.Ship2D.prototype.Thrust = function(amount) {
+    Thrust(amount) {
         if (amount > 0) {
             this.thruster = true;
         } else {
@@ -68,8 +60,8 @@ if (typeof Starship == "undefined" || !Starship) {
         for (var i=0;i<3;i++)
             amount_vec3[i] *= amount;
         this.ApplyForce(amount_vec3);
-    };
-    Starship.Ship2D.prototype.Update = function(parent) {
+    }
+    Update(parent) {
         var pos = this.universe.GetPos3Local(this);
 
         var vel4 = this.GetGlobalVel4();
@@ -118,5 +110,5 @@ if (typeof Starship == "undefined" || !Starship) {
         } else {
             this.sprite2.visible = false;
         }
-    };
-}());
+    }
+};
