@@ -2,55 +2,55 @@
 
 function main() {
 
-	var width =  1080;
-	var height = 720;
+    var width =  1080;
+    var height = 720;
 
-	// enable scrolling?
-	PIXI.AUTO_PREVENT_DEFAULT = false;
+    // enable scrolling?
+    PIXI.AUTO_PREVENT_DEFAULT = false;
 
-	// create an new instance of a pixi stage
+    // create an new instance of a pixi stage
     var stage = new PIXI.Stage(0x000000);
 
-	// create a renderer instance
-	var renderer = PIXI.autoDetectRenderer(width,height);
-	renderer.view.style.display = "block";
-	renderer.view.style.height = "100%";
-	renderer.view.style.width = "100%";
+    // create a renderer instance
+    var renderer = PIXI.autoDetectRenderer(width,height);
+    renderer.view.style.display = "block";
+    renderer.view.style.height = "100%";
+    renderer.view.style.width = "100%";
 
-	var resize = function(e) {
-		var gameArea = document.getElementById('gameArea');
-		var widthToHeight = renderer.width/renderer.height;
-		var newWidth = window.innerWidth;
-    	var newHeight = window.innerHeight;
-    	var newWidthToHeight = newWidth/newHeight;
-    	if (newWidthToHeight > widthToHeight) {
-		  // window width is too wide relative to desired game width
-		  newWidth = Math.floor(newHeight * widthToHeight);
-		  gameArea.style.height = newHeight + 'px';
-		  gameArea.style.width = newWidth + 'px';
-		  gameArea.style.marginTop = 0 + 'px';
-		  gameArea.style.marginLeft = Math.floor((window.innerWidth-newWidth)/2) + 'px';
-		} else { // window height is too high relative to desired game height
-		  newHeight = Math.floor(newWidth / widthToHeight);
-		  gameArea.style.width = newWidth + 'px';
-		  gameArea.style.height = newHeight + 'px';
-		  gameArea.style.marginTop = Math.floor((window.innerHeight-newHeight)/2) + 'px';
-		  gameArea.style.marginLeft = 0 + 'px';
-		}
-		//gameArea.style.marginTop = 0 + 'px';
-		//gameArea.style.marginLeft = 0 + 'px';
-		//renderer.view.style.height = "100%";
-		//renderer.view.style.width = "100%";
-		//renderer.resize(newWidth,newHeight);
-	};
+    var resize = function(e) {
+        var gameArea = document.getElementById('gameArea');
+        var widthToHeight = renderer.width/renderer.height;
+        var newWidth = window.innerWidth;
+        var newHeight = window.innerHeight;
+        var newWidthToHeight = newWidth/newHeight;
+        if (newWidthToHeight > widthToHeight) {
+          // window width is too wide relative to desired game width
+          newWidth = Math.floor(newHeight * widthToHeight);
+          gameArea.style.height = newHeight + 'px';
+          gameArea.style.width = newWidth + 'px';
+          gameArea.style.marginTop = 0 + 'px';
+          gameArea.style.marginLeft = Math.floor((window.innerWidth-newWidth)/2) + 'px';
+        } else { // window height is too high relative to desired game height
+          newHeight = Math.floor(newWidth / widthToHeight);
+          gameArea.style.width = newWidth + 'px';
+          gameArea.style.height = newHeight + 'px';
+          gameArea.style.marginTop = Math.floor((window.innerHeight-newHeight)/2) + 'px';
+          gameArea.style.marginLeft = 0 + 'px';
+        }
+        //gameArea.style.marginTop = 0 + 'px';
+        //gameArea.style.marginLeft = 0 + 'px';
+        //renderer.view.style.height = "100%";
+        //renderer.view.style.width = "100%";
+        //renderer.resize(newWidth,newHeight);
+    };
 
-	resize();
-	window.addEventListener('resize', resize, false);
+    resize();
+    window.addEventListener('resize', resize, false);
     window.addEventListener('orientationchange', resize, false);
 
-	// add the renderer view element to the DOM
-	var gameArea = document.getElementById('gameArea');
-	gameArea.appendChild(renderer.view);
+    // add the renderer view element to the DOM
+    var gameArea = document.getElementById('gameArea');
+    gameArea.appendChild(renderer.view);
 
     var observerFrame = new PIXI.DisplayObjectContainer();
     // center of the main display screen
@@ -96,36 +96,36 @@ function main() {
     var turn = 0.0;
     var thrust = 200.0;
 
-	var headingControl = Starship.generateSprite("heading", 20, '#ff00ff');
-	headingControl.position.x = 360;
-	headingControl.position.y = 0;
-	headingControl.anchor.x = 1.0;
-	headingControl.anchor.y = 0.5;
-	headingControl.rotation = 0;
-	headingControl.buttonMode = true;
-	headingControl.interactive = true;
+    var headingControl = Starship.generateSprite("heading", 20, '#ff00ff');
+    headingControl.position.x = 360;
+    headingControl.position.y = 0;
+    headingControl.anchor.x = 1.0;
+    headingControl.anchor.y = 0.5;
+    headingControl.rotation = 0;
+    headingControl.buttonMode = true;
+    headingControl.interactive = true;
     observerFrame.addChild(headingControl);
 
-	var headingDown = false;
+    var headingDown = false;
 
-	headingControl.mousedown = headingControl.touchstart = function(data) {
-		// stop the default event...
-		data.originalEvent.preventDefault();
+    headingControl.mousedown = headingControl.touchstart = function(data) {
+        // stop the default event...
+        data.originalEvent.preventDefault();
 
-		// store a reference to the data
-		// The reason for this is because of multitouch
-		// we want to track the movement of this particular touch
-		this.data = data;
-		this.alpha = 0.9;
-		this.dragging = true;
+        // store a reference to the data
+        // The reason for this is because of multitouch
+        // we want to track the movement of this particular touch
+        this.data = data;
+        this.alpha = 0.9;
+        this.dragging = true;
     };
 
-	headingControl.mouseup = headingControl.touchend = headingControl.mouseupoutside = headingControl.touchendoutside = function(data) {
-		this.alpha = 1
-		this.dragging = false;
-		// set the interaction data to null
-		this.data = null;
-	};
+    headingControl.mouseup = headingControl.touchend = headingControl.mouseupoutside = headingControl.touchendoutside = function(data) {
+        this.alpha = 1
+        this.dragging = false;
+        // set the interaction data to null
+        this.data = null;
+    };
 
     headingControl.updateHeading = function(c,s) {
         // Rotate the sprite
@@ -159,22 +159,22 @@ function main() {
         this.position.y = s*r;
     }
 
-	// set the callbacks for when the mouse or a touch moves
-	headingControl.mousemove = headingControl.touchmove = function(data)
-	{
-		if(this.dragging)
-		{
-			var newPosition = this.data.getLocalPosition(this.parent);
-			var angle = Math.atan2(newPosition.y,newPosition.x);
+    // set the callbacks for when the mouse or a touch moves
+    headingControl.mousemove = headingControl.touchmove = function(data)
+    {
+        if(this.dragging)
+        {
+            var newPosition = this.data.getLocalPosition(this.parent);
+            var angle = Math.atan2(newPosition.y,newPosition.x);
             angle = Math.floor(angle/(delta_turn*Math.PI/180)+0.5)*(delta_turn*Math.PI/180);
-			var c = Math.cos(angle);
-			var s = Math.sin(angle);
+            var c = Math.cos(angle);
+            var s = Math.sin(angle);
 
             this.updateHeading(c,s);
 
-			u.GetObserver().SetOrientation(Math.cos(angle), Math.sin(angle));
-		}
-	}
+            u.GetObserver().SetOrientation(Math.cos(angle), Math.sin(angle));
+        }
+    }
 
     /*
     var backgroundTexture = new PIXI.Texture.fromImage("resources\\brushed_metal.png");
@@ -184,25 +184,25 @@ function main() {
     stage.addChild(background);
     */
 
-	var thrustButtonStuff = Starship.generateButton("button", 60, 'yellow', "Thrust");
+    var thrustButtonStuff = Starship.generateButton("button", 60, 'yellow', "Thrust");
     var thrustButton = thrustButtonStuff[0];
     var thrustButtonUp = thrustButtonStuff[1];
     var thrustButtonDown = thrustButtonStuff[2];
 
-	thrustButton.position.x = width-90;
-	thrustButton.position.y = height-90;
+    thrustButton.position.x = width-90;
+    thrustButton.position.y = height-90;
 
-	var thrustDown = false;
+    var thrustDown = false;
 
-	thrustButton.mousedown = thrustButton.touchstart = function(data) {
-		thrustDown = true;
+    thrustButton.mousedown = thrustButton.touchstart = function(data) {
+        thrustDown = true;
         this.setTexture(thrustButtonDown);
     };
 
-	thrustButton.mouseup = thrustButton.touchend = thrustButton.mouseupoutside = thrustButton.touchendoutside = function(data) {
-		thrustDown = false;
+    thrustButton.mouseup = thrustButton.touchend = thrustButton.mouseupoutside = thrustButton.touchendoutside = function(data) {
+        thrustDown = false;
         this.setTexture(thrustButtonUp);
-	};
+    };
 
     stage.addChild(thrustButton);
 
@@ -318,7 +318,7 @@ function main() {
     var deltatime = new PIXI.Text("", white_font_right);
     deltatime.position.x = width/2;
     deltatime.position.y = 2*font_size+font_margin;
-	stage.addChild(deltatime);
+    stage.addChild(deltatime);
 
     var rangeTitle = new PIXI.Text("", yellow_font_left);
     rangeTitle.position.x = font_margin
@@ -368,21 +368,21 @@ function main() {
     var relveltime = new PIXI.Text("", white_font_right);
     relveltime.position.x = width/2;
     relveltime.position.y = 7*font_size+font_margin;
-	stage.addChild(relveltime);
+    stage.addChild(relveltime);
 
-	var targetSprite = Starship.generateSprite("target",16,"#ffffff");
-	targetSprite.position.x = 0;
-	targetSprite.position.y = 0;
-	targetSprite.visible = false;
-	observerFrame.addChild(targetSprite);
+    var targetSprite = Starship.generateSprite("target",16,"#ffffff");
+    targetSprite.position.x = 0;
+    targetSprite.position.y = 0;
+    targetSprite.visible = false;
+    observerFrame.addChild(targetSprite);
 
-	var bearingSprite = Starship.generateSprite("bearing",16,"#ffffff");
-	bearingSprite.position.x = 0;
-	bearingSprite.position.y = 0;
-	bearingSprite.visible = false;
-	observerFrame.addChild(bearingSprite);
+    var bearingSprite = Starship.generateSprite("bearing",16,"#ffffff");
+    bearingSprite.position.x = 0;
+    bearingSprite.position.y = 0;
+    bearingSprite.visible = false;
+    observerFrame.addChild(bearingSprite);
 
-	var trackSprite = Starship.generateSprite("track",16,"#ffff00");
+    var trackSprite = Starship.generateSprite("track",16,"#ffff00");
     trackSprite.position.x = 0;
     trackSprite.position.y = 0;
     trackSprite.visible = false;
@@ -436,19 +436,19 @@ function main() {
         // Update Everything
 
         var targetPos = 0;
-		var targetttext = "N/A";
-		var deltattext = "N/A";
+        var targetttext = "N/A";
+        var deltattext = "N/A";
         var rangetext = "N/A";
         var bearingtext = "N/A";
         var tracktext = "N/A";
-		var relveltext = "N/A";
+        var relveltext = "N/A";
 
         if (MOButtonToggle)
             u.measured = true;
         else
             u.measured = false;
 
-		var objects = u.GetObjects();
+        var objects = u.GetObjects();
         for (var i=0; i<objects.length; i++) {
             var obj = objects[i];
             obj.Update(observerFrame);
@@ -488,70 +488,70 @@ function main() {
             return temp2+"."+temp.slice(-1)+"% c";
         }
 
-		var shipt = u.GetObserver().GetClock();
-		if (observerFrame.currentTarget) {
-			var targett = observerFrame.currentTarget.GetClock();
-			targetPos = u.GetPos3Local(observerFrame.currentTarget);
-			targetSprite.position.x = targetPos[0];
-			targetSprite.position.y = targetPos[1];
+        var shipt = u.GetObserver().GetClock();
+        if (observerFrame.currentTarget) {
+            var targett = observerFrame.currentTarget.GetClock();
+            targetPos = u.GetPos3Local(observerFrame.currentTarget);
+            targetSprite.position.x = targetPos[0];
+            targetSprite.position.y = targetPos[1];
             var bearing = Math.atan2(targetPos[1],targetPos[0]);
             bearingtext = formatAngle(bearing);
             if ((Math.abs(targetSprite.position.x) > height/2+32) || (Math.abs(targetSprite.position.y) > height/2+32)) {
-				targetSprite.visible = false;
-				// draw bearing indicator here
-				bearingSprite.rotation = bearing;
+                targetSprite.visible = false;
+                // draw bearing indicator here
+                bearingSprite.rotation = bearing;
                 bearingSprite.position.x = Math.cos(bearing)*(height/2-60);
                 bearingSprite.position.y = Math.sin(bearing)*(height/2-60);
-				bearingSprite.visible = true;
-			} else {
-				targetSprite.visible = true;
-				bearingSprite.visible = false;
-			}
-        	var deltat = targett - shipt;
-        	targetttext = formatTime(targett);
-        	deltattext = formatTime(deltat);
-        	var targetvel = u.GetObserver().GetObservedRelativeVel3(observerFrame.currentTarget);
+                bearingSprite.visible = true;
+            } else {
+                targetSprite.visible = true;
+                bearingSprite.visible = false;
+            }
+            var deltat = targett - shipt;
+            targetttext = formatTime(targett);
+            deltattext = formatTime(deltat);
+            var targetvel = u.GetObserver().GetObservedRelativeVel3(observerFrame.currentTarget);
             var velocityAngle = Math.atan2(targetvel[1],targetvel[0])-Math.PI;
             var speed = Math.sqrt(targetvel[0]*targetvel[0]+targetvel[1]*targetvel[1]+targetvel[2]*targetvel[2]);
-        	if (speed > 1e-6) {
-				// draw velocity indicator here
+            if (speed > 1e-6) {
+                // draw velocity indicator here
                 trackSprite.rotation = velocityAngle;
                 trackSprite.position.x = -Math.cos(velocityAngle)*(height/2-30);
                 trackSprite.position.y = -Math.sin(velocityAngle)*(height/2-30);
                 trackSprite.visible = true;
-			} else {
+            } else {
                 trackSprite.visible = false;
-			}
+            }
             tracktext = formatAngle(velocityAngle);
             rangetext = formatDist(Math.sqrt(targetPos[0]*targetPos[0] + targetPos[1]*targetPos[1]));
-        	// TBD - calculate relvel
-        	var relvel = targetvel[1]*Math.sin(bearing)+targetvel[0]*Math.cos(bearing);
-        	relveltext = formatVel(relvel);
-		}
-		else {
-			targetttext = "N/A";
-			deltattext = "N/A";
+            // TBD - calculate relvel
+            var relvel = targetvel[1]*Math.sin(bearing)+targetvel[0]*Math.cos(bearing);
+            relveltext = formatVel(relvel);
+        }
+        else {
+            targetttext = "N/A";
+            deltattext = "N/A";
             rangetext = "N/A";
             bearingtext = "N/A";
             tracktext = "N/A";
-			relveltext = "N/A";
-			targetSprite.visible = false;
-		}
+            relveltext = "N/A";
+            targetSprite.visible = false;
+        }
 
         var headingVector = u.GetObserver().GetOrientation();
         var headingtext = formatAngle(Math.atan2(headingVector[1], headingVector[0]));
 
-		var v = u.GetObserver().GetVel3
-		shiptimeTitle.setText("SHIP TIME:");
+        var v = u.GetObserver().GetVel3
+        shiptimeTitle.setText("SHIP TIME:");
         shiptime.setText(formatTime(shipt));
         shiptime.position.x = width/4 - shiptime.width;
 
-		targettimeTitle.setText("TARGET TIME:");
-		targettime.setText(targetttext);
+        targettimeTitle.setText("TARGET TIME:");
+        targettime.setText(targetttext);
         targettime.position.x = width/4 - targettime.width;
 
-		deltatimeTitle.setText("DELTA TIME:");
-		deltatime.setText(deltattext);
+        deltatimeTitle.setText("DELTA TIME:");
+        deltatime.setText(deltattext);
         deltatime.position.x = width/4 - deltatime.width;
 
         rangeTitle.setText("RANGE:");
@@ -570,8 +570,8 @@ function main() {
         trackAngle.setText(tracktext);
         trackAngle.position.x = width/4 - trackAngle.width;
 
-		relvelTitle.setText("VELOCITY:");
-		relveltime.setText(relveltext);
+        relvelTitle.setText("VELOCITY:");
+        relveltime.setText(relveltext);
         relveltime.position.x = width/4 - relveltime.width;
 
         renderer.render(stage);

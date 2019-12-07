@@ -43,7 +43,7 @@ function ProjectTimeObserved(pos, vel) {
     if (D < 0.0) {
         console.log("***",B,C,D)
         D = 0.0;
-	}
+    }
     var S = Math.sqrt(D);
     var x = 0.0;
     //if (A>0.0)
@@ -328,7 +328,7 @@ var SR = {};
         this.pos4[1] += this.vel4[1]*delta_tau;
         this.pos4[2] += this.vel4[2]*delta_tau;
         this.pos4[3] += this.vel4[3]*delta_tau;
-		this.clock += delta_tau;
+        this.clock += delta_tau;
         //if self.GetName() != 'beacon':
         //    print self.__clock,delta_tau
     }

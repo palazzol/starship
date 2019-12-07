@@ -25,17 +25,17 @@ if (typeof Starship == "undefined" || !Starship) {
     };
     Starship.Object2D.prototype.Update = function(parent) {
         if (this.rendered === false) {
-			if (this.name === "beacon") { // beacons are not selectable
-				this.sprite = Starship.generateSprite("plus",this.radius,this.color);
-			} else {
-				this.sprite = Starship.generateSprite("circle",this.radius,this.color);
-				this.sprite.buttonMode = true;
-				this.sprite.interactive = true;
-				this.sprite.objref = this;
-				this.sprite.mousedown = this.sprite.touchstart = function(data) {
-					data.target.parent.currentTarget = data.target.objref;
-				}
-			}
+            if (this.name === "beacon") { // beacons are not selectable
+                this.sprite = Starship.generateSprite("plus",this.radius,this.color);
+            } else {
+                this.sprite = Starship.generateSprite("circle",this.radius,this.color);
+                this.sprite.buttonMode = true;
+                this.sprite.interactive = true;
+                this.sprite.objref = this;
+                this.sprite.mousedown = this.sprite.touchstart = function(data) {
+                    data.target.parent.currentTarget = data.target.objref;
+                }
+            }
             parent.addChild(this.sprite);
 
             this.rendered = true;
@@ -79,7 +79,7 @@ if (typeof Starship == "undefined" || !Starship) {
         var v = gv/g;
         var t = this.GetClock();
 
-		/*
+        /*
         // Put the circle on hold for a bit
         for (r=50; r<600; r+=50) {
             var center_offset = r;
@@ -91,32 +91,32 @@ if (typeof Starship == "undefined" || !Starship) {
             ctx.arc(center_pos[0], center_pos[1], radius, 0, 2*Math.PI);
             ctx.stroke();
         }
-		*/
+        */
 
         if (this.rendered === false) {
 
-			this.sprite = Starship.generateSprite("ship",this.radius,this.color);
-			this.sprite2 = Starship.generateSprite("flame",this.radius,"#ffff00");
-			parent.addChild(this.sprite);
-			parent.addChild(this.sprite2);
+            this.sprite = Starship.generateSprite("ship",this.radius,this.color);
+            this.sprite2 = Starship.generateSprite("flame",this.radius,"#ffff00");
+            parent.addChild(this.sprite);
+            parent.addChild(this.sprite2);
 
             this.rendered = true;
         }
 
-		this.sprite.position.x = pos[0];
-		this.sprite.position.y = pos[1];
-		var temp = this.GetOrientation();
-		var angle = Math.atan2(temp[1],temp[0]);
-		this.sprite.rotation = angle;
+        this.sprite.position.x = pos[0];
+        this.sprite.position.y = pos[1];
+        var temp = this.GetOrientation();
+        var angle = Math.atan2(temp[1],temp[0]);
+        this.sprite.rotation = angle;
 
-		this.sprite2.position.x = pos[0];
-		this.sprite2.position.y = pos[1];
-		this.sprite2.rotation = angle;
+        this.sprite2.position.x = pos[0];
+        this.sprite2.position.y = pos[1];
+        this.sprite2.rotation = angle;
 
-		if (this.thruster) {
-			this.sprite2.visible = true;
-		} else {
-			this.sprite2.visible = false;
-		}
+        if (this.thruster) {
+            this.sprite2.visible = true;
+        } else {
+            this.sprite2.visible = false;
+        }
     };
 }());

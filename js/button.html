@@ -53,8 +53,8 @@ var phongMtx = function(r, g, b, normal_x, normal_y, normal_z, ls) {
 var createButton = function(imageData, border, width, height, color, pressed) {
 
     // Light source vector
-	var ls_invert = 0.0;
-	if (pressed) ls_invert = 1.0;
+    var ls_invert = 0.0;
+    if (pressed) ls_invert = 1.0;
     var ls_theta = (135.0+180.0*ls_invert)*Math.PI/180;
     var ls_phi = 54.735*Math.PI/180;
     var ls = [Math.cos(ls_theta)*Math.sin(ls_phi), -Math.sin(ls_theta)*Math.sin(ls_phi), Math.cos(ls_phi)];
