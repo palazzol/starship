@@ -15,6 +15,6 @@ Quick Speed Keys:
 
 # What am I looking at?
 
-The "Observer view" shows all objects in the positions as they would appear, including delays due to distance. In other words, it shows objects where they intersect the ship's past light code
+The "Observer view" shows all objects in the positions as they would appear, including delays due to distance. In other words, it shows objects where they intersect the ship's past light cone.
 
 The "Measured view" shows all objects in the ship's notion of "now", which is essentially when they intersect his local plane t=0.  This is geometrically simpler, but it really only realstic for objects that "local" to the ship, where propagation delays are not significant.
