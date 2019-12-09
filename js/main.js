@@ -526,7 +526,8 @@ function main() {
             rangetext = formatDist(Math.sqrt(targetPos[0]*targetPos[0] + targetPos[1]*targetPos[1]));
             // TBD - calculate relvel
             var relvel = targetvel[1]*Math.sin(bearing)+targetvel[0]*Math.cos(bearing);
-            relveltext = formatVel(relvel);
+            relveltext = Math.round(targetvel[0]*1000)/10+","+Math.round(targetvel[1]*1000)/10;
+            //relveltext = formatVel(relvel);
         }
         else {
             targetttext = "N/A";
